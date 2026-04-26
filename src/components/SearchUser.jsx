@@ -3,12 +3,8 @@ import React, { useState } from 'react';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
 const StatBadge = ({ label, value, color }) => (
-  <div style={{
-    background: 'var(--bg3)', padding: '8px 14px',
-    borderRadius: '8px', textAlign: 'center',
-    border: '1px solid ' + color + '44', minWidth: '80px'
-  }}>
-    <div style={{ fontSize: '18px', fontWeight: 'bold', color }}>{value}</div>
+  <div style={{ background: 'var(--bg3)', padding: '8px 14px', borderRadius: '8px', textAlign: 'center', minWidth: '80px' }}>
+    <div style={{ fontSize: '18px', fontWeight: 'bold', color: color }}>{value}</div>
     <div style={{ fontSize: '11px', color: 'var(--text2)' }}>{label}</div>
   </div>
 );
@@ -56,9 +52,7 @@ const SearchUser = ({ user }) => {
         });
         const data = await res.json();
         if (!data.error) setGithubData(data);
-      } catch (err) {
-        console.error('GitHub error:', err);
-      }
+      } catch (err) { console.error(err); }
     }
     if (u.leetcodeUsername) {
       try {
@@ -67,11 +61,47 @@ const SearchUser = ({ user }) => {
           const data = await res.json();
           if (data.status !== 'error') setLeetcodeData(data);
         }
-      } catch (err) {
-        console.error('LeetCode error:', err);
-      }
+      } catch (err) { console.error(err); }
     }
     setProfileLoading(false);
+  };
+
+  const inputStyle = {
+    flex: 1, padding: '12px 16px',
+    background: 'var(--bg2)', border: '1px solid var(--border)',
+    borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none'
+  };
+
+  const btnStyle = {
+    padding: '12px 24px', background: 'var(--primary)',
+    border: 'none', borderRadius: '8px', color: '#000',
+    fontWeight: 'bold', cursor: 'pointer', fontSize: '14px'
+  };
+
+  const backBtnStyle = {
+    background: 'transparent', border: '1px solid var(--border)',
+    color: 'var(--text2)', padding: '8px 16px', borderRadius: '6px',
+    cursor: 'pointer', marginBottom: '15px', fontSize: '13px'
+  };
+
+  const rowStyle = {
+    display: 'flex', alignItems: 'center', gap: '12px',
+    padding: '12px', borderRadius: '8px', marginTop: '8px',
+    background: 'var(--bg2)', border: '1px solid var(--border)', cursor: 'pointer'
+  };
+
+  const avatarStyle = {
+    width: '45px', height: '45px', borderRadius: '50%',
+    background: 'linear-gradient(135deg, var(--primary), var(--gold))',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontWeight: 'bold', fontSize: '16px', flexShrink: 0
+  };
+
+  const bigAvatarStyle = {
+    width: '70px', height: '70px', borderRadius: '50%',
+    background: 'linear-gradient(135deg, var(--primary), var(--gold))',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontWeight: 'bold', fontSize: '24px'
   };
 
   return (
@@ -81,39 +111,23 @@ const SearchUser = ({ user }) => {
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
           <input
             type="text"
-            placeholder="Name ya GitHub username likho..."
+            placeholder="Name ya GitHub username..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchUsers()}
-            style={{
-              flex: 1, padding: '12px 16px',
-              background: 'var(--bg2)', border: '1px solid var(--border)',
-              borderRadius: '8px', color: 'var(--text1)', fontSize: '14px',
-              outline: 'none'
-            }}
+            style={inputStyle}
           />
-          <button
-            onClick={searchUsers}
-            style={{
-              padding: '12px 24px', background: 'var(--primary)',
-              border: 'none', borderRadius: '8px', color: '#000',
-              fontWeight: 'bold', cursor: 'pointer', fontSize: '14px'
-            }}
-          >
-            Search
-          </button>
+          <button onClick={searchUsers} style={btnStyle}>Search</button>
         </div>
       </div>
 
       {loading && (
-        <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>
-          Searching...
-        </div>
+        <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>Searching...</div>
       )}
 
       {!loading && searched && results.length === 0 && (
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
-          <div style={{ fontSize: '40px' }}>No user found</div>
+          <div style={{ color: 'var(--text2)' }}>Koi user nahi mila</div>
         </div>
       )}
 
@@ -121,29 +135,13 @@ const SearchUser = ({ user }) => {
         <div className="card" style={{ marginBottom: '20px' }}>
           <div className="card-title">Results ({results.length})</div>
           {results.map((u, i) => (
-            <div
-              key={i}
-              onClick={() => viewProfile(u)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '12px', borderRadius: '8px', marginTop: '8px',
-                background: 'var(--bg2)', border: '1px solid var(--border)',
-                cursor: 'pointer'
-              }}
-            >
-              <div style={{
-                width: '45px', height: '45px', borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--primary), var(--gold))',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 'bold', fontSize: '16px', flexShrink: 0
-              }}>
-                {u.name.substring(0, 2).toUpperCase()}
-              </div>
+            <div key={i} onClick={() => viewProfile(u)} style={rowStyle}>
+              <div style={avatarStyle}>{u.name.substring(0, 2).toUpperCase()}</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: '600', fontSize: '15px' }}>{u.name}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text2)' }}>
-                  {u.githubUsername && '🐙 @' + u.githubUsername}
-                  {u.leetcodeUsername && ' ⚡ @' + u.leetcodeUsername}
+                  {u.githubUsername ? '🐙 @' + u.githubUsername : ''}
+                  {u.leetcodeUsername ? ' ⚡ @' + u.leetcodeUsername : ''}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -157,40 +155,19 @@ const SearchUser = ({ user }) => {
 
       {selectedUser && (
         <div>
-          <button
-            onClick={() => { setSelectedUser(null); setGithubData(null); setLeetcodeData(null); }}
-            style={{
-              background: 'transparent', border: '1px solid var(--border)',
-              color: 'var(--text2)', padding: '8px 16px', borderRadius: '6px',
-              cursor: 'pointer', marginBottom: '15px', fontSize: '13px'
-            }}
-          >
+          <button onClick={() => { setSelectedUser(null); setGithubData(null); setLeetcodeData(null); }} style={backBtnStyle}>
             Back
           </button>
-
           <div className="card" style={{ marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               {githubData && githubData.avatar_url ? (
-                <img
-                  src={githubData.avatar_url}
-                  alt="avatar"
-                  style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)' }}
-                />
+                <img src={githubData.avatar_url} alt="avatar" style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)' }} />
               ) : (
-                <div style={{
-                  width: '70px', height: '70px', borderRadius: '50%',
-                  background: 'linear-gradient(135deg, var(--primary), var(--gold))',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 'bold', fontSize: '24px'
-                }}>
-                  {selectedUser.name.substring(0, 2).toUpperCase()}
-                </div>
+                <div style={bigAvatarStyle}>{selectedUser.name.substring(0, 2).toUpperCase()}</div>
               )}
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: '20px' }}>{selectedUser.name}</div>
-                {githubData && (
-                  <div style={{ color: 'var(--text2)', fontSize: '13px' }}>{'@' + githubData.login}</div>
-                )}
+                {githubData && <div style={{ color: 'var(--text2)', fontSize: '13px' }}>{'@' + githubData.login}</div>}
               </div>
             </div>
             <div style={{ display: 'flex', gap: '15px', marginTop: '20px', flexWrap: 'wrap' }}>
@@ -201,9 +178,7 @@ const SearchUser = ({ user }) => {
           </div>
 
           {profileLoading && (
-            <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>
-              Loading...
-            </div>
+            <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>Loading...</div>
           )}
 
           {githubData && (
@@ -214,17 +189,7 @@ const SearchUser = ({ user }) => {
                 <StatBadge label="Followers" value={githubData.followers} color="var(--gold)" />
                 <StatBadge label="Following" value={githubData.following} color="var(--text2)" />
               </div>
-              
-                href={githubData.html_url}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: 'inline-block', marginTop: '12px',
-                  color: 'var(--primary)', fontSize: '12px',
-                  textDecoration: 'none', border: '1px solid var(--primary)',
-                  padding: '4px 12px', borderRadius: '4px'
-                }}
-              >
+              <a href={githubData.html_url} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '12px', color: 'var(--primary)', fontSize: '12px', textDecoration: 'none', border: '1px solid var(--primary)', padding: '4px 12px', borderRadius: '4px' }}>
                 View GitHub Profile
               </a>
             </div>
@@ -244,9 +209,7 @@ const SearchUser = ({ user }) => {
 
           {!profileLoading && !githubData && !leetcodeData && (
             <div className="card" style={{ textAlign: 'center', padding: '25px' }}>
-              <div style={{ color: 'var(--text2)', fontSize: '14px' }}>
-                Platforms connect nahi kiye
-              </div>
+              <div style={{ color: 'var(--text2)', fontSize: '14px' }}>Platforms connect nahi kiye</div>
             </div>
           )}
         </div>
