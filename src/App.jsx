@@ -5,6 +5,7 @@ import ProfilePage from "./components/ProfilePage";
 import AIPortfolio from "./components/AIPortfolio";
 import Activity from "./components/Activity";
 import Leaderboard from "./components/Leaderboard";
+import SearchUser from "./components/SearchUser";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -25,6 +26,7 @@ function App() {
         overview: "Systems Synced 🟢",
         activity: "Activity Feed Loaded 📊",
         leaderboard: "Leaderboard Updated 🏆",
+        search: "Search Engine Ready 🔍",
         insights: "AI Engine Initialized 🤖",
         profile: "Identity Verified 🛡️"
       };
@@ -36,7 +38,6 @@ function App() {
 
   return (
     <div id="app">
-      {/* Toast Notifications */}
       <div className="toast-container">
         {toasts.map(t => (
           <div key={t.id} className={`toast ${t.type}`}>
@@ -51,11 +52,10 @@ function App() {
       {!user ? (
         <Auth setUser={(userData) => {
           setUser(userData);
-          addToast(`Welcome, ${userData.name.split(' ')[0]} 👋`, 'success');
+          addToast('Welcome, ' + userData.name.split(' ')[0] + ' 👋', 'success');
         }} />
       ) : (
         <>
-          {/* Navbar */}
           <nav className="navbar">
             <div className="nav-logo" onClick={() => setActiveTab('overview')} style={{ cursor: 'pointer' }}>
               <div className="logo-icon-wrapper">
@@ -68,36 +68,12 @@ function App() {
             </div>
 
             <div className="nav-tabs">
-              <button
-                className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveTab('overview')}
-              >
-                Overview
-              </button>
-              <button
-                className={`nav-tab ${activeTab === 'leaderboard' ? 'active' : ''}`}
-                onClick={() => setActiveTab('leaderboard')}
-              >
-                Leaderboard
-              </button>
-              <button
-                className={`nav-tab ${activeTab === 'activity' ? 'active' : ''}`}
-                onClick={() => setActiveTab('activity')}
-              >
-                Activity
-              </button>
-              <button
-                className={`nav-tab ${activeTab === 'insights' ? 'active' : ''}`}
-                onClick={() => setActiveTab('insights')}
-              >
-                Insights
-              </button>
-              <button
-                className={`nav-tab ${activeTab === 'profile' ? 'active' : ''}`}
-                onClick={() => setActiveTab('profile')}
-              >
-                Profile
-              </button>
+              <button className={'nav-tab ' + (activeTab === 'overview' ? 'active' : '')} onClick={() => setActiveTab('overview')}>Overview</button>
+              <button className={'nav-tab ' + (activeTab === 'leaderboard' ? 'active' : '')} onClick={() => setActiveTab('leaderboard')}>Leaderboard</button>
+              <button className={'nav-tab ' + (activeTab === 'activity' ? 'active' : '')} onClick={() => setActiveTab('activity')}>Activity</button>
+              <button className={'nav-tab ' + (activeTab === 'search' ? 'active' : '')} onClick={() => setActiveTab('search')}>🔍 Search</button>
+              <button className={'nav-tab ' + (activeTab === 'insights' ? 'active' : '')} onClick={() => setActiveTab('insights')}>Insights</button>
+              <button className={'nav-tab ' + (activeTab === 'profile' ? 'active' : '')} onClick={() => setActiveTab('profile')}>Profile</button>
             </div>
 
             <div className="nav-user" onClick={() => setActiveTab('profile')} style={{ cursor: 'pointer' }}>
@@ -111,21 +87,16 @@ function App() {
               </div>
               <div className="avatar" style={{ border: '2px solid var(--primary)', position: 'relative' }}>
                 {user.name ? user.name.substring(0, 2).toUpperCase() : "KK"}
-                <div style={{
-                  position: 'absolute', bottom: '0', right: '0',
-                  width: '8px', height: '8px',
-                  background: 'var(--primary)', borderRadius: '50%',
-                  border: '2px solid var(--bg)'
-                }}></div>
+                <div style={{ position: 'absolute', bottom: '0', right: '0', width: '8px', height: '8px', background: 'var(--primary)', borderRadius: '50%', border: '2px solid var(--bg)' }}></div>
               </div>
             </div>
           </nav>
 
-          {/* Pages */}
           <div className="rel">
             {activeTab === 'overview' && <Dashboard user={user} />}
             {activeTab === 'leaderboard' && <Leaderboard user={user} />}
             {activeTab === 'activity' && <Activity user={user} />}
+            {activeTab === 'search' && <SearchUser user={user} />}
             {activeTab === 'insights' && <AIPortfolio user={user} />}
             {activeTab === 'profile' && <ProfilePage user={user} setUser={setUser} />}
           </div>
