@@ -6,7 +6,7 @@ const StatBadge = ({ label, value, color }) => (
   <div style={{
     background: 'var(--bg3)', padding: '8px 14px',
     borderRadius: '8px', textAlign: 'center',
-    border: `1px solid ${color}44`, minWidth: '80px'
+    border: '1px solid ' + color + '44', minWidth: '80px'
   }}>
     <div style={{ fontSize: '18px', fontWeight: 'bold', color }}>{value}</div>
     <div style={{ fontSize: '11px', color: 'var(--text2)' }}>{label}</div>
@@ -31,7 +31,6 @@ const SearchUser = ({ user }) => {
     setSelectedUser(null);
     setGithubData(null);
     setLeetcodeData(null);
-
     try {
       const res = await fetch(API_URL + '/api/user/search?query=' + query, {
         headers: { 'Authorization': 'Bearer ' + token }
@@ -50,7 +49,6 @@ const SearchUser = ({ user }) => {
     setGithubData(null);
     setLeetcodeData(null);
     setProfileLoading(true);
-
     if (u.githubUsername) {
       try {
         const res = await fetch(API_URL + '/api/user/github/' + u.githubUsername, {
@@ -62,7 +60,6 @@ const SearchUser = ({ user }) => {
         console.error('GitHub error:', err);
       }
     }
-
     if (u.leetcodeUsername) {
       try {
         const res = await fetch('https://leetcode-stats-api.herokuapp.com/' + u.leetcodeUsername);
@@ -74,15 +71,13 @@ const SearchUser = ({ user }) => {
         console.error('LeetCode error:', err);
       }
     }
-
     setProfileLoading(false);
   };
 
   return (
     <div className="page active rel">
-
       <div className="card" style={{ marginBottom: '20px' }}>
-        <div className="card-title">🔍 SEARCH DEVELOPER</div>
+        <div className="card-title">SEARCH DEVELOPER</div>
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
           <input
             type="text"
@@ -118,8 +113,7 @@ const SearchUser = ({ user }) => {
 
       {!loading && searched && results.length === 0 && (
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
-          <div style={{ fontSize: '40px' }}>😕</div>
-          <div style={{ color: 'var(--text2)', marginTop: '10px' }}>Koi user nahi mila</div>
+          <div style={{ fontSize: '40px' }}>No user found</div>
         </div>
       )}
 
@@ -136,8 +130,6 @@ const SearchUser = ({ user }) => {
                 background: 'var(--bg2)', border: '1px solid var(--border)',
                 cursor: 'pointer'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
             >
               <div style={{
                 width: '45px', height: '45px', borderRadius: '50%',
@@ -155,10 +147,9 @@ const SearchUser = ({ user }) => {
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ color: 'var(--primary)', fontWeight: 'bold' }}>#{u.rank || 9999}</div>
+                <div style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{'#' + (u.rank || 9999)}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text2)' }}>Score: {u.score}</div>
               </div>
-              <div style={{ color: 'var(--text2)', fontSize: '12px' }}>View →</div>
             </div>
           ))}
         </div>
@@ -174,12 +165,12 @@ const SearchUser = ({ user }) => {
               cursor: 'pointer', marginBottom: '15px', fontSize: '13px'
             }}
           >
-            Back to results
+            Back
           </button>
 
           <div className="card" style={{ marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              {githubData?.avatar_url ? (
+              {githubData && githubData.avatar_url ? (
                 <img
                   src={githubData.avatar_url}
                   alt="avatar"
@@ -198,10 +189,7 @@ const SearchUser = ({ user }) => {
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: '20px' }}>{selectedUser.name}</div>
                 {githubData && (
-                  <div style={{ color: 'var(--text2)', fontSize: '13px' }}>@{githubData.login}</div>
-                )}
-                {githubData?.bio && (
-                  <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>{githubData.bio}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: '13px' }}>{'@' + githubData.login}</div>
                 )}
               </div>
             </div>
@@ -214,13 +202,13 @@ const SearchUser = ({ user }) => {
 
           {profileLoading && (
             <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>
-              Loading platform data...
+              Loading...
             </div>
           )}
 
           {githubData && (
             <div className="card" style={{ marginBottom: '20px' }}>
-              <div className="card-title">🐙 GITHUB</div>
+              <div className="card-title">GITHUB</div>
               <div style={{ display: 'flex', gap: '15px', marginTop: '15px', flexWrap: 'wrap' }}>
                 <StatBadge label="Repos" value={githubData.public_repos} color="var(--primary)" />
                 <StatBadge label="Followers" value={githubData.followers} color="var(--gold)" />
@@ -244,7 +232,7 @@ const SearchUser = ({ user }) => {
 
           {leetcodeData && (
             <div className="card" style={{ marginBottom: '20px' }}>
-              <div className="card-title">⚡ LEETCODE</div>
+              <div className="card-title">LEETCODE</div>
               <div style={{ display: 'flex', gap: '15px', marginTop: '15px', flexWrap: 'wrap' }}>
                 <StatBadge label="Total" value={leetcodeData.totalSolved || 0} color="var(--primary)" />
                 <StatBadge label="Easy" value={leetcodeData.easySolved || 0} color="#00b8a3" />
@@ -257,13 +245,12 @@ const SearchUser = ({ user }) => {
           {!profileLoading && !githubData && !leetcodeData && (
             <div className="card" style={{ textAlign: 'center', padding: '25px' }}>
               <div style={{ color: 'var(--text2)', fontSize: '14px' }}>
-                Is user ne platforms connect nahi kiye hain
+                Platforms connect nahi kiye
               </div>
             </div>
           )}
         </div>
       )}
-
     </div>
   );
 };
