@@ -23,7 +23,6 @@ const SearchUser = ({ user }) => {
     setError('');
     setGithubData(null);
     setLeetcodeData(null);
-
     try {
       const res = await fetch(API_URL + '/api/user/github/' + query.trim(), {
         headers: { 'Authorization': 'Bearer ' + token }
@@ -36,7 +35,7 @@ const SearchUser = ({ user }) => {
         fetchLeetcode(query.trim());
       }
     } catch (err) {
-      setError('Error fetching GitHub data');
+      setError('Error fetching data');
     } finally {
       setLoading(false);
     }
@@ -50,20 +49,8 @@ const SearchUser = ({ user }) => {
         if (data.status !== 'error') setLeetcodeData(data);
       }
     } catch (err) {
-      console.error('LeetCode error:', err);
+      console.error(err);
     }
-  };
-
-  const inputStyle = {
-    flex: 1, padding: '12px 16px',
-    background: 'var(--bg2)', border: '1px solid var(--border)',
-    borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none'
-  };
-
-  const btnStyle = {
-    padding: '12px 24px', background: 'var(--primary)',
-    border: 'none', borderRadius: '8px', color: '#000',
-    fontWeight: 'bold', cursor: 'pointer', fontSize: '14px'
   };
 
   return (
@@ -76,20 +63,31 @@ const SearchUser = ({ user }) => {
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
           <input
             type="text"
-            placeholder="GitHub username (e.g. krishankumar)..."
+            placeholder="GitHub username..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && searchGithub()}
-            style={inputStyle}
+            style={{
+              flex: 1, padding: '12px 16px',
+              background: 'var(--bg2)', border: '1px solid var(--border)',
+              borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none'
+            }}
           />
-          <button onClick={searchGithub} style={btnStyle}>Search</button>
+          <button
+            onClick={searchGithub}
+            style={{
+              padding: '12px 24px', background: 'var(--primary)',
+              border: 'none', borderRadius: '8px', color: '#000',
+              fontWeight: 'bold', cursor: 'pointer', fontSize: '14px'
+            }}
+          >
+            Search
+          </button>
         </div>
       </div>
 
       {loading && (
-        <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>
-          Loading...
-        </div>
+        <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>Loading...</div>
       )}
 
       {error && (
@@ -114,7 +112,7 @@ const SearchUser = ({ user }) => {
                   <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>{githubData.bio}</div>
                 )}
                 {githubData.location && (
-                  <div style={{ color: 'var(--text2)', fontSize: '12px' }}>📍 {githubData.location}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: '12px' }}>{'📍 ' + githubData.location}</div>
                 )}
               </div>
             </div>
@@ -122,9 +120,6 @@ const SearchUser = ({ user }) => {
               <StatBadge label="Repos" value={githubData.public_repos} color="var(--primary)" />
               <StatBadge label="Followers" value={githubData.followers} color="var(--gold)" />
               <StatBadge label="Following" value={githubData.following} color="var(--text2)" />
-              {githubData.public_gists > 0 && (
-                <StatBadge label="Gists" value={githubData.public_gists} color="var(--purple)" />
-              )}
             </div>
             
               href={githubData.html_url}
@@ -137,7 +132,7 @@ const SearchUser = ({ user }) => {
                 padding: '6px 16px', borderRadius: '6px'
               }}
             >
-              View Full GitHub Profile
+              View GitHub Profile
             </a>
           </div>
 
@@ -145,21 +140,10 @@ const SearchUser = ({ user }) => {
             <div className="card" style={{ marginBottom: '20px' }}>
               <div className="card-title">LEETCODE</div>
               <div style={{ display: 'flex', gap: '15px', marginTop: '15px', flexWrap: 'wrap' }}>
-                <StatBadge label="Total Solved" value={leetcodeData.totalSolved || 0} color="var(--primary)" />
+                <StatBadge label="Total" value={leetcodeData.totalSolved || 0} color="var(--primary)" />
                 <StatBadge label="Easy" value={leetcodeData.easySolved || 0} color="#00b8a3" />
                 <StatBadge label="Medium" value={leetcodeData.mediumSolved || 0} color="#FFA116" />
                 <StatBadge label="Hard" value={leetcodeData.hardSolved || 0} color="#FF375F" />
-                {leetcodeData.ranking && (
-                  <StatBadge label="Ranking" value={'#' + leetcodeData.ranking} color="var(--gold)" />
-                )}
-              </div>
-            </div>
-          )}
-
-          {!leetcodeData && (
-            <div className="card" style={{ textAlign: 'center', padding: '20px', marginBottom: '20px' }}>
-              <div style={{ color: 'var(--text2)', fontSize: '13px' }}>
-                LeetCode data available nahi hai is username ke liye
               </div>
             </div>
           )}
