@@ -58,7 +58,7 @@ const SearchUser = ({ user }) => {
       <div className="card" style={{ marginBottom: '20px' }}>
         <div className="card-title">SEARCH DEVELOPER</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '8px' }}>
-          GitHub username daalo — kisi ka bhi real data dekhne ke liye
+          GitHub username daalo
         </p>
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
           <input
@@ -107,12 +107,9 @@ const SearchUser = ({ user }) => {
               />
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: '22px' }}>{githubData.name || githubData.login}</div>
-                <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{'@' + githubData.login}</div>
+                <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{githubData.login}</div>
                 {githubData.bio && (
                   <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>{githubData.bio}</div>
-                )}
-                {githubData.location && (
-                  <div style={{ color: 'var(--text2)', fontSize: '12px' }}>{'📍 ' + githubData.location}</div>
                 )}
               </div>
             </div>
@@ -121,7 +118,6 @@ const SearchUser = ({ user }) => {
               <StatBadge label="Followers" value={githubData.followers} color="var(--gold)" />
               <StatBadge label="Following" value={githubData.following} color="var(--text2)" />
             </div>
-            
             
               href={githubData.html_url}
               target="_blank"
