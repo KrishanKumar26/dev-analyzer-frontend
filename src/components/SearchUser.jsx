@@ -57,60 +57,23 @@ const SearchUser = ({ user }) => {
     <div className="page active rel">
       <div className="card" style={{ marginBottom: '20px' }}>
         <div className="card-title">SEARCH DEVELOPER</div>
-        <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '8px' }}>
-          GitHub username daalo
-        </p>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '8px' }}>Search GitHub users</p>
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-          <input
-            type="text"
-            placeholder="GitHub username..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && searchGithub()}
-            style={{
-              flex: 1, padding: '12px 16px',
-              background: 'var(--bg2)', border: '1px solid var(--border)',
-              borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none'
-            }}
-          />
-          <button
-            onClick={searchGithub}
-            style={{
-              padding: '12px 24px', background: 'var(--primary)',
-              border: 'none', borderRadius: '8px', color: '#000',
-              fontWeight: 'bold', cursor: 'pointer', fontSize: '14px'
-            }}
-          >
-            Search
-          </button>
+          <input type="text" placeholder="GitHub username..." value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && searchGithub()} style={{ flex: 1, padding: '12px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none' }} />
+          <button onClick={searchGithub} style={{ padding: '12px 24px', background: 'var(--primary)', border: 'none', borderRadius: '8px', color: '#000', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>Search</button>
         </div>
       </div>
-
-      {loading && (
-        <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>Loading...</div>
-      )}
-
-      {error && (
-        <div className="card" style={{ textAlign: 'center', padding: '20px' }}>
-          <div style={{ color: 'red', fontSize: '14px' }}>{error}</div>
-        </div>
-      )}
-
+      {loading && <div style={{ textAlign: 'center', color: 'var(--primary)', padding: '20px' }}>Loading...</div>}
+      {error && <div className="card" style={{ textAlign: 'center', padding: '20px' }}><div style={{ color: 'red', fontSize: '14px' }}>{error}</div></div>}
       {githubData && (
         <div>
           <div className="card" style={{ marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <img
-                src={githubData.avatar_url}
-                alt="avatar"
-                style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--primary)' }}
-              />
+              <img src={githubData.avatar_url} alt="avatar" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--primary)' }} />
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: '22px' }}>{githubData.name || githubData.login}</div>
-                <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{githubData.login}</div>
-                {githubData.bio && (
-                  <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>{githubData.bio}</div>
-                )}
+                <div style={{ color: 'var(--text2)', fontSize: '14px' }}>@{githubData.login}</div>
+                {githubData.bio && <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>{githubData.bio}</div>}
               </div>
             </div>
             <div style={{ display: 'flex', gap: '15px', marginTop: '20px', flexWrap: 'wrap' }}>
@@ -118,21 +81,8 @@ const SearchUser = ({ user }) => {
               <StatBadge label="Followers" value={githubData.followers} color="var(--gold)" />
               <StatBadge label="Following" value={githubData.following} color="var(--text2)" />
             </div>
-            
-              href={githubData.html_url}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'inline-block', marginTop: '15px',
-                color: 'var(--primary)', fontSize: '13px',
-                textDecoration: 'none', border: '1px solid var(--primary)',
-                padding: '6px 16px', borderRadius: '6px'
-              }}
-            >
-              View GitHub Profile
-            </a>
+            <a href={githubData.html_url} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '15px', color: 'var(--primary)', fontSize: '13px', textDecoration: 'none', border: '1px solid var(--primary)', padding: '6px 16px', borderRadius: '6px' }}>View GitHub Profile</a>
           </div>
-
           {leetcodeData && (
             <div className="card" style={{ marginBottom: '20px' }}>
               <div className="card-title">LEETCODE</div>
