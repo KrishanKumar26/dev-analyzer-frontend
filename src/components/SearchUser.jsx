@@ -122,6 +122,7 @@ const SearchUser = ({ user }) => {
               <StatBadge label="Following" value={githubData.following} color="var(--text2)" />
             </div>
             
+            
               href={githubData.html_url}
               target="_blank"
               rel="noreferrer"
