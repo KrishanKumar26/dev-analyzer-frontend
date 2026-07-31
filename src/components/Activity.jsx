@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { SkeletonStatsGrid } from './Skeleton';
 
-const API_URL = "https://YOUR-BACKEND.up.railway.app"; // 👈 yaha apna Railway URL daalo
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
 const StatBadge = ({ label, value, color }) => (
   <div style={{
@@ -90,26 +91,52 @@ const Activity = () => {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '60px' }}>
-        Loading...
+      <div className="page active rel">
+        <SkeletonStatsGrid count={4} />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="page active rel">
 
       {githubData ? (
-        <div>
-          <h3>GitHub</h3>
-          <p>{githubData.public_repos} Repos</p>
+        <div className="card" style={{ marginBottom: '20px' }}>
+          <div className="card-title">🐙 GITHUB</div>
+          <div className="stats-grid">
+            <div className="stat-card green">
+              <div className="stat-label">PUBLIC REPOS</div>
+              <div className="stat-value">{githubData.public_repos ?? 0}</div>
+            </div>
+            <div className="stat-card purple">
+              <div className="stat-label">FOLLOWERS</div>
+              <div className="stat-value">{githubData.followers ?? 0}</div>
+            </div>
+          </div>
         </div>
       ) : <NotSetCard icon="🐙" name="GitHub" field="githubUsername" />}
 
       {leetcodeData ? (
-        <div>
-          <h3>LeetCode</h3>
-          <p>{leetcodeData.totalSolved} Solved</p>
+        <div className="card">
+          <div className="card-title">⚡ LEETCODE</div>
+          <div className="stats-grid">
+            <div className="stat-card green">
+              <div className="stat-label">TOTAL SOLVED</div>
+              <div className="stat-value">{leetcodeData.totalSolved}</div>
+            </div>
+            <div className="stat-card gold">
+              <div className="stat-label">EASY</div>
+              <div className="stat-value">{leetcodeData.easySolved}</div>
+            </div>
+            <div className="stat-card purple">
+              <div className="stat-label">MEDIUM</div>
+              <div className="stat-value">{leetcodeData.mediumSolved}</div>
+            </div>
+            <div className="stat-card red">
+              <div className="stat-label">HARD</div>
+              <div className="stat-value">{leetcodeData.hardSolved}</div>
+            </div>
+          </div>
         </div>
       ) : <NotSetCard icon="⚡" name="LeetCode" field="leetcodeUsername" />}
 

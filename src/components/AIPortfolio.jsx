@@ -1,15 +1,48 @@
 import React, { useState } from 'react';
+import { exportTextPDF } from '../utils/export';
+import { useApp } from '../context/AppContext';
 
 const AIPortfolio = ({ user }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPortfolio, setShowPortfolio] = useState(false);
+  const { addToast } = useApp();
+
+  const score = user?.score ?? 0;
+  const rank = user?.rank ?? 9999;
+  const streak = user?.streak ?? 0;
+  const name = user?.name || 'Developer';
+
+  const summaryText = `${name} is a developer with a global rank of #${rank}. With a Dev Score of ${score} and a ${streak}-day activity streak, they demonstrate consistent engagement across GitHub, LeetCode, and other tracked platforms. Keep building your streak and solving problems to climb the leaderboard.`;
 
   const generateAI = () => {
     setIsGenerating(true);
     setTimeout(() => {
       setIsGenerating(false);
       setShowPortfolio(true);
-    }, 2000); // 2 second ka fake AI processing feel dene ke liye
+    }, 1200);
+  };
+
+  const handleDownloadPDF = () => {
+    exportTextPDF({
+      title: `${name} - Developer Portfolio`,
+      paragraphs: [
+        summaryText,
+        `Global Rank: #${rank}`,
+        `Dev Score: ${score}`,
+        `Current Streak: ${streak} days`,
+      ],
+      filename: `${name.replace(/\s+/g, '-').toLowerCase()}-portfolio`,
+    });
+    addToast('Portfolio exported as PDF', 'success');
+  };
+
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}?profile=${encodeURIComponent(name)}`;
+    navigator.clipboard.writeText(url).then(() => {
+      addToast('Shareable link copied to clipboard', 'success');
+    }).catch(() => {
+      addToast('Could not copy link', 'warning');
+    });
   };
 
   return (
@@ -31,16 +64,13 @@ const AIPortfolio = ({ user }) => {
           </button>
         ) : (
           <div className="insight-card" style={{ textAlign: 'left', marginTop: '20px', border: '1px solid var(--primary)' }}>
-            <span className="tag tag-strength">AI GENERATED SUMMARY</span>
-            <p className="insight-body" style={{ fontSize: '16px', lineHeight: '1.8', color: 'white' }}>
-              "<strong>{user?.name || "Arjun Sharma"}</strong> is a high-performing developer with a global rank of <strong>#1,201</strong>. 
-              With <strong>1,847 problems solved</strong> and a <strong>47-day streak</strong>, they demonstrate elite consistency. 
-              Top skills include <strong>Data Structures</strong> and <strong>System Design</strong>, evidenced by a GitHub contribution 
-              score of <strong>2,840</strong>. Highly recommended for Full-Stack roles."
+            <span className="tag tag-strength">PORTFOLIO SUMMARY</span>
+            <p className="insight-body" style={{ fontSize: '16px', lineHeight: '1.8', color: 'var(--text)' }}>
+              "{summaryText}"
             </p>
             <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-              <button className="refresh-btn">📥 Download PDF</button>
-              <button className="refresh-btn" style={{ borderColor: 'var(--accent2)', color: 'var(--accent2)' }}>🔗 Copy Shareable Link</button>
+              <button className="refresh-btn" onClick={handleDownloadPDF}>📥 Download PDF</button>
+              <button className="refresh-btn" style={{ borderColor: 'var(--accent2)', color: 'var(--accent2)' }} onClick={handleCopyLink}>🔗 Copy Shareable Link</button>
             </div>
           </div>
         )}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ActivityCalendar from './ActivityCalendar';
 import PerformanceChart from './PerformanceChart';
+import { SkeletonRows, SkeletonStatsGrid } from './Skeleton';
 
-// 👇 IMPORTANT: yaha apna REAL Railway URL daalo
-const API_URL = "https://YOUR-BACKEND.up.railway.app";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
 const Dashboard = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,24 +66,28 @@ const Dashboard = ({ user }) => {
         </div>
       </div>
 
-      <div className="stats-grid">
-        <div className="stat-card green">
-          <div className="stat-label">DEV SCORE</div>
-          <div className="stat-value">{devScore}</div>
+      {loading ? (
+        <SkeletonStatsGrid count={4} />
+      ) : (
+        <div className="stats-grid">
+          <div className="stat-card green">
+            <div className="stat-label">DEV SCORE</div>
+            <div className="stat-value">{devScore}</div>
+          </div>
+          <div className="stat-card gold">
+            <div className="stat-label">GLOBAL RANK</div>
+            <div className="stat-value">#{globalRank}</div>
+          </div>
+          <div className="stat-card purple">
+            <div className="stat-label">PROBLEMS</div>
+            <div className="stat-value">{solved}</div>
+          </div>
+          <div className="stat-card red">
+            <div className="stat-label">STREAK</div>
+            <div className="stat-value">{streak}d</div>
+          </div>
         </div>
-        <div className="stat-card gold">
-          <div className="stat-label">GLOBAL RANK</div>
-          <div className="stat-value">#{globalRank}</div>
-        </div>
-        <div className="stat-card purple">
-          <div className="stat-label">PROBLEMS</div>
-          <div className="stat-value">{solved}</div>
-        </div>
-        <div className="stat-card red">
-          <div className="stat-label">STREAK</div>
-          <div className="stat-value">{streak}d</div>
-        </div>
-      </div>
+      )}
 
       <div className="two-col">
 
@@ -101,7 +105,7 @@ const Dashboard = ({ user }) => {
 
             <div className="lb-container">
               {loading ? (
-                <div style={{ textAlign: 'center', padding: '20px' }}>Loading...</div>
+                <SkeletonRows count={5} />
               ) : filteredLeaders.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '20px' }}>No users yet</div>
               ) : (

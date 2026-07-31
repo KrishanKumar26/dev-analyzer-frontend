@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { SkeletonRows } from './Skeleton';
+import { exportToCSV, exportToPDF } from '../utils/export';
+import { useApp } from '../context/AppContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
@@ -7,6 +10,33 @@ const Leaderboard = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const token = localStorage.getItem('token');
+  const { addToast } = useApp();
+
+  const exportColumns = [
+    { key: 'rank', label: 'Rank' },
+    { key: 'name', label: 'Name' },
+    { key: 'platform', label: 'Platform' },
+    { key: 'score', label: 'Score' },
+  ];
+
+  const buildExportRows = () =>
+    filtered.map((item, i) => ({ rank: i + 1, name: item.name, platform: item.platform, score: item.score }));
+
+  const handleExportCSV = () => {
+    exportToCSV(buildExportRows(), exportColumns, 'vortex-leaderboard');
+    addToast('Leaderboard exported as CSV', 'success');
+  };
+
+  const handleExportPDF = () => {
+    exportToPDF({
+      title: 'VORTEX Leaderboard',
+      subtitle: `${filtered.length} developers ranked`,
+      columns: exportColumns,
+      rows: buildExportRows(),
+      filename: 'vortex-leaderboard',
+    });
+    addToast('Leaderboard exported as PDF', 'success');
+  };
 
   useEffect(() => {
     fetchLeaderboard();
@@ -42,10 +72,14 @@ const Leaderboard = ({ user }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ marginLeft: '15px' }}
           />
+          <div className="card-actions">
+            <button className="export-btn" onClick={handleExportCSV} disabled={loading || filtered.length === 0}>⇩ CSV</button>
+            <button className="export-btn" onClick={handleExportPDF} disabled={loading || filtered.length === 0}>⇩ PDF</button>
+          </div>
         </div>
 
         {loading ? (
-          <div style={{ color: 'var(--text2)', textAlign: 'center', padding: '40px' }}>Loading...</div>
+          <SkeletonRows count={8} />
         ) : filtered.length === 0 ? (
           <div style={{ color: 'var(--text2)', textAlign: 'center', padding: '40px' }}>No users found</div>
         ) : (
@@ -66,7 +100,7 @@ const Leaderboard = ({ user }) => {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 'bold', fontSize: '14px',
                   background: i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : i === 2 ? '#CD7F32' : 'var(--bg3)',
-                  color: i < 3 ? '#000' : 'var(--text1)', marginRight: '12px', flexShrink: 0
+                  color: i < 3 ? '#000' : 'var(--text)', marginRight: '12px', flexShrink: 0
                 }}>
                   {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
                 </div>

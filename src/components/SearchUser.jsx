@@ -59,7 +59,7 @@ const SearchUser = ({ user }) => {
         <div className="card-title">SEARCH DEVELOPER</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '8px' }}>Search GitHub users</p>
         <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-          <input type="text" placeholder="GitHub username..." value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && searchGithub()} style={{ flex: 1, padding: '12px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text1)', fontSize: '14px', outline: 'none' }} />
+          <input type="text" placeholder="GitHub username..." value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && searchGithub()} style={{ flex: 1, padding: '12px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text)', fontSize: '14px', outline: 'none' }} />
           <button onClick={searchGithub} style={{ padding: '12px 24px', background: 'var(--primary)', border: 'none', borderRadius: '8px', color: '#000', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}>Search</button>
         </div>
       </div>
