@@ -110,11 +110,11 @@ const Dashboard = ({ user }) => {
                 <div style={{ textAlign: 'center', padding: '20px' }}>No users yet</div>
               ) : (
                 filteredLeaders.map((item, i) => (
-                  <div className={`lb-row ${item.name === userName ? 'me' : ''}`} key={i}>
+                  <div className={`lb-row ${item.isMe ? 'me' : ''}`} key={i}>
                     <div className={`lb-rank rank-${i + 1}`}>#{i + 1}</div>
                     <div className="lb-info">
                       <div className="lb-name">
-                        {item.name} {item.name === userName ? '(You)' : ''}
+                        {item.name} {item.isMe ? '(You)' : ''}
                       </div>
                       <div className="lb-platform">{item.platform}</div>
                     </div>

@@ -87,12 +87,12 @@ const Leaderboard = ({ user }) => {
             {filtered.map((item, i) => (
               <div
                 key={i}
-                className={`lb-row ${item.name === user?.name ? 'me' : ''}`}
+                className={`lb-row ${item.isMe ? 'me' : ''}`}
                 style={{
                   display: 'flex', alignItems: 'center', padding: '12px',
                   borderRadius: '8px', marginBottom: '8px',
-                  background: item.name === user?.name ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
-                  border: item.name === user?.name ? '1px solid var(--primary)' : '1px solid var(--border)'
+                  background: item.isMe ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
+                  border: item.isMe ? '1px solid var(--primary)' : '1px solid var(--border)'
                 }}
               >
                 <div style={{
@@ -114,7 +114,7 @@ const Leaderboard = ({ user }) => {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: '600', fontSize: '14px' }}>
-                    {item.name} {item.name === user?.name ? '(You)' : ''}
+                    {item.name} {item.isMe ? '(You)' : ''}
                   </div>
                   <div style={{ fontSize: '12px', color: 'var(--text2)' }}>{item.platform}</div>
                 </div>

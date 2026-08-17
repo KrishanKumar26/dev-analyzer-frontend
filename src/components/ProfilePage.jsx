@@ -95,6 +95,21 @@ const ProfilePage = ({ user, setUser }) => {
     setUser(null);
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Pakka? Ye tumhara account hamesha ke liye delete kar dega.')) return;
+    try {
+      await fetch(`${API_URL}/api/user/account`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('scoreBreakdown');
+    setUser(null);
+  };
+
   return (
     <div className="page active rel">
       <div className="overview-header">
@@ -224,9 +239,25 @@ const ProfilePage = ({ user, setUser }) => {
         {syncMsg && <p style={{ color: 'var(--primary)', fontSize: '13px', marginTop: '10px' }}>{syncMsg}</p>}
       </div>
 
-      <div className="card" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+      <div className="card" style={{ marginTop: '1.5rem' }}>
         <div className="card-title">Update Your Stats (Manual)</div>
         <ScoreUpdater token={token} onUpdate={fetchProfile} />
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem', marginBottom: '2rem', border: '1px solid #ff4d4f44' }}>
+        <div className="card-title" style={{ color: '#ff4d4f' }}>⚠️ Danger Zone</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Account delete karne se tumhara saara data hamesha ke liye chala jayega.
+        </p>
+        <button
+          onClick={handleDeleteAccount}
+          style={{
+            background: 'transparent', border: '1px solid #ff4d4f', color: '#ff4d4f',
+            padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px'
+          }}
+        >
+          🗑️ Delete My Account
+        </button>
       </div>
     </div>
   );
