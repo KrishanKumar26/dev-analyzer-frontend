@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const ProfilePage = ({ user, setUser }) => {
   const [profile, setProfile] = useState(null);
@@ -197,7 +197,7 @@ const ScoreUpdater = ({ token, onUpdate }) => {
   const [stats, setStats] = useState({ score: '', problems: '', streak: '' });
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
   const handleUpdate = async () => {
     setSaving(true);

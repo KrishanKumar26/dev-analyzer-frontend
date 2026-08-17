@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const Auth = ({ setUser }) => {
   const [email, setEmail] = useState('');

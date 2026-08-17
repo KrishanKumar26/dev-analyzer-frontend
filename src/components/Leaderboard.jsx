@@ -3,7 +3,7 @@ import { SkeletonRows } from './Skeleton';
 import { exportToCSV, exportToPDF } from '../utils/export';
 import { useApp } from '../context/AppContext';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const Leaderboard = ({ user }) => {
   const [leaders, setLeaders] = useState([]);

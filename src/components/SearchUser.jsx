@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const StatBadge = ({ label, value, color }) => (
   <div style={{ background: 'var(--bg3)', padding: '8px 14px', borderRadius: '8px', textAlign: 'center', minWidth: '80px' }}>
