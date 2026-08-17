@@ -95,6 +95,16 @@ const ProfilePage = ({ user, setUser }) => {
     setUser(null);
   };
 
+  const [copied, setCopied] = useState(false);
+  const handleShare = () => {
+    if (!profile?.id) return;
+    const url = `${window.location.origin}/u/${profile.id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
+
   const handleDeleteAccount = async () => {
     if (!window.confirm('Pakka? Ye tumhara account hamesha ke liye delete kar dega.')) return;
     try {
@@ -223,6 +233,27 @@ const ProfilePage = ({ user, setUser }) => {
             <span style={{ color: 'var(--text2)', fontSize: '14px' }}>
               Complete challenges to earn achievements! 🎯
             </span>
+          )}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem', border: '1px solid var(--primary)' }}>
+        <div className="card-title">🔗 Your Public Profile</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Ek shareable link jispe tumhara verified developer profile dikhega — recruiters, LinkedIn,
+          resume me daalo. Bina login koi bhi dekh sakta hai.
+        </p>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', color: 'var(--text)', flex: 1, minWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {profile?.id ? `${window.location.origin}/u/${profile.id}` : 'Loading...'}
+          </code>
+          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleShare} disabled={!profile?.id}>
+            {copied ? '✅ Copied!' : '📋 Copy Link'}
+          </button>
+          {profile?.id && (
+            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none' }}>
+              👁️ Preview
+            </a>
           )}
         </div>
       </div>

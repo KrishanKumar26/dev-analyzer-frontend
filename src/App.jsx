@@ -8,6 +8,7 @@ import Leaderboard from "./components/Leaderboard";
 import SearchUser from "./components/SearchUser";
 import CommandPalette from "./components/CommandPalette";
 import ShortcutsHelp from "./components/ShortcutsHelp";
+import PublicProfile from "./components/PublicProfile";
 import { AppProvider, useApp } from "./context/AppContext";
 
 const TAB_ORDER = ["overview", "leaderboard", "activity", "search", "insights", "profile"];
@@ -148,6 +149,12 @@ function AppShell({ user, setUser }) {
 function App() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Public shareable profile route: /u/{id} — bina login khulta hai
+  const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
+  if (publicMatch) {
+    return <PublicProfile id={publicMatch[1]} />;
+  }
 
   return (
     <AppProvider user={user} setUser={setUser} activeTab={activeTab} setActiveTab={setActiveTab}>
