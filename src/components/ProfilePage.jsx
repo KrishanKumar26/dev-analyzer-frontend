@@ -14,7 +14,32 @@ const ProfilePage = ({ user, setUser }) => {
     codeforcesUsername: '',
     hackerrankUsername: ''
   });
+  const [syncing, setSyncing] = useState(false);
+  const [syncMsg, setSyncMsg] = useState('');
   const token = localStorage.getItem('token');
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncMsg('');
+    try {
+      const res = await fetch(`${API_URL}/api/user/sync`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSyncMsg(`✅ Synced! Score: ${data.score} · Rank: #${data.rank}`);
+        setProfile(prev => ({ ...prev, score: data.score, problems: data.problems, rank: data.rank }));
+        setUser(prev => ({ ...prev, score: data.score, rank: data.rank }));
+      } else {
+        setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+      }
+    } catch (err) {
+      setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   useEffect(() => {
     fetchProfile();
@@ -185,8 +210,20 @@ const ProfilePage = ({ user, setUser }) => {
         </div>
       </div>
 
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">⚡ Auto-Sync from Platforms</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Apne connected platforms (GitHub, LeetCode, Codeforces, HackerRank) ke real data se
+          Dev Score, problems aur rank apne aap calculate karo.
+        </p>
+        <button className="auth-btn" onClick={handleSync} disabled={syncing}>
+          {syncing ? 'Syncing... (thoda time lag sakta hai)' : '🔄 SYNC MY STATS'}
+        </button>
+        {syncMsg && <p style={{ color: 'var(--primary)', fontSize: '13px', marginTop: '10px' }}>{syncMsg}</p>}
+      </div>
+
       <div className="card" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
-        <div className="card-title">Update Your Stats</div>
+        <div className="card-title">Update Your Stats (Manual)</div>
         <ScoreUpdater token={token} onUpdate={fetchProfile} />
       </div>
     </div>
