@@ -32,6 +32,8 @@ const Activity = () => {
   const [profile, setProfile] = useState(null);
   const [githubData, setGithubData] = useState(null);
   const [leetcodeData, setLeetcodeData] = useState(null);
+  const [codeforcesData, setCodeforcesData] = useState(null);
+  const [hackerrankData, setHackerrankData] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('token');
 
@@ -39,16 +41,19 @@ const Activity = () => {
     fetchAll();
   }, []);
 
+  const authGet = (path) =>
+    fetch(`${API_URL}${path}`, { headers: { Authorization: `Bearer ${token}` } });
+
   const fetchAll = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/user/profile`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await authGet('/api/user/profile');
       const data = await res.json();
       setProfile(data);
 
       if (data.githubUsername) fetchGithub(data.githubUsername);
       if (data.leetcodeUsername) fetchLeetcode(data.leetcodeUsername);
+      if (data.codeforcesUsername) fetchCodeforces(data.codeforcesUsername);
+      if (data.hackerrankUsername) fetchHackerrank(data.hackerrankUsername);
 
     } catch (err) {
       console.error(err);
@@ -59,11 +64,9 @@ const Activity = () => {
 
   const fetchGithub = async (username) => {
     try {
-      const res = await fetch(`${API_URL}/api/user/github/${username}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const res = await authGet(`/api/user/github/${username}`);
       const data = await res.json();
-      setGithubData(data);
+      if (res.ok && !data.error) setGithubData(data);
     } catch (err) {
       console.error('GitHub error:', err);
     }
@@ -75,6 +78,26 @@ const Activity = () => {
       if (data) setLeetcodeData(data);
     } catch (err) {
       console.error('LeetCode API failed:', err);
+    }
+  };
+
+  const fetchCodeforces = async (username) => {
+    try {
+      const res = await authGet(`/api/user/codeforces/${username}`);
+      const data = await res.json();
+      if (res.ok && !data.error) setCodeforcesData(data);
+    } catch (err) {
+      console.error('Codeforces error:', err);
+    }
+  };
+
+  const fetchHackerrank = async (username) => {
+    try {
+      const res = await authGet(`/api/user/hackerrank/${username}`);
+      const data = await res.json();
+      if (res.ok && !data.error) setHackerrankData(data);
+    } catch (err) {
+      console.error('HackerRank error:', err);
     }
   };
 
@@ -128,6 +151,56 @@ const Activity = () => {
           </div>
         </div>
       ) : <NotSetCard icon="⚡" name="LeetCode" field="leetcodeUsername" />}
+
+      {codeforcesData ? (
+        <div className="card" style={{ marginTop: '20px' }}>
+          <div className="card-title">🏆 CODEFORCES</div>
+          <div style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '4px', textTransform: 'capitalize' }}>
+            {codeforcesData.rank || 'unrated'} · @{codeforcesData.handle}
+          </div>
+          <div className="stats-grid" style={{ marginTop: '12px' }}>
+            <div className="stat-card green">
+              <div className="stat-label">RATING</div>
+              <div className="stat-value">{codeforcesData.rating}</div>
+            </div>
+            <div className="stat-card gold">
+              <div className="stat-label">MAX RATING</div>
+              <div className="stat-value">{codeforcesData.maxRating}</div>
+            </div>
+            <div className="stat-card purple">
+              <div className="stat-label">SOLVED</div>
+              <div className="stat-value">{codeforcesData.solved}</div>
+            </div>
+          </div>
+        </div>
+      ) : <NotSetCard icon="🏆" name="Codeforces" field="codeforcesUsername" />}
+
+      {hackerrankData ? (
+        <div className="card" style={{ marginTop: '20px' }}>
+          <div className="card-title">🎯 HACKERRANK</div>
+          <div className="stats-grid" style={{ marginTop: '12px' }}>
+            <div className="stat-card gold">
+              <div className="stat-label">TOTAL STARS</div>
+              <div className="stat-value">⭐ {hackerrankData.totalStars}</div>
+            </div>
+            <div className="stat-card green">
+              <div className="stat-label">PROBLEMS SOLVED</div>
+              <div className="stat-value">{hackerrankData.totalSolved}</div>
+            </div>
+            <div className="stat-card purple">
+              <div className="stat-label">BADGES</div>
+              <div className="stat-value">{hackerrankData.badges?.length ?? 0}</div>
+            </div>
+          </div>
+          {hackerrankData.badges?.length > 0 && (
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '15px' }}>
+              {hackerrankData.badges.slice(0, 6).map((b) => (
+                <StatBadge key={b.name} label={b.name} value={'⭐'.repeat(b.stars)} color="var(--gold)" />
+              ))}
+            </div>
+          )}
+        </div>
+      ) : <NotSetCard icon="🎯" name="HackerRank" field="hackerrankUsername" />}
 
     </div>
   );
