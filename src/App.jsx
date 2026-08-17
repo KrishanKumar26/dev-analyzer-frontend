@@ -6,12 +6,13 @@ import AIPortfolio from "./components/AIPortfolio";
 import Activity from "./components/Activity";
 import Leaderboard from "./components/Leaderboard";
 import SearchUser from "./components/SearchUser";
+import Groups from "./components/Groups";
 import CommandPalette from "./components/CommandPalette";
 import ShortcutsHelp from "./components/ShortcutsHelp";
 import PublicProfile from "./components/PublicProfile";
 import { AppProvider, useApp } from "./context/AppContext";
 
-const TAB_ORDER = ["overview", "leaderboard", "activity", "search", "insights", "profile"];
+const TAB_ORDER = ["overview", "leaderboard", "groups", "activity", "search", "insights", "profile"];
 
 function AppShell({ user, setUser }) {
   const { activeTab, setActiveTab, toasts, addToast, theme, toggleTheme, setPaletteOpen, setShortcutsOpen, logout } = useApp();
@@ -22,6 +23,7 @@ function AppShell({ user, setUser }) {
         overview: "Systems Synced 🟢",
         activity: "Activity Feed Loaded 📊",
         leaderboard: "Leaderboard Updated 🏆",
+        groups: "Groups Loaded 👥",
         search: "Search Engine Ready 🔍",
         insights: "AI Engine Initialized 🤖",
         profile: "Identity Verified 🛡️"
@@ -100,6 +102,7 @@ function AppShell({ user, setUser }) {
             <div className="nav-tabs">
               <button className={'nav-tab ' + (activeTab === 'overview' ? 'active' : '')} onClick={() => setActiveTab('overview')}>Overview</button>
               <button className={'nav-tab ' + (activeTab === 'leaderboard' ? 'active' : '')} onClick={() => setActiveTab('leaderboard')}>Leaderboard</button>
+              <button className={'nav-tab ' + (activeTab === 'groups' ? 'active' : '')} onClick={() => setActiveTab('groups')}>Groups</button>
               <button className={'nav-tab ' + (activeTab === 'activity' ? 'active' : '')} onClick={() => setActiveTab('activity')}>Activity</button>
               <button className={'nav-tab ' + (activeTab === 'search' ? 'active' : '')} onClick={() => setActiveTab('search')}>🔍 Search</button>
               <button className={'nav-tab ' + (activeTab === 'insights' ? 'active' : '')} onClick={() => setActiveTab('insights')}>Insights</button>
@@ -135,6 +138,7 @@ function AppShell({ user, setUser }) {
           <div className="rel">
             {activeTab === 'overview' && <Dashboard user={user} />}
             {activeTab === 'leaderboard' && <Leaderboard user={user} />}
+            {activeTab === 'groups' && <Groups />}
             {activeTab === 'activity' && <Activity user={user} />}
             {activeTab === 'search' && <SearchUser user={user} />}
             {activeTab === 'insights' && <AIPortfolio user={user} />}
