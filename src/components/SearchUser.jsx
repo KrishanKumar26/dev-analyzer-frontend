@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { fetchLeetCode } from '../utils/leetcode';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -43,11 +44,8 @@ const SearchUser = ({ user }) => {
 
   const fetchLeetcode = async (username) => {
     try {
-      const res = await fetch('https://leetcode-stats-api.herokuapp.com/' + username);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.status !== 'error') setLeetcodeData(data);
-      }
+      const data = await fetchLeetCode(API_URL, username, token);
+      if (data) setLeetcodeData(data);
     } catch (err) {
       console.error(err);
     }
