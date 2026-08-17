@@ -23,6 +23,7 @@ const AIPortfolio = ({ user }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPortfolio, setShowPortfolio] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [aiText, setAiText] = useState('');   // real AI response from Claude
   const { addToast } = useApp();
   const token = localStorage.getItem('token');
 
@@ -79,19 +80,37 @@ const AIPortfolio = ({ user }) => {
         }
   );
 
-  const generateAI = () => {
+  const generateAI = async () => {
     setIsGenerating(true);
-    setTimeout(() => {
+    setAiText('');
+    try {
+      const res = await fetch(`${API_URL}/api/user/ai-coach`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ breakdown: readBreakdown() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.insights) setAiText(data.insights);
+      } else if (res.status === 503) {
+        // AI not configured on server — silently fall back to the built-in summary
+        addToast('AI not configured — showing built-in summary', 'info');
+      } else {
+        addToast('AI unavailable — showing built-in summary', 'warning');
+      }
+    } catch (err) {
+      addToast('AI unavailable — showing built-in summary', 'warning');
+    } finally {
       setIsGenerating(false);
       setShowPortfolio(true);
-    }, 1000);
+    }
   };
 
   const handleDownloadPDF = () => {
     exportTextPDF({
       title: `${name} - Developer Portfolio`,
       paragraphs: [
-        summaryText,
+        aiText || summaryText,
         `Global Rank: #${rank}`,
         `Dev Score: ${score.toLocaleString()}`,
         `Problems Solved: ${problems.toLocaleString()}`,
@@ -130,9 +149,9 @@ const AIPortfolio = ({ user }) => {
           </button>
         ) : (
           <div className="insight-card" style={{ textAlign: 'left', marginTop: '20px', border: '1px solid var(--primary)' }}>
-            <span className="tag tag-strength">PORTFOLIO SUMMARY</span>
-            <p className="insight-body" style={{ fontSize: '16px', lineHeight: '1.8', color: 'var(--text)' }}>
-              "{summaryText}"
+            <span className="tag tag-strength">{aiText ? '🤖 AI CAREER COACH' : 'PORTFOLIO SUMMARY'}</span>
+            <p className="insight-body" style={{ fontSize: '16px', lineHeight: '1.8', color: 'var(--text)', whiteSpace: 'pre-wrap' }}>
+              {aiText ? aiText : `"${summaryText}"`}
             </p>
             <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
               <button className="refresh-btn" onClick={handleDownloadPDF}>📥 Download PDF</button>
