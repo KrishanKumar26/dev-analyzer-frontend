@@ -5,11 +5,19 @@ import { useApp } from '../context/AppContext';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const PLATFORM_META = [
-  { key: 'githubScore', label: 'GitHub', user: 'githubUsername' },
-  { key: 'leetcodeScore', label: 'LeetCode', user: 'leetcodeUsername' },
-  { key: 'codeforcesScore', label: 'Codeforces', user: 'codeforcesUsername' },
-  { key: 'hackerrankScore', label: 'HackerRank', user: 'hackerrankUsername' },
+  { key: 'github', label: 'GitHub', user: 'githubUsername' },
+  { key: 'leetcode', label: 'LeetCode', user: 'leetcodeUsername' },
+  { key: 'codeforces', label: 'Codeforces', user: 'codeforcesUsername' },
+  { key: 'hackerrank', label: 'HackerRank', user: 'hackerrankUsername' },
 ];
+
+const readBreakdown = () => {
+  try {
+    return JSON.parse(localStorage.getItem('scoreBreakdown') || '{}');
+  } catch (e) {
+    return {};
+  }
+};
 
 const AIPortfolio = ({ user }) => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -32,9 +40,10 @@ const AIPortfolio = ({ user }) => {
   const streak = p.streak ?? user?.streak ?? 0;
   const problems = p.problems ?? 0;
 
-  // Real per-platform breakdown
+  // Real per-platform breakdown (SYNC ke time localStorage me save hua)
+  const breakdown = readBreakdown();
   const connected = PLATFORM_META.filter(m => p[m.user]);
-  const withScores = PLATFORM_META.map(m => ({ label: m.label, score: p[m.key] || 0 }));
+  const withScores = PLATFORM_META.map(m => ({ label: m.label, score: breakdown[m.key] || 0 }));
   const strongest = withScores.reduce((a, b) => (b.score > a.score ? b : a), { label: '', score: 0 });
   const notConnected = PLATFORM_META.filter(m => !p[m.user]).map(m => m.label);
 

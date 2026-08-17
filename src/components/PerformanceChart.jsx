@@ -1,42 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-
 const PLATFORMS = [
-  { key: 'githubScore', label: 'GitHub', color: '#a371f7' },
-  { key: 'leetcodeScore', label: 'LeetCode', color: '#ffa116' },
-  { key: 'codeforcesScore', label: 'Codeforces', color: '#1f8acb' },
-  { key: 'hackerrankScore', label: 'HackerRank', color: '#00ea9c' },
+  { key: 'github', label: 'GitHub', color: '#a371f7' },
+  { key: 'leetcode', label: 'LeetCode', color: '#ffa116' },
+  { key: 'codeforces', label: 'Codeforces', color: '#1f8acb' },
+  { key: 'hackerrank', label: 'HackerRank', color: '#00ea9c' },
 ];
 
 const PerformanceChart = () => {
   const [chartData, setChartData] = useState([]);
   const [hasData, setHasData] = useState(false);
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+    // Breakdown SYNC ke time localStorage me save hota hai (ProfilePage se)
+    let breakdown = {};
     try {
-      const res = await fetch(`${API_URL}/api/user/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      const rows = PLATFORMS.map(p => ({
-        platform: p.label,
-        score: data[p.key] || 0,
-        color: p.color,
-      }));
-      setChartData(rows);
-      setHasData(rows.some(r => r.score > 0));
-    } catch (err) {
-      setChartData(PLATFORMS.map(p => ({ platform: p.label, score: 0, color: p.color })));
-      setHasData(false);
+      breakdown = JSON.parse(localStorage.getItem('scoreBreakdown') || '{}');
+    } catch (e) {
+      breakdown = {};
     }
-  };
+    const rows = PLATFORMS.map(p => ({
+      platform: p.label,
+      score: breakdown[p.key] || 0,
+      color: p.color,
+    }));
+    setChartData(rows);
+    setHasData(rows.some(r => r.score > 0));
+  }, []);
 
   return (
     <div className="card" style={{ marginTop: '20px', height: '300px' }}>

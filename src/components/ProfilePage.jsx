@@ -31,6 +31,8 @@ const ProfilePage = ({ user, setUser }) => {
         setSyncMsg(`✅ Synced! Score: ${data.score} · Rank: #${data.rank}`);
         setProfile(prev => ({ ...prev, score: data.score, problems: data.problems, rank: data.rank }));
         setUser(prev => ({ ...prev, score: data.score, rank: data.rank }));
+        // Performance chart ke liye platform breakdown save karo
+        if (data.breakdown) localStorage.setItem('scoreBreakdown', JSON.stringify(data.breakdown));
       } else {
         setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
       }
