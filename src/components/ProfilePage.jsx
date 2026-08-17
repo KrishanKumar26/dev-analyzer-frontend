@@ -105,6 +105,18 @@ const ProfilePage = ({ user, setUser }) => {
     }).catch(() => {});
   };
 
+  const badgeMarkdown = profile?.id
+    ? `[![Dev Score](${API_URL}/api/public/badge/${profile.id}.svg)](${window.location.origin}/u/${profile.id})`
+    : '';
+  const [badgeCopied, setBadgeCopied] = useState(false);
+  const handleCopyBadge = () => {
+    if (!badgeMarkdown) return;
+    navigator.clipboard.writeText(badgeMarkdown).then(() => {
+      setBadgeCopied(true);
+      setTimeout(() => setBadgeCopied(false), 2000);
+    }).catch(() => {});
+  };
+
   const handleDeleteAccount = async () => {
     if (!window.confirm('Pakka? Ye tumhara account hamesha ke liye delete kar dega.')) return;
     try {
@@ -255,6 +267,27 @@ const ProfilePage = ({ user, setUser }) => {
               👁️ Preview
             </a>
           )}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">🏷️ README Badge</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Apne GitHub README, portfolio ya blog me ye badge lagao — live Dev Score dikhega.
+          Copy karke README me paste karo.
+        </p>
+        {profile?.id && (
+          <div style={{ marginBottom: '12px' }}>
+            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '20px' }} />
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', color: 'var(--text)', flex: 1, minWidth: '220px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+            {badgeMarkdown || 'Loading...'}
+          </code>
+          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleCopyBadge} disabled={!badgeMarkdown}>
+            {badgeCopied ? '✅ Copied!' : '📋 Copy Markdown'}
+          </button>
         </div>
       </div>
 
