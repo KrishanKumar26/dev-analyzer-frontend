@@ -4,7 +4,7 @@ import { fetchLeetCode } from '../utils/leetcode';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const fetchDev = async (username, token) => {
-  const out = { github: null, leetcode: null, codeforces: null, hackerrank: null, error: null };
+  const out = { github: null, leetcode: null, codeforces: null, hackerrank: null, atcoder: null, error: null };
   try {
     const res = await fetch(`${API_URL}/api/user/github/${username.trim()}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,6 +26,11 @@ const fetchDev = async (username, token) => {
     const res = await fetch(`${API_URL}/api/user/hackerrank/${username.trim()}`, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
     if (res.ok && !data.error) out.hackerrank = data;
+  } catch (e) { /* ignore */ }
+  try {
+    const res = await fetch(`${API_URL}/api/user/atcoder/${username.trim()}`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (res.ok && !data.error) out.atcoder = data;
   } catch (e) { /* ignore */ }
   return out;
 };
@@ -61,7 +66,7 @@ const Compare = () => {
       <div className="card">
         <div className="card-title">⚔️ 1v1 Developer Compare</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Do developers ke username daalo — GitHub, LeetCode, Codeforces, HackerRank sab side-by-side (real data). Same handle assume hota hai.
+          Do developers ke username daalo — GitHub, LeetCode, Codeforces, HackerRank, AtCoder sab side-by-side (real data). Same handle assume hota hai.
         </p>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
           <input value={ua} onChange={(e) => setUa(e.target.value)} placeholder="GitHub username A"
@@ -94,6 +99,8 @@ const Compare = () => {
           <Stat label="CF Problems" a={da.codeforces?.solved} b={db.codeforces?.solved} />
           <Stat label="HackerRank Stars" a={da.hackerrank?.totalStars} b={db.hackerrank?.totalStars} />
           <Stat label="HR Solved" a={da.hackerrank?.totalSolved} b={db.hackerrank?.totalSolved} />
+          <Stat label="AtCoder Rating" a={da.atcoder?.rating} b={db.atcoder?.rating} />
+          <Stat label="AtCoder Solved" a={da.atcoder?.acceptedCount} b={db.atcoder?.acceptedCount} />
         </div>
       )}
     </div>
