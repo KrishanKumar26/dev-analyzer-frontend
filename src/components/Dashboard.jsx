@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ActivityCalendar from './ActivityCalendar';
 import PerformanceChart from './PerformanceChart';
+import GrowthChart from './GrowthChart';
 import { SkeletonRows, SkeletonStatsGrid } from './Skeleton';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
@@ -16,7 +17,25 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     fetchProfile();
     fetchLeaderboard();
+    autoSyncDaily();
   }, []);
+
+  // Auto-sync roz ek baar — data fresh rakhta hai + growth snapshot record karta hai
+  const autoSyncDaily = async () => {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      if (localStorage.getItem('lastAutoSync') === today) return;
+      const res = await fetch(`${API_URL}/api/user/sync`, {
+        method: 'PUT', headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.breakdown) localStorage.setItem('scoreBreakdown', JSON.stringify(data.breakdown));
+        localStorage.setItem('lastAutoSync', today);
+        fetchProfile();
+      }
+    } catch (e) { /* ignore */ }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -137,6 +156,8 @@ const Dashboard = ({ user }) => {
         </div>
 
       </div>
+
+      <GrowthChart />
     </div>
   );
 };
