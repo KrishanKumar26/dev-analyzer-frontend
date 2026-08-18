@@ -5,6 +5,8 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } fro
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
+const IMPORTANT_TAGS = ['dp', 'graphs', 'trees', 'greedy', 'binary search', 'two pointers', 'dsu', 'strings', 'math', 'bitmasks', 'number theory', 'constructive algorithms'];
+
 const StatBadge = ({ label, value, color }) => (
   <div style={{
     background: 'var(--bg3)', padding: '8px 14px',
@@ -235,6 +237,32 @@ const Activity = () => {
           </ResponsiveContainer>
         </div>
       )}
+
+      {skillRadar.length > 0 && (() => {
+        const counts = {};
+        skillRadar.forEach((r) => { counts[r.tag] = r.count; });
+        const weak = IMPORTANT_TAGS
+          .map((t) => ({ tag: t, count: counts[t] || 0 }))
+          .sort((a, b) => a.count - b.count)
+          .slice(0, 5);
+        return (
+          <div className="card" style={{ marginTop: '20px' }}>
+            <div className="card-title">🎯 RECOMMENDED PRACTICE (your weak areas)</div>
+            <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
+              In topics me tumne kam solve kiya — inhe practice karke apna Skill Radar strong banao.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {weak.map((w) => (
+                <a key={w.tag} href={`https://codeforces.com/problemset?tags=${encodeURIComponent(w.tag)}`} target="_blank" rel="noreferrer"
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
+                  <span style={{ fontWeight: '600', fontSize: '14px', textTransform: 'capitalize' }}>{w.tag}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--primary)' }}>{w.count} solved · Practice →</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="card" style={{ marginTop: '20px' }}>
         <div className="card-title">📅 UPCOMING CONTESTS (Codeforces)</div>

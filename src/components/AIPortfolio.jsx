@@ -23,7 +23,8 @@ const AIPortfolio = ({ user }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPortfolio, setShowPortfolio] = useState(false);
   const [profile, setProfile] = useState(null);
-  const [aiText, setAiText] = useState('');   // real AI response from Claude
+  const [aiText, setAiText] = useState('');   // real AI response
+  const [resumeBusy, setResumeBusy] = useState(false);
   const { addToast } = useApp();
   const token = localStorage.getItem('token');
 
@@ -106,6 +107,35 @@ const AIPortfolio = ({ user }) => {
     }
   };
 
+  const handleResume = async () => {
+    setResumeBusy(true);
+    try {
+      const res = await fetch(`${API_URL}/api/user/ai-resume`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ breakdown: readBreakdown() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const paras = (data.resume || '').split('\n').map((x) => x.trim()).filter(Boolean);
+        exportTextPDF({
+          title: `${name} — Developer Resume`,
+          paragraphs: paras.length ? paras : ['No resume generated.'],
+          filename: `${name.replace(/\s+/g, '-').toLowerCase()}-resume`,
+        });
+        addToast('AI Resume downloaded as PDF', 'success');
+      } else if (res.status === 503) {
+        addToast('AI not configured on server', 'warning');
+      } else {
+        addToast('Resume generation failed', 'warning');
+      }
+    } catch (e) {
+      addToast('Resume generation failed', 'warning');
+    } finally {
+      setResumeBusy(false);
+    }
+  };
+
   const handleDownloadPDF = () => {
     exportTextPDF({
       title: `${name} - Developer Portfolio`,
@@ -139,14 +169,14 @@ const AIPortfolio = ({ user }) => {
         </p>
 
         {!showPortfolio ? (
-          <button
-            className="btn-primary"
-            style={{ width: 'auto', padding: '12px 30px' }}
-            onClick={generateAI}
-            disabled={isGenerating}
-          >
-            {isGenerating ? "Analyzing your data..." : "✨ Generate AI Portfolio"}
-          </button>
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button className="btn-primary" style={{ width: 'auto', padding: '12px 30px' }} onClick={generateAI} disabled={isGenerating}>
+              {isGenerating ? "Analyzing your data..." : "✨ Generate AI Portfolio"}
+            </button>
+            <button className="btn-primary" style={{ width: 'auto', padding: '12px 30px', background: 'transparent', border: '1px solid var(--primary)', color: 'var(--primary)' }} onClick={handleResume} disabled={resumeBusy}>
+              {resumeBusy ? "Building resume..." : "📄 AI Resume PDF"}
+            </button>
+          </div>
         ) : (
           <div className="insight-card" style={{ textAlign: 'left', marginTop: '20px', border: '1px solid var(--primary)' }}>
             <span className="tag tag-strength">{aiText ? '🤖 AI CAREER COACH' : 'PORTFOLIO SUMMARY'}</span>
@@ -156,6 +186,7 @@ const AIPortfolio = ({ user }) => {
             <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
               <button className="refresh-btn" onClick={handleDownloadPDF}>📥 Download PDF</button>
               <button className="refresh-btn" style={{ borderColor: 'var(--accent2)', color: 'var(--accent2)' }} onClick={handleCopyLink}>🔗 Copy Shareable Link</button>
+              <button className="refresh-btn" onClick={handleResume} disabled={resumeBusy}>{resumeBusy ? '...' : '📄 AI Resume PDF'}</button>
             </div>
           </div>
         )}
