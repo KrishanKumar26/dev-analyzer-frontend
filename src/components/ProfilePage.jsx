@@ -234,19 +234,43 @@ const ProfilePage = ({ user, setUser }) => {
       </div>
 
       <div className="card" style={{ marginTop: '1.5rem' }}>
-        <div className="card-title">Achievements</div>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          {profile?.streak >= 7 && <span className="platform-badge badge-gh">🔥 {profile.streak}-Day Streak</span>}
-          {profile?.problems >= 100 && <span className="platform-badge badge-lc">💎 100+ Solved</span>}
-          {profile?.problems >= 500 && <span className="platform-badge badge-cf">🚀 500+ Solved</span>}
-          {profile?.score >= 1000 && <span className="platform-badge badge-gh">⭐ Score 1000+</span>}
-          {profile?.score >= 5000 && <span className="platform-badge badge-lc">👑 Elite Developer</span>}
-          {(!profile?.streak || profile.streak < 7) && (!profile?.problems || profile.problems < 100) && (
-            <span style={{ color: 'var(--text2)', fontSize: '14px' }}>
-              Complete challenges to earn achievements! 🎯
-            </span>
-          )}
-        </div>
+        <div className="card-title">🏅 Achievements</div>
+        {(() => {
+          const s = profile || {};
+          const allPlatforms = s.githubUsername && s.leetcodeUsername && s.codeforcesUsername && s.hackerrankUsername;
+          const list = [
+            { icon: '🔥', title: 'Week Warrior', desc: '7-day streak', done: (s.streak || 0) >= 7 },
+            { icon: '⚡', title: 'Month Master', desc: '30-day streak', done: (s.streak || 0) >= 30 },
+            { icon: '💯', title: 'Century', desc: '100 problems', done: (s.problems || 0) >= 100 },
+            { icon: '🚀', title: 'Half-K Club', desc: '500 problems', done: (s.problems || 0) >= 500 },
+            { icon: '🧠', title: 'Kilo Solver', desc: '1000 problems', done: (s.problems || 0) >= 1000 },
+            { icon: '⭐', title: 'Rising Star', desc: 'Dev Score 1,000+', done: (s.score || 0) >= 1000 },
+            { icon: '💎', title: 'Elite Dev', desc: 'Dev Score 5,000+', done: (s.score || 0) >= 5000 },
+            { icon: '👑', title: 'Legend', desc: 'Dev Score 50,000+', done: (s.score || 0) >= 50000 },
+            { icon: '🌐', title: 'Fully Connected', desc: 'All 4 platforms', done: !!allPlatforms },
+            { icon: '🏅', title: 'Top 10', desc: 'Global rank under 10', done: (s.rank || 9999) >= 1 && (s.rank || 9999) <= 10 },
+          ];
+          const unlocked = list.filter((x) => x.done).length;
+          return (
+            <>
+              <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 14px' }}>{unlocked} / {list.length} unlocked</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+                {list.map((a) => (
+                  <div key={a.title} style={{
+                    padding: '14px', borderRadius: '10px', textAlign: 'center',
+                    background: a.done ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
+                    border: a.done ? '1px solid var(--primary)' : '1px solid var(--border)',
+                    opacity: a.done ? 1 : 0.55,
+                  }}>
+                    <div style={{ fontSize: '28px' }}>{a.done ? a.icon : '🔒'}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '13px', marginTop: '6px' }}>{a.title}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text2)', marginTop: '2px' }}>{a.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+        })()}
       </div>
 
       <div className="card" style={{ marginTop: '1.5rem', border: '1px solid var(--primary)' }}>
