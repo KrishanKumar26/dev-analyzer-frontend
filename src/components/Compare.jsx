@@ -4,7 +4,7 @@ import { fetchLeetCode } from '../utils/leetcode';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const fetchDev = async (username, token) => {
-  const out = { github: null, leetcode: null, error: null };
+  const out = { github: null, leetcode: null, codeforces: null, hackerrank: null, error: null };
   try {
     const res = await fetch(`${API_URL}/api/user/github/${username.trim()}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -16,6 +16,16 @@ const fetchDev = async (username, token) => {
   try {
     const lc = await fetchLeetCode(API_URL, username.trim(), token);
     if (lc) out.leetcode = lc;
+  } catch (e) { /* ignore */ }
+  try {
+    const res = await fetch(`${API_URL}/api/user/codeforces/${username.trim()}`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (res.ok && !data.error) out.codeforces = data;
+  } catch (e) { /* ignore */ }
+  try {
+    const res = await fetch(`${API_URL}/api/user/hackerrank/${username.trim()}`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (res.ok && !data.error) out.hackerrank = data;
   } catch (e) { /* ignore */ }
   return out;
 };
@@ -51,7 +61,7 @@ const Compare = () => {
       <div className="card">
         <div className="card-title">⚔️ 1v1 Developer Compare</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Do developers ke GitHub username daalo — side-by-side compare karo (real data).
+          Do developers ke username daalo — GitHub, LeetCode, Codeforces, HackerRank sab side-by-side (real data). Same handle assume hota hai.
         </p>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
           <input value={ua} onChange={(e) => setUa(e.target.value)} placeholder="GitHub username A"
@@ -80,6 +90,10 @@ const Compare = () => {
           <Stat label="Followers" a={da.github?.followers} b={db.github?.followers} />
           <Stat label="LeetCode Solved" a={da.leetcode?.totalSolved} b={db.leetcode?.totalSolved} />
           <Stat label="LC Hard" a={da.leetcode?.hardSolved} b={db.leetcode?.hardSolved} />
+          <Stat label="Codeforces Rating" a={da.codeforces?.rating} b={db.codeforces?.rating} />
+          <Stat label="CF Problems" a={da.codeforces?.solved} b={db.codeforces?.solved} />
+          <Stat label="HackerRank Stars" a={da.hackerrank?.totalStars} b={db.hackerrank?.totalStars} />
+          <Stat label="HR Solved" a={da.hackerrank?.totalSolved} b={db.hackerrank?.totalSolved} />
         </div>
       )}
     </div>
