@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SkeletonStatsGrid } from './Skeleton';
 import { fetchLeetCode } from '../utils/leetcode';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -34,6 +35,8 @@ const Activity = () => {
   const [leetcodeData, setLeetcodeData] = useState(null);
   const [codeforcesData, setCodeforcesData] = useState(null);
   const [hackerrankData, setHackerrankData] = useState(null);
+  const [skillRadar, setSkillRadar] = useState([]);
+  const [contests, setContests] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('token');
 
@@ -54,6 +57,8 @@ const Activity = () => {
       if (data.leetcodeUsername) fetchLeetcode(data.leetcodeUsername);
       if (data.codeforcesUsername) fetchCodeforces(data.codeforcesUsername);
       if (data.hackerrankUsername) fetchHackerrank(data.hackerrankUsername);
+      if (data.codeforcesUsername) fetchSkillRadar(data.codeforcesUsername);
+      fetchContests();
 
     } catch (err) {
       console.error(err);
@@ -89,6 +94,22 @@ const Activity = () => {
     } catch (err) {
       console.error('Codeforces error:', err);
     }
+  };
+
+  const fetchContests = async () => {
+    try {
+      const res = await authGet('/api/user/contests');
+      const data = await res.json();
+      if (Array.isArray(data)) setContests(data);
+    } catch (e) { /* ignore */ }
+  };
+
+  const fetchSkillRadar = async (handle) => {
+    try {
+      const res = await authGet(`/api/user/skill-radar/${handle}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setSkillRadar(data);
+    } catch (e) { /* ignore */ }
   };
 
   const fetchHackerrank = async (username) => {
@@ -201,6 +222,35 @@ const Activity = () => {
           )}
         </div>
       ) : <NotSetCard icon="🎯" name="HackerRank" field="hackerrankUsername" />}
+
+      {skillRadar.length > 0 && (
+        <div className="card" style={{ marginTop: '20px' }}>
+          <div className="card-title">🧭 SKILL RADAR (Codeforces topics)</div>
+          <ResponsiveContainer width="100%" height={280}>
+            <RadarChart data={skillRadar}>
+              <PolarGrid stroke="rgba(255,255,255,0.1)" />
+              <PolarAngleAxis dataKey="tag" tick={{ fill: 'var(--text2)', fontSize: 10 }} />
+              <Radar dataKey="count" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      <div className="card" style={{ marginTop: '20px' }}>
+        <div className="card-title">📅 UPCOMING CONTESTS (Codeforces)</div>
+        {contests.length === 0 ? (
+          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>Koi upcoming contest nahi mila (ya load ho raha).</p>
+        ) : (
+          <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {contests.map((c, i) => (
+              <a key={i} href={c.url} target="_blank" rel="noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', textDecoration: 'none', color: 'inherit', gap: '10px', flexWrap: 'wrap' }}>
+                <span style={{ fontWeight: '600', fontSize: '14px' }}>{c.name}</span>
+                <span style={{ fontSize: '12px', color: 'var(--primary)' }}>{new Date(c.startTimeSeconds * 1000).toLocaleString()}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
 
     </div>
   );
