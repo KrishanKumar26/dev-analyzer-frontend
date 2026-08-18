@@ -1,5 +1,12 @@
 {
   "rewrites": [
-    { "source": "/u/(.*)", "destination": "/" }
+    {
+      "source": "/u/(.*)",
+      "destination": "/"
+    },
+    {
+      "source": "/reset",
+      "destination": "/"
+    }
   ]
 }

@@ -9,6 +9,7 @@ const Auth = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [forgotMsg, setForgotMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +48,21 @@ const Auth = ({ setUser }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleForgot = async () => {
+    setForgotMsg(''); setError('');
+    if (!email.trim()) { setError('Pehle apna email daalo, phir Forgot password dabao.'); return; }
+    try {
+      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) setForgotMsg('📧 ' + (data.message || 'Reset link bhej diya (email check karo).'));
+      else if (res.status === 503) setForgotMsg('⚠️ Email service abhi configured nahi hai.');
+      else setForgotMsg('❌ ' + (data.error || 'Failed'));
+    } catch (e) { setForgotMsg('❌ Network error'); }
   };
 
   return (
@@ -104,6 +120,12 @@ const Auth = ({ setUser }) => {
           <button type="submit" className="auth-btn" disabled={isLoading}>
             {isLoading ? <div className="loader-mini"></div> : isLogin ? 'INITIALIZE SESSION ➔' : 'CREATE ACCOUNT ➔'}
           </button>
+          {isLogin && (
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+              <span onClick={handleForgot} style={{ color: 'var(--primary)', fontSize: '12px', cursor: 'pointer' }}>Forgot password?</span>
+            </div>
+          )}
+          {forgotMsg && <p style={{ color: 'var(--primary)', fontSize: '12px', textAlign: 'center', marginTop: '8px' }}>{forgotMsg}</p>}
         </form>
 
         <div className="auth-footer" style={{ cursor: 'pointer' }} onClick={() => setIsLogin(!isLogin)}>

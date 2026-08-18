@@ -12,6 +12,7 @@ import Goals from "./components/Goals";
 import CommandPalette from "./components/CommandPalette";
 import ShortcutsHelp from "./components/ShortcutsHelp";
 import PublicProfile from "./components/PublicProfile";
+import ResetPassword from "./components/ResetPassword";
 import { AppProvider, useApp } from "./context/AppContext";
 
 const TAB_ORDER = ["overview", "leaderboard", "groups", "goals", "activity", "compare", "search", "insights", "profile"];
@@ -166,6 +167,9 @@ function App() {
   const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
   if (publicMatch) {
     return <PublicProfile id={publicMatch[1]} />;
+  }
+  if (window.location.pathname === '/reset') {
+    return <ResetPassword />;
   }
 
   return (
