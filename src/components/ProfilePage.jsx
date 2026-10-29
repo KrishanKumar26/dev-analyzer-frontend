@@ -1,0 +1,414 @@
+import React, { useState, useEffect } from 'react';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+const ProfilePage = ({ user, setUser }) => {
+  const [profile, setProfile] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    githubUsername: '',
+    leetcodeUsername: '',
+    codeforcesUsername: '',
+    hackerrankUsername: ''
+  });
+  const [syncing, setSyncing] = useState(false);
+  const [syncMsg, setSyncMsg] = useState('');
+  const token = localStorage.getItem('token');
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncMsg('');
+    try {
+      const res = await fetch(`${API_URL}/api/user/sync`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSyncMsg(`✅ Synced! Score: ${data.score} · Rank: #${data.rank}`);
+        setProfile(prev => ({ ...prev, score: data.score, problems: data.problems, rank: data.rank }));
+        setUser(prev => ({ ...prev, score: data.score, rank: data.rank }));
+        // Performance chart ke liye platform breakdown save karo
+        if (data.breakdown) localStorage.setItem('scoreBreakdown', JSON.stringify(data.breakdown));
+      } else {
+        setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+      }
+    } catch (err) {
+      setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/user/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setProfile(data);
+      setForm({
+        name: data.name || '',
+        githubUsername: data.githubUsername || '',
+        leetcodeUsername: data.leetcodeUsername || '',
+        codeforcesUsername: data.codeforcesUsername || '',
+        hackerrankUsername: data.hackerrankUsername || ''
+      });
+    } catch (err) {
+      console.error('Profile fetch error:', err);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch(`${API_URL}/api/user/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      setProfile(prev => ({ ...prev, ...data }));
+      setUser(prev => ({ ...prev, name: data.name }));
+      setEditing(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error('Update error:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  const [copied, setCopied] = useState(false);
+  const handleShare = () => {
+    if (!profile?.id) return;
+    const url = `${window.location.origin}/u/${profile.id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
+
+  const badgeMarkdown = profile?.id
+    ? `[![Dev Score](${API_URL}/api/public/badge/${profile.id}.svg)](${window.location.origin}/u/${profile.id})`
+    : '';
+  const [badgeCopied, setBadgeCopied] = useState(false);
+  const handleCopyBadge = () => {
+    if (!badgeMarkdown) return;
+    navigator.clipboard.writeText(badgeMarkdown).then(() => {
+      setBadgeCopied(true);
+      setTimeout(() => setBadgeCopied(false), 2000);
+    }).catch(() => {});
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Pakka? Ye tumhara account hamesha ke liye delete kar dega.')) return;
+    try {
+      await fetch(`${API_URL}/api/user/account`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('scoreBreakdown');
+    setUser(null);
+  };
+
+  return (
+    <div className="page active rel">
+      <div className="overview-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div className="avatar" style={{ width: '80px', height: '80px', fontSize: '24px' }}>
+            {(profile?.name || user?.name || 'US').substring(0, 2).toUpperCase()}
+          </div>
+          <div>
+            <h1 className="greeting">{profile?.name || user?.name}</h1>
+            <p style={{ color: 'var(--text2)', fontSize: '14px' }}>{profile?.email || user?.email}</p>
+            <div className="live-badge" style={{ marginTop: '8px' }}>
+              <div className="live-dot"></div>
+              Rank: #{profile?.rank || 9999} globally
+            </div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            className="btn-primary"
+            style={{ width: 'auto', padding: '10px 20px' }}
+            onClick={() => setEditing(!editing)}
+          >
+            {editing ? 'Cancel ✕' : 'Edit Profile ✏️'}
+          </button>
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
+
+      {editing && (
+        <div className="card" style={{ marginTop: '1.5rem' }}>
+          <div className="card-title">Edit Profile</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { label: 'Full Name', key: 'name', icon: '👤' },
+              { label: 'GitHub Username', key: 'githubUsername', icon: '🐙' },
+              { label: 'LeetCode Username', key: 'leetcodeUsername', icon: '⚡' },
+              { label: 'Codeforces Username', key: 'codeforcesUsername', icon: '🏆' },
+              { label: 'HackerRank Username', key: 'hackerrankUsername', icon: '🎯' }
+            ].map(({ label, key, icon }) => (
+              <div key={key} className="input-group">
+                <label>{icon} {label.toUpperCase()}</label>
+                <input
+                  type="text"
+                  value={form[key]}
+                  onChange={(e) => setForm(prev => ({ ...prev, [key]: e.target.value }))}
+                  placeholder={`Enter ${label}`}
+                />
+              </div>
+            ))}
+            <button
+              className="auth-btn"
+              onClick={handleSave}
+              disabled={saving}
+              style={{ marginTop: '10px' }}
+            >
+              {saving ? 'Saving...' : saved ? '✅ Saved!' : 'SAVE CHANGES'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="stats-grid" style={{ marginTop: '1.5rem' }}>
+        <div className="stat-card green">
+          <div className="stat-label">DEV SCORE</div>
+          <div className="stat-value">{profile?.score ?? 0}</div>
+        </div>
+        <div className="stat-card gold">
+          <div className="stat-label">GLOBAL RANK</div>
+          <div className="stat-value">#{profile?.rank ?? 9999}</div>
+        </div>
+        <div className="stat-card purple">
+          <div className="stat-label">PROBLEMS</div>
+          <div className="stat-value">{profile?.problems ?? 0}</div>
+        </div>
+        <div className="stat-card red">
+          <div className="stat-label">STREAK</div>
+          <div className="stat-value">{profile?.streak ?? 0}d</div>
+        </div>
+      </div>
+
+      <div className="card-title" style={{ marginTop: '2rem' }}>Connected Platforms</div>
+      <div className="profile-platforms" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+        {[
+          { icon: '🐙', name: 'GitHub', handle: profile?.githubUsername },
+          { icon: '⚡', name: 'LeetCode', handle: profile?.leetcodeUsername },
+          { icon: '🏆', name: 'Codeforces', handle: profile?.codeforcesUsername },
+          { icon: '🎯', name: 'HackerRank', handle: profile?.hackerrankUsername }
+        ].map(({ icon, name, handle }) => (
+          <div key={name} className={`platform-card ${handle ? 'connected' : ''}`}>
+            <div className="platform-header">
+              <span className="platform-icon">{icon}</span>
+              <div>
+                <div className="platform-name">{name}</div>
+                <div className="platform-handle">@{handle || 'not connected'}</div>
+              </div>
+              <span className="connected-pill">{handle ? 'Connected ✅' : 'Not Set'}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">🏅 Achievements</div>
+        {(() => {
+          const s = profile || {};
+          const allPlatforms = s.githubUsername && s.leetcodeUsername && s.codeforcesUsername && s.hackerrankUsername;
+          const list = [
+            { icon: '🔥', title: 'Week Warrior', desc: '7-day streak', done: (s.streak || 0) >= 7 },
+            { icon: '⚡', title: 'Month Master', desc: '30-day streak', done: (s.streak || 0) >= 30 },
+            { icon: '💯', title: 'Century', desc: '100 problems', done: (s.problems || 0) >= 100 },
+            { icon: '🚀', title: 'Half-K Club', desc: '500 problems', done: (s.problems || 0) >= 500 },
+            { icon: '🧠', title: 'Kilo Solver', desc: '1000 problems', done: (s.problems || 0) >= 1000 },
+            { icon: '⭐', title: 'Rising Star', desc: 'Dev Score 1,000+', done: (s.score || 0) >= 1000 },
+            { icon: '💎', title: 'Elite Dev', desc: 'Dev Score 5,000+', done: (s.score || 0) >= 5000 },
+            { icon: '👑', title: 'Legend', desc: 'Dev Score 50,000+', done: (s.score || 0) >= 50000 },
+            { icon: '🌐', title: 'Fully Connected', desc: 'All 4 platforms', done: !!allPlatforms },
+            { icon: '🏅', title: 'Top 10', desc: 'Global rank under 10', done: (s.rank || 9999) >= 1 && (s.rank || 9999) <= 10 },
+          ];
+          const unlocked = list.filter((x) => x.done).length;
+          return (
+            <>
+              <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 14px' }}>{unlocked} / {list.length} unlocked</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+                {list.map((a) => (
+                  <div key={a.title} style={{
+                    padding: '14px', borderRadius: '10px', textAlign: 'center',
+                    background: a.done ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
+                    border: a.done ? '1px solid var(--primary)' : '1px solid var(--border)',
+                    opacity: a.done ? 1 : 0.55,
+                  }}>
+                    <div style={{ fontSize: '28px' }}>{a.done ? a.icon : '🔒'}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '13px', marginTop: '6px' }}>{a.title}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text2)', marginTop: '2px' }}>{a.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+        })()}
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem', border: '1px solid var(--primary)' }}>
+        <div className="card-title">🔗 Your Public Profile</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Ek shareable link jispe tumhara verified developer profile dikhega — recruiters, LinkedIn,
+          resume me daalo. Bina login koi bhi dekh sakta hai.
+        </p>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', color: 'var(--text)', flex: 1, minWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {profile?.id ? `${window.location.origin}/u/${profile.id}` : 'Loading...'}
+          </code>
+          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleShare} disabled={!profile?.id}>
+            {copied ? '✅ Copied!' : '📋 Copy Link'}
+          </button>
+          {profile?.id && (
+            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none' }}>
+              👁️ Preview
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">🏷️ README Badge</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Apne GitHub README, portfolio ya blog me ye badge lagao — live Dev Score dikhega.
+          Copy karke README me paste karo.
+        </p>
+        {profile?.id && (
+          <div style={{ marginBottom: '12px' }}>
+            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '20px' }} />
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', color: 'var(--text)', flex: 1, minWidth: '220px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+            {badgeMarkdown || 'Loading...'}
+          </code>
+          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleCopyBadge} disabled={!badgeMarkdown}>
+            {badgeCopied ? '✅ Copied!' : '📋 Copy Markdown'}
+          </button>
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">⚡ Auto-Sync from Platforms</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Apne connected platforms (GitHub, LeetCode, Codeforces, HackerRank) ke real data se
+          Dev Score, problems aur rank apne aap calculate karo.
+        </p>
+        <button className="auth-btn" onClick={handleSync} disabled={syncing}>
+          {syncing ? 'Syncing... (thoda time lag sakta hai)' : '🔄 SYNC MY STATS'}
+        </button>
+        {syncMsg && <p style={{ color: 'var(--primary)', fontSize: '13px', marginTop: '10px' }}>{syncMsg}</p>}
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="card-title">Update Your Stats (Manual)</div>
+        <ScoreUpdater token={token} onUpdate={fetchProfile} />
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem', marginBottom: '2rem', border: '1px solid #ff4d4f44' }}>
+        <div className="card-title" style={{ color: '#ff4d4f' }}>⚠️ Danger Zone</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
+          Account delete karne se tumhara saara data hamesha ke liye chala jayega.
+        </p>
+        <button
+          onClick={handleDeleteAccount}
+          style={{
+            background: 'transparent', border: '1px solid #ff4d4f', color: '#ff4d4f',
+            padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px'
+          }}
+        >
+          🗑️ Delete My Account
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const ScoreUpdater = ({ token, onUpdate }) => {
+  const [stats, setStats] = useState({ score: '', problems: '', streak: '' });
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+  const handleUpdate = async () => {
+    setSaving(true);
+    try {
+      const body = {};
+      if (stats.score) body.score = parseInt(stats.score);
+      if (stats.problems) body.problems = parseInt(stats.problems);
+      if (stats.streak) body.streak = parseInt(stats.streak);
+
+      const res = await fetch(`${API_URL}/api/user/update-stats`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        setMsg('✅ Stats updated!');
+        setStats({ score: '', problems: '', streak: '' });
+        onUpdate();
+        setTimeout(() => setMsg(''), 2000);
+      }
+    } catch (err) {
+      setMsg('❌ Error updating stats');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      {[
+        { label: 'New Score', key: 'score', placeholder: 'e.g. 1500' },
+        { label: 'Problems Solved', key: 'problems', placeholder: 'e.g. 150' },
+        { label: 'Current Streak (days)', key: 'streak', placeholder: 'e.g. 10' }
+      ].map(({ label, key, placeholder }) => (
+        <div key={key} className="input-group">
+          <label>{label.toUpperCase()}</label>
+          <input
+            type="number"
+            value={stats[key]}
+            onChange={(e) => setStats(prev => ({ ...prev, [key]: e.target.value }))}
+            placeholder={placeholder}
+          />
+        </div>
+      ))}
+      {msg && <p style={{ color: 'var(--primary)', fontSize: '13px' }}>{msg}</p>}
+      <button className="auth-btn" onClick={handleUpdate} disabled={saving}>
+        {saving ? 'Updating...' : 'UPDATE STATS ➔'}
+      </button>
+    </div>
+  );
+};
+
+export default ProfilePage;
