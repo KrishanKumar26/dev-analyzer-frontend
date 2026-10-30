@@ -35,8 +35,7 @@ const PerformanceChart = () => {
 
       {!hasData ? (
         <div style={{ color: 'var(--text2)', fontSize: '13px', textAlign: 'center', padding: '50px 20px' }}>
-          Profile me "🔄 SYNC MY STATS" dabao — phir yahan tumhare score ka
-          platform-wise breakdown dikhega 📊
+          Click "🔄 SYNC MY STATS" in Profile — then your platform-wise score breakdown will appear here 📊
         </div>
       ) : (
         <ResponsiveContainer width="100%" height="85%">

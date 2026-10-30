@@ -86,7 +86,7 @@ const Compare = () => {
       <div className="card">
         <div className="card-title">⚔️ 1v1 Developer Compare</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Do developers ke username daalo — GitHub, LeetCode, Codeforces, HackerRank, AtCoder sab side-by-side (real data). Same handle assume hota hai.
+          Enter two developer usernames — compares GitHub, LeetCode, Codeforces, HackerRank, AtCoder side-by-side (real data). Assumes same handle across platforms.
         </p>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
           <input value={ua} onChange={(e) => setUa(e.target.value)} placeholder="GitHub username A"

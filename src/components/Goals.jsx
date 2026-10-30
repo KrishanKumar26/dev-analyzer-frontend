@@ -49,7 +49,7 @@ const Goals = () => {
       <div className="card">
         <div className="card-title">🎯 Set a Goal</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-          e.g. "Solve 100 LeetCode", "Reach 1500 CF rating" — target set karo aur progress track karo.
+          e.g. "Solve 100 LeetCode", "Reach 1500 CF rating" — set your target and track progress.
         </p>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Goal title"
@@ -63,7 +63,7 @@ const Goals = () => {
       <div className="card" style={{ marginTop: '16px' }}>
         <div className="card-title">📋 My Goals</div>
         {goals.length === 0 ? (
-          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>Abhi koi goal nahi. Upar se add karo.</p>
+          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>No goals yet. Add one above.</p>
         ) : (
           <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {goals.map((g) => {

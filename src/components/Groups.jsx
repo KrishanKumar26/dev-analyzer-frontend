@@ -43,7 +43,7 @@ const Groups = () => {
       const res = await authFetch('/api/groups/create', { method: 'POST', body: JSON.stringify({ name: createName }) });
       const data = await res.json();
       if (res.ok) {
-        setMsg(`✅ "${data.name}" bana! Code: ${data.code} — friends ko bhejo`);
+        setMsg(`✅ "${data.name}" created! Code: ${data.code} — share with friends`);
         setCreateName('');
         await loadMine();
       } else setMsg('❌ ' + (data.error || 'Failed'));
@@ -66,7 +66,7 @@ const Groups = () => {
   };
 
   const leaveGroup = async (code) => {
-    if (!window.confirm('Group chhodna hai?')) return;
+    if (!window.confirm('Leave this group?')) return;
     await authFetch(`/api/groups/${code}/leave`, { method: 'DELETE' });
     if (selected?.code === code) setSelected(null);
     loadMine();
@@ -81,7 +81,7 @@ const Groups = () => {
         <div className="card">
           <div className="card-title">➕ Create a Group</div>
           <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-            College, company ya friends ka private league banao.
+            Create a private league for your college, company, or friends.
           </p>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <input value={createName} onChange={(e) => setCreateName(e.target.value)} placeholder="e.g. IIT Delhi Coders"
@@ -93,7 +93,7 @@ const Groups = () => {
         <div className="card">
           <div className="card-title">🔑 Join a Group</div>
           <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-            Kisi ne code diya? Yahan daal ke join karo.
+            Have a group code? Enter it here to join.
           </p>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <input value={joinCode} onChange={(e) => setJoinCode(e.target.value.toUpperCase())} placeholder="GROUP CODE"
@@ -109,7 +109,7 @@ const Groups = () => {
       <div className="card" style={{ marginTop: '16px' }}>
         <div className="card-title">🏆 My Groups</div>
         {myGroups.length === 0 ? (
-          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>Abhi koi group nahi. Upar se banao ya join karo.</p>
+          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>No groups yet. Create or join one above.</p>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px', marginTop: '12px' }}>
             {myGroups.map((g) => (
