@@ -164,14 +164,10 @@ function App() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [showAuth, setShowAuth] = useState(false);
-  const [showLanding, setShowLanding] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && !user) {
-      setShowLanding(false);
-    }
-  }, [user]);
+  
+  // Check token immediately, not in useEffect
+  const hasToken = localStorage.getItem('token');
+  const [showLanding, setShowLanding] = useState(!hasToken);
 
   // Public shareable profile route
   const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
@@ -183,7 +179,7 @@ function App() {
   }
 
   // Show landing page
-  if (showLanding && !user) {
+  if (showLanding && !user && !hasToken) {
     return (
       <LandingPage 
         onGetStarted={() => {
@@ -199,7 +195,7 @@ function App() {
   }
 
   // Show auth screen
-  if (showAuth && !user) {
+  if ((showAuth || hasToken) && !user) {
     return (
       <Auth setUser={(userData) => {
         setUser(userData);
