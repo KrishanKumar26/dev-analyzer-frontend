@@ -20,7 +20,7 @@ const Dashboard = ({ user }) => {
     autoSyncDaily();
   }, []);
 
-  // Auto-sync roz ek baar — data fresh rakhta hai + growth snapshot record karta hai
+  // Auto-sync once daily — keeps data fresh and records growth snapshots
   const autoSyncDaily = async () => {
     try {
       const today = new Date().toISOString().slice(0, 10);
