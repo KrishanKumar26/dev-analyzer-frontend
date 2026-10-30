@@ -285,6 +285,50 @@ body {
   animation: pulse 2s infinite;
 }
 
+/* --- LOGO STYLING --- */
+.logo-icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon-wrapper .pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 2s infinite;
+  position: absolute;
+}
+
+.logo-icon-wrapper .orbit-ring {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: orbit-spin 8s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.logo-text {
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.logo-accent {
+  color: var(--text);
+}
+
+/* --- EXISTING PULSE ANIMATION UPDATE --- */
 @keyframes pulse {
 
   0%,
@@ -1883,51 +1927,4 @@ body {
 
 .shortcut-keys .kbd {
   font-family: var(--mono);
-  font-size: 10px;
-  background: var(--bg4);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 2px 6px;
-  color: var(--text);
-}
-
-/* --- EXPORT BUTTON --- */
-.export-btn {
-  background: transparent;
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  color: var(--primary);
-  font-size: 11px;
-  padding: 4px 10px;
-  cursor: pointer;
-  font-family: var(--mono);
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.export-btn:hover {
-  background: rgba(0, 229, 160, 0.1);
-}
-
-.export-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.card-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-@media (max-width: 700px) {
-  .palette-trigger .kbd {
-    display: none;
-  }
-  .shortcuts-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
+ 
