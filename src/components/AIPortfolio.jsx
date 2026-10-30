@@ -42,7 +42,7 @@ const AIPortfolio = ({ user }) => {
   const streak = p.streak ?? user?.streak ?? 0;
   const problems = p.problems ?? 0;
 
-  // Real per-platform breakdown (SYNC ke time localStorage me save hua)
+  // Real per-platform breakdown (saved during SYNC in localStorage)
   const breakdown = readBreakdown();
   const connected = PLATFORM_META.filter(m => p[m.user]);
   const withScores = PLATFORM_META.map(m => ({ label: m.label, score: breakdown[m.key] || 0 }));

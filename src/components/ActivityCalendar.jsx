@@ -71,7 +71,7 @@ const ActivityCalendar = () => {
 
       {state === 'nogithub' ? (
         <div style={{ color: 'var(--text2)', fontSize: '13px', textAlign: 'center', padding: '30px' }}>
-          Profile → Edit Profile me apna GitHub username daalo, phir yahan asli activity dikhegi 🐙
+          Add your GitHub username in Profile → Edit Profile to view your real activity 🐙
         </div>
       ) : (
         <div style={{

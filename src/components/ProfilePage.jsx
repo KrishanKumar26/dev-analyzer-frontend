@@ -276,8 +276,8 @@ const ProfilePage = ({ user, setUser }) => {
       <div className="card" style={{ marginTop: '1.5rem', border: '1px solid var(--primary)' }}>
         <div className="card-title">🔗 Your Public Profile</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Ek shareable link jispe tumhara verified developer profile dikhega — recruiters, LinkedIn,
-          resume me daalo. Bina login koi bhi dekh sakta hai.
+          A shareable link showcasing your verified developer profile — perfect for recruiters, LinkedIn,
+          and resumes. Accessible to anyone without login.
         </p>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
           <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', color: 'var(--text)', flex: 1, minWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -297,8 +297,8 @@ const ProfilePage = ({ user, setUser }) => {
       <div className="card" style={{ marginTop: '1.5rem' }}>
         <div className="card-title">🏷️ README Badge</div>
         <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Apne GitHub README, portfolio ya blog me ye badge lagao — live Dev Score dikhega.
-          Copy karke README me paste karo.
+          Add this badge to your GitHub README, portfolio or blog — it displays your live Dev Score.
+          Copy and paste it into your README.
         </p>
         {profile?.id && (
           <div style={{ marginBottom: '12px' }}>

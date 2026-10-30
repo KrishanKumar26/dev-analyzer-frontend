@@ -23,9 +23,9 @@ const NotSetCard = ({ icon, name, field }) => (
     border: '1px dashed var(--border)'
   }}>
     <div style={{ fontSize: '32px', marginBottom: '8px' }}>{icon}</div>
-    <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{name} connected nahi hai</div>
+    <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{name} Not Connected</div>
     <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>
-      Profile - Edit Profile mein {field} daalo
+      Add your {field} in Profile → Edit Profile
     </div>
   </div>
 );
@@ -257,7 +257,7 @@ const Activity = () => {
           <div className="card" style={{ marginTop: '20px' }}>
             <div className="card-title">🎯 RECOMMENDED PRACTICE (your weak areas)</div>
             <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-              In topics me tumne kam solve kiya — inhe practice karke apna Skill Radar strong banao.
+              These topics need more practice. Strengthen your Skill Radar by solving problems in these areas.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {weak.map((w) => (
@@ -275,7 +275,7 @@ const Activity = () => {
       <div className="card" style={{ marginTop: '20px' }}>
         <div className="card-title">📅 UPCOMING CONTESTS (Codeforces)</div>
         {contests.length === 0 ? (
-          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>Koi upcoming contest nahi mila (ya load ho raha).</p>
+          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>No upcoming contests found (or loading).</p>
         ) : (
           <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {contests.map((c, i) => (

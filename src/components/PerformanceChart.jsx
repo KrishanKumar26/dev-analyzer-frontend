@@ -13,7 +13,7 @@ const PerformanceChart = () => {
   const [hasData, setHasData] = useState(false);
 
   useEffect(() => {
-    // Breakdown SYNC ke time localStorage me save hota hai (ProfilePage se)
+    // Breakdown is saved in localStorage during SYNC (from ProfilePage)
     let breakdown = {};
     try {
       breakdown = JSON.parse(localStorage.getItem('scoreBreakdown') || '{}');

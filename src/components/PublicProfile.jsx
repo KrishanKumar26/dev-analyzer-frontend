@@ -40,8 +40,8 @@ const PublicProfile = ({ id }) => {
         <div>
           <div style={{ fontSize: '48px', marginBottom: '10px' }}>🔍</div>
           <h2>Profile not found</h2>
-          <p style={{ color: 'var(--text2)', marginTop: '8px' }}>Ye developer profile exist nahi karta.</p>
-          <a href="/" style={{ color: 'var(--primary)', marginTop: '16px', display: 'inline-block' }}>← Vortex pe jao</a>
+          <p style={{ color: 'var(--text2)', marginTop: '8px' }}>This developer profile does not exist.</p>
+          <a href="/" style={{ color: 'var(--primary)', marginTop: '16px', display: 'inline-block' }}>← Go to Vortex</a>
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ const PublicProfile = ({ id }) => {
         <div className="card" style={{ marginTop: '20px' }}>
           <div className="card-title">Verified Platforms</div>
           {(!data.platforms || data.platforms.length === 0) ? (
-            <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '12px' }}>Abhi koi platform connect nahi hai.</p>
+            <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '12px' }}>No platforms connected yet.</p>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginTop: '15px' }}>
               {data.platforms.map((pf) => (
@@ -114,7 +114,7 @@ const PublicProfile = ({ id }) => {
         {/* CTA footer */}
         <div style={{ textAlign: 'center', marginTop: '30px', color: 'var(--text3)', fontSize: '13px' }}>
           Powered by <a href="/" style={{ color: 'var(--primary)', textDecoration: 'none' }}>Vortex Dev Analyzer</a> —
-          apna developer profile banao aur real stats track karo.
+          create your developer profile and track real coding stats.
         </div>
       </div>
     </div>

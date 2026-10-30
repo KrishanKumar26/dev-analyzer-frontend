@@ -52,15 +52,15 @@ const Auth = ({ setUser }) => {
 
   const handleForgot = async () => {
     setForgotMsg(''); setError('');
-    if (!email.trim()) { setError('Pehle apna email daalo, phir Forgot password dabao.'); return; }
+    if (!email.trim()) { setError('Please enter your email address first.'); return; }
     try {
       const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      if (res.ok) setForgotMsg('📧 ' + (data.message || 'Reset link bhej diya (email check karo).'));
-      else if (res.status === 503) setForgotMsg('⚠️ Email service abhi configured nahi hai.');
+      if (res.ok) setForgotMsg('📧 ' + (data.message || 'Password reset link sent. Please check your email.'));
+      else if (res.status === 503) setForgotMsg('⚠️ Email service is currently not configured.');
       else setForgotMsg('❌ ' + (data.error || 'Failed'));
     } catch (e) { setForgotMsg('❌ Network error'); }
   };
