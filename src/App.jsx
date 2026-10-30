@@ -38,7 +38,7 @@ function AppShell({ user, setUser }) {
         addToast(messages[activeTab], 'info');
       }
     }
-  }, [activeTab, user]);
+  }, [activeTab, user, addToast]);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -168,13 +168,12 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && !user) {
       setShowLanding(false);
-      setShowAuth(false);
     }
-  }, []);
+  }, [user]);
 
-  // Public shareable profile route: /u/{id} — accessible without login
+  // Public shareable profile route
   const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
   if (publicMatch) {
     return <PublicProfile id={publicMatch[1]} />;
@@ -183,7 +182,7 @@ function App() {
     return <ResetPassword />;
   }
 
-  // Show landing page for non-authenticated users
+  // Show landing page
   if (showLanding && !user) {
     return (
       <LandingPage 
@@ -217,4 +216,4 @@ function App() {
   );
 }
 
-export default App;p;
+export default App;
