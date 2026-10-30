@@ -13,6 +13,7 @@ import CommandPalette from "./components/CommandPalette";
 import ShortcutsHelp from "./components/ShortcutsHelp";
 import PublicProfile from "./components/PublicProfile";
 import ResetPassword from "./components/ResetPassword";
+import LandingPage from "./components/LandingPage";
 import { AppProvider, useApp } from "./context/AppContext";
 
 const TAB_ORDER = ["overview", "leaderboard", "groups", "goals", "activity", "compare", "search", "insights", "profile"];
@@ -162,14 +163,51 @@ function AppShell({ user, setUser }) {
 function App() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showAuth, setShowAuth] = useState(false);
+  const [showLanding, setShowLanding] = useState(true);
 
-  // Public shareable profile route: /u/{id} — bina login khulta hai
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setShowLanding(false);
+      setShowAuth(false);
+    }
+  }, []);
+
+  // Public shareable profile route: /u/{id} — accessible without login
   const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
   if (publicMatch) {
     return <PublicProfile id={publicMatch[1]} />;
   }
   if (window.location.pathname === '/reset') {
     return <ResetPassword />;
+  }
+
+  // Show landing page for non-authenticated users
+  if (showLanding && !user) {
+    return (
+      <LandingPage 
+        onGetStarted={() => {
+          setShowLanding(false);
+          setShowAuth(true);
+        }}
+        onSignIn={() => {
+          setShowLanding(false);
+          setShowAuth(true);
+        }}
+      />
+    );
+  }
+
+  // Show auth screen
+  if (showAuth && !user) {
+    return (
+      <Auth setUser={(userData) => {
+        setUser(userData);
+        setShowAuth(false);
+        setShowLanding(false);
+      }} />
+    );
   }
 
   return (
@@ -179,4 +217,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;p;
