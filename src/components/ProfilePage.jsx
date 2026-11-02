@@ -382,4 +382,151 @@ const ProfilePage = ({ user, setUser }) => {
       {/* README Badge */}
       <div className="card" style={{ marginBottom: '2rem' }}>
         <div className="card-title">🏷️ GitHub README Badge</div>
-        <p styl
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
+          Add this badge to your GitHub README to display your live Dev Score
+        </p>
+        {profile?.id && (
+          <div style={{ marginBottom: '16px', padding: '12px', background: 'var(--bg2)', borderRadius: '8px', textAlign: 'center' }}>
+            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '28px' }} />
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+          <code style={{ 
+            background: 'var(--bg2)', 
+            padding: '12px 16px', 
+            borderRadius: '8px', 
+            fontSize: '12px', 
+            color: 'var(--text)', 
+            flex: 1, 
+            minWidth: '220px', 
+            overflowX: 'auto', 
+            fontFamily: 'var(--mono)',
+            border: '1px solid var(--border)'
+          }}>
+            {badgeMarkdown || 'Loading...'}
+          </code>
+          <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={handleCopyBadge} disabled={!badgeMarkdown}>
+            {badgeCopied ? '✅ Copied!' : '📋 Copy Markdown'}
+          </button>
+        </div>
+      </div>
+
+      {/* Manual Stats Update */}
+      <div className="card" style={{ marginBottom: '2rem' }}>
+        <div className="card-title">📊 Manual Stats Update</div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
+          Manually update your statistics if needed
+        </p>
+        <ScoreUpdater token={token} onUpdate={fetchProfile} />
+      </div>
+
+      {/* Danger Zone */}
+      <div className="card" style={{ marginBottom: '3rem', border: '1px solid rgba(255, 77, 109, 0.3)', background: 'rgba(255, 77, 109, 0.03)' }}>
+        <div className="card-title" style={{ color: 'var(--accent)' }}>⚠️ Danger Zone</div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
+          Deleting your account will permanently remove all your data. This action cannot be undone.
+        </p>
+        <button
+          onClick={handleDeleteAccount}
+          style={{
+            background: 'transparent', 
+            border: '1px solid var(--accent)', 
+            color: 'var(--accent)',
+            padding: '12px 24px', 
+            borderRadius: '8px', 
+            cursor: 'pointer', 
+            fontWeight: '700', 
+            fontSize: '14px',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = 'rgba(255, 77, 109, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'transparent';
+          }}
+        >
+          🗑️ Delete My Account
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const ScoreUpdater = ({ token, onUpdate }) => {
+  const [stats, setStats] = useState({ score: '', problems: '', streak: '' });
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+  const handleUpdate = async () => {
+    setSaving(true);
+    setMsg('');
+    try {
+      const body = {};
+      if (stats.score) body.score = parseInt(stats.score);
+      if (stats.problems) body.problems = parseInt(stats.problems);
+      if (stats.streak) body.streak = parseInt(stats.streak);
+
+      const res = await fetch(`${API_URL}/api/user/update-stats`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        setMsg('✅ Stats updated successfully!');
+        setStats({ score: '', problems: '', streak: '' });
+        onUpdate();
+        setTimeout(() => setMsg(''), 3000);
+      } else {
+        setMsg('❌ Failed to update stats');
+      }
+    } catch (err) {
+      setMsg('❌ Network error occurred');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+      {[
+        { label: 'Dev Score', key: 'score', placeholder: 'e.g. 1500' },
+        { label: 'Problems Solved', key: 'problems', placeholder: 'e.g. 150' },
+        { label: 'Streak (days)', key: 'streak', placeholder: 'e.g. 10' }
+      ].map(({ label, key, placeholder }) => (
+        <div key={key} className="input-group">
+          <label>{label}</label>
+          <input
+            type="number"
+            value={stats[key]}
+            onChange={(e) => setStats(prev => ({ ...prev, [key]: e.target.value }))}
+            placeholder={placeholder}
+          />
+        </div>
+      ))}
+      <div style={{ gridColumn: '1 / -1' }}>
+        {msg && (
+          <p style={{ 
+            color: msg.includes('✅') ? 'var(--primary)' : 'var(--accent)', 
+            fontSize: '13px', 
+            marginBottom: '12px',
+            padding: '10px',
+            background: 'var(--bg2)',
+            borderRadius: '6px'
+          }}>
+            {msg}
+          </p>
+        )}
+        <button className="auth-btn" onClick={handleUpdate} disabled={saving} style={{ width: '100%' }}>
+          {saving ? '⏳ Updating...' : '📊 UPDATE STATS'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ProfilePage;
