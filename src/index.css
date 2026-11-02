@@ -7,24 +7,35 @@
 }
 
 :root {
-  --primary: #00E5A0;
-  --primary-dim: #00c987;
-  --accent: #FF4D6D;
-  --accent2: #7B61FF;
-  --gold: #FFD166;
+  /* Professional Developer Theme Colors */
+  --primary: #00D9A3;        /* Bright green - GitHub success */
+  --primary-dim: #00b386;
+  --accent: #2196F3;         /* Electric blue - VS Code blue */
+  --accent2: #BB86FC;        /* Soft purple - Material Design */
+  --gold: #FFB020;           /* Warm gold */
   --silver: #B0B8C8;
   --bronze: #CD7C3F;
-  --bg: #0A0D14;
-  --bg2: #111520;
-  --bg3: #181D2C;
-  --bg4: #1E2436;
-  --border: rgba(255, 255, 255, 0.07);
-  --border2: rgba(0, 229, 160, 0.2);
-  --text: #E8EDF7;
-  --text2: #8A93A8;
-  --text3: #5A6278;
+  
+  /* Dark Backgrounds - Professional coding theme */
+  --bg: #0D1117;             /* Very dark - like GitHub dark */
+  --bg2: #161B22;            /* Cards/panels */
+  --bg3: #1F2937;            /* Hover states */
+  --bg4: #252B35;            /* Modal overlays */
+  
+  /* Borders & Dividers */
+  --border: #30363D;         /* Subtle borders */
+  --border2: rgba(0, 217, 163, 0.3);  /* Primary border */
+  
+  /* Text Colors */
+  --text: #E6EDF3;           /* Primary text - bright */
+  --text2: #8B949E;          /* Secondary text - muted */
+  --text3: #6E7681;          /* Tertiary text - dim */
+  
+  /* Fonts */
   --mono: 'Space Mono', monospace;
   --sans: 'DM Sans', sans-serif;
+  
+  /* Radius */
   --radius: 12px;
   --radius-sm: 8px;
 }
@@ -44,14 +55,15 @@ body {
   overflow: hidden;
 }
 
-/* Grid bg */
+/* Grid bg - Subtle coding theme */
 #app::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(rgba(0, 229, 160, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 229, 160, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(rgba(33, 150, 243, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 150, 243, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
   pointer-events: none;
   z-index: 0;
 }

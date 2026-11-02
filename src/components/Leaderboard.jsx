@@ -114,9 +114,7 @@ const Leaderboard = ({ user }) => {
               letterSpacing: '-0.5px'
             }}>
               Global <span style={{ 
-                background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                color: 'var(--primary)'
               }}>Leaderboard</span>
             </h1>
             <p style={{ fontSize: '14px', color: 'var(--text2)', marginBottom: '0' }}>
@@ -138,7 +136,7 @@ const Leaderboard = ({ user }) => {
             borderRadius: '12px',
             border: '1px solid rgba(0, 229, 160, 0.3)'
           }}>
-            <div style={{ fontSize: '12px', color: '#00e5a0', marginBottom: '4px', fontWeight: '600' }}>📊 Total Developers</div>
+            <div style={{ fontSize: '12px', color: 'var(--primary)', marginBottom: '4px', fontWeight: '600' }}>📊 Total Developers</div>
             <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text)' }}>{totalDevs}+</div>
           </div>
           <div style={{
@@ -148,7 +146,7 @@ const Leaderboard = ({ user }) => {
             borderRadius: '12px',
             border: '1px solid rgba(123, 97, 255, 0.3)'
           }}>
-            <div style={{ fontSize: '12px', color: '#7b61ff', marginBottom: '4px', fontWeight: '600' }}>👑 Your Rank</div>
+            <div style={{ fontSize: '12px', color: 'var(--accent)', marginBottom: '4px', fontWeight: '600' }}>👑 Your Rank</div>
             <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text)' }}>#{userRank || '—'}</div>
           </div>
           <div style={{
@@ -174,8 +172,8 @@ const Leaderboard = ({ user }) => {
             onClick={() => setActiveTab('global')}
             style={{
               padding: '12px 24px',
-              background: activeTab === 'global' ? '#00e5a0' : 'transparent',
-              color: activeTab === 'global' ? '#0a0e1a' : 'var(--text)',
+              background: activeTab === 'global' ? 'var(--primary)' : 'transparent',
+              color: activeTab === 'global' ? '#000' : 'var(--text)',
               border: activeTab === 'global' ? 'none' : '1px solid var(--border)',
               borderRadius: '10px',
               fontSize: '14px',
@@ -193,8 +191,8 @@ const Leaderboard = ({ user }) => {
             onClick={() => setActiveTab('friends')}
             style={{
               padding: '12px 24px',
-              background: activeTab === 'friends' ? '#00e5a0' : 'transparent',
-              color: activeTab === 'friends' ? '#0a0e1a' : 'var(--text)',
+              background: activeTab === 'friends' ? 'var(--primary)' : 'transparent',
+              color: activeTab === 'friends' ? '#000' : 'var(--text)',
               border: activeTab === 'friends' ? 'none' : '1px solid var(--border)',
               borderRadius: '10px',
               fontSize: '14px',
@@ -235,7 +233,7 @@ const Leaderboard = ({ user }) => {
               background: 'rgba(0, 229, 160, 0.1)',
               border: '1px solid rgba(0, 229, 160, 0.3)',
               borderRadius: '10px',
-              color: '#00e5a0',
+              color: 'var(--primary)',
               fontSize: '14px',
               fontWeight: '600',
               cursor: loading ? 'not-allowed' : 'pointer',
@@ -335,7 +333,7 @@ const Leaderboard = ({ user }) => {
                     ? 'rgba(255, 215, 0, 0.05)' 
                     : 'var(--bg3)',
                   border: isUser 
-                    ? '2px solid #00e5a0' 
+                    ? '2px solid var(--primary)' 
                     : isTopThree 
                     ? '1px solid rgba(255, 215, 0, 0.3)'
                     : '1px solid transparent',
@@ -371,14 +369,14 @@ const Leaderboard = ({ user }) => {
                     width: '36px',
                     height: '36px',
                     borderRadius: '50%',
-                    background: `linear-gradient(135deg, ${isTopThree ? '#ffd700' : '#00e5a0'} 0%, ${isTopThree ? '#ffa500' : '#7b61ff'} 100%)`,
+                    background: isTopThree ? 'var(--gold)' : 'var(--primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '14px',
                     fontWeight: '700',
                     color: '#fff',
-                    border: isTopThree ? '2px solid #ffd700' : 'none'
+                    border: isTopThree ? '2px solid var(--gold)' : 'none'
                   }}>
                     {item.name?.substring(0, 2).toUpperCase()}
                   </div>
@@ -411,7 +409,7 @@ const Leaderboard = ({ user }) => {
                 <div style={{ 
                   fontSize: '16px', 
                   fontWeight: '800', 
-                  color: isUser ? '#00e5a0' : isTopThree ? '#ffd700' : 'var(--text)'
+                  color: isUser ? 'var(--primary)' : isTopThree ? 'var(--gold)' : 'var(--text)'
                 }}>
                   {item.score}
                 </div>
@@ -465,7 +463,7 @@ const Leaderboard = ({ user }) => {
           </div>
           <button style={{
             padding: '10px 24px',
-            background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+            background: 'var(--primary)',
             color: '#fff',
             border: 'none',
             borderRadius: '8px',
