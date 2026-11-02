@@ -89,21 +89,41 @@ const Dashboard = ({ user }) => {
         <SkeletonStatsGrid count={4} />
       ) : (
         <div className="stats-grid">
-          <div className="stat-card green">
-            <div className="stat-label">DEV SCORE</div>
-            <div className="stat-value">{devScore}</div>
+          <div className="stat-card" style={{ 
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.05) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.3)'
+          }}>
+            <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🏆</div>
+            <div className="stat-label">DEVELOPER SCORE</div>
+            <div className="stat-value" style={{ color: '#10b981' }}>{devScore}</div>
+            <div className="stat-change up">+18%</div>
           </div>
-          <div className="stat-card gold">
+          <div className="stat-card" style={{ 
+            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%)',
+            border: '1px solid rgba(245, 158, 11, 0.3)'
+          }}>
+            <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🌍</div>
             <div className="stat-label">GLOBAL RANK</div>
-            <div className="stat-value">#{globalRank}</div>
+            <div className="stat-value" style={{ color: '#f59e0b' }}>#{globalRank}</div>
+            <div className="stat-change up">+2</div>
           </div>
-          <div className="stat-card purple">
-            <div className="stat-label">PROBLEMS</div>
-            <div className="stat-value">{solved}</div>
+          <div className="stat-card" style={{ 
+            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(118, 75, 162, 0.05) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.3)'
+          }}>
+            <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>✓</div>
+            <div className="stat-label">PROBLEMS SOLVED</div>
+            <div className="stat-value" style={{ color: '#8b5cf6' }}>{solved}</div>
+            <div className="stat-change up">+12%</div>
           </div>
-          <div className="stat-card red">
-            <div className="stat-label">STREAK</div>
-            <div className="stat-value">{streak}d</div>
+          <div className="stat-card" style={{ 
+            background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%)',
+            border: '1px solid rgba(239, 68, 68, 0.3)'
+          }}>
+            <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🔥</div>
+            <div className="stat-label">CURRENT STREAK</div>
+            <div className="stat-value" style={{ color: '#ef4444' }}>{streak}d</div>
+            <div className="stat-change up">+1d</div>
           </div>
         </div>
       )}
@@ -112,12 +132,14 @@ const Dashboard = ({ user }) => {
 
         <div className="left-stack">
           <div className="card">
-            <div className="card-title" style={{ marginBottom: '15px' }}>
+            <div className="card-title" style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '20px' }}>📊</span>
               GLOBAL LEADERBOARD
               <input
                 type="text"
                 placeholder="Find User..."
                 className="search-mini"
+                style={{ marginLeft: 'auto' }}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
@@ -126,20 +148,28 @@ const Dashboard = ({ user }) => {
               {loading ? (
                 <SkeletonRows count={5} />
               ) : filteredLeaders.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '20px' }}>No users yet</div>
+                <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text2)' }}>No users found</div>
               ) : (
-                filteredLeaders.map((item, i) => (
-                  <div className={`lb-row ${item.isMe ? 'me' : ''}`} key={i}>
-                    <div className={`lb-rank rank-${i + 1}`}>#{i + 1}</div>
-                    <div className="lb-info">
-                      <div className="lb-name">
-                        {item.name} {item.isMe ? '(You)' : ''}
+                filteredLeaders.map((item, i) => {
+                  const medals = ['🥇', '🥈', '🥉'];
+                  return (
+                    <div className={`lb-row ${item.isMe ? 'me' : ''}`} key={i}>
+                      <div className={`lb-rank rank-${i + 1}`}>
+                        {i < 3 ? medals[i] : `#${i + 1}`}
                       </div>
-                      <div className="lb-platform">{item.platform}</div>
+                      <div className="lb-info">
+                        <div className="lb-name">
+                          {item.name} {item.isMe ? '(You)' : ''}
+                        </div>
+                        <div className="lb-platform">{item.platform}</div>
+                      </div>
+                      <div className="lb-score" style={{ 
+                        color: item.isMe ? '#10b981' : 'var(--text)',
+                        fontWeight: item.isMe ? '700' : '600'
+                      }}>{item.score}</div>
                     </div>
-                    <div className="lb-score">{item.score}</div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -149,7 +179,11 @@ const Dashboard = ({ user }) => {
 
         <div className="right-stack">
           <div className="card">
-            <div className="card-title">SKILL ANALYTICS</div>
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <span style={{ fontSize: '20px' }}>💻</span>
+              SKILL ANALYTICS
+            </div>
+            {/* Skill bars will be rendered by PerformanceChart component */}
           </div>
 
           <PerformanceChart />
