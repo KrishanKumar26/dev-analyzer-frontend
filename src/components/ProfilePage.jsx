@@ -28,16 +28,15 @@ const ProfilePage = ({ user, setUser }) => {
       });
       const data = await res.json();
       if (res.ok) {
-        setSyncMsg(`✅ Synced! Score: ${data.score} · Rank: #${data.rank}`);
+        setSyncMsg(`✅ Synced Successfully! Score: ${data.score} · Rank: #${data.rank}`);
         setProfile(prev => ({ ...prev, score: data.score, problems: data.problems, rank: data.rank }));
         setUser(prev => ({ ...prev, score: data.score, rank: data.rank }));
-        // Performance chart ke liye platform breakdown save karo
         if (data.breakdown) localStorage.setItem('scoreBreakdown', JSON.stringify(data.breakdown));
       } else {
-        setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+        setSyncMsg('❌ Sync failed. Please try again later.');
       }
     } catch (err) {
-      setSyncMsg('❌ Sync failed. Thodi der baad try karo.');
+      setSyncMsg('❌ Network error. Please check your connection.');
     } finally {
       setSyncing(false);
     }
@@ -118,7 +117,7 @@ const ProfilePage = ({ user, setUser }) => {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Pakka? Ye tumhara account hamesha ke liye delete kar dega.')) return;
+    if (!window.confirm('Are you absolutely sure? This will permanently delete your account and all data.')) return;
     try {
       await fetch(`${API_URL}/api/user/account`, {
         method: 'DELETE',
@@ -133,107 +132,161 @@ const ProfilePage = ({ user, setUser }) => {
   };
 
   return (
-    <div className="page active rel">
-      <div className="overview-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <div className="avatar" style={{ width: '80px', height: '80px', fontSize: '24px' }}>
-            {(profile?.name || user?.name || 'US').substring(0, 2).toUpperCase()}
-          </div>
-          <div>
-            <h1 className="greeting">{profile?.name || user?.name}</h1>
-            <p style={{ color: 'var(--text2)', fontSize: '14px' }}>{profile?.email || user?.email}</p>
-            <div className="live-badge" style={{ marginTop: '8px' }}>
-              <div className="live-dot"></div>
-              Rank: #{profile?.rank || 9999} globally
+    <div className="page active rel" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      
+      {/* Profile Header */}
+      <div style={{ background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1), rgba(123, 97, 255, 0.1))', padding: '2rem', borderRadius: '16px', marginBottom: '2rem', border: '1px solid var(--border2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div className="avatar" style={{ width: '100px', height: '100px', fontSize: '36px', border: '3px solid var(--primary)', boxShadow: '0 8px 20px rgba(0, 229, 160, 0.3)' }}>
+              {(profile?.name || user?.name || 'US').substring(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px', color: 'var(--text)' }}>
+                {profile?.name || user?.name}
+              </h1>
+              <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '12px' }}>{profile?.email || user?.email}</p>
+              <div className="live-badge">
+                <div className="live-dot"></div>
+                Global Rank #{profile?.rank || 9999}
+              </div>
             </div>
           </div>
-        </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            className="btn-primary"
-            style={{ width: 'auto', padding: '10px 20px' }}
-            onClick={() => setEditing(!editing)}
-          >
-            {editing ? 'Cancel ✕' : 'Edit Profile ✏️'}
-          </button>
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={() => setEditing(!editing)}>
+              {editing ? '✕ Cancel' : '✏️ Edit Profile'}
+            </button>
+            <button className="refresh-btn" onClick={handleLogout}>
+              🚪 Logout
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Edit Form */}
       {editing && (
-        <div className="card" style={{ marginTop: '1.5rem' }}>
-          <div className="card-title">Edit Profile</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="card" style={{ marginBottom: '2rem', animation: 'fadeInPage 0.3s ease' }}>
+          <div className="card-title">✏️ Edit Your Profile</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginTop: '16px' }}>
             {[
-              { label: 'Full Name', key: 'name', icon: '👤' },
-              { label: 'GitHub Username', key: 'githubUsername', icon: '🐙' },
-              { label: 'LeetCode Username', key: 'leetcodeUsername', icon: '⚡' },
-              { label: 'Codeforces Username', key: 'codeforcesUsername', icon: '🏆' },
-              { label: 'HackerRank Username', key: 'hackerrankUsername', icon: '🎯' }
-            ].map(({ label, key, icon }) => (
+              { label: 'Full Name', key: 'name', icon: '👤', placeholder: 'Enter your name' },
+              { label: 'GitHub Username', key: 'githubUsername', icon: '🐙', placeholder: 'your-github-username' },
+              { label: 'LeetCode Username', key: 'leetcodeUsername', icon: '⚡', placeholder: 'your-leetcode-username' },
+              { label: 'Codeforces Username', key: 'codeforcesUsername', icon: '🏆', placeholder: 'your-codeforces-username' },
+              { label: 'HackerRank Username', key: 'hackerrankUsername', icon: '🎯', placeholder: 'your-hackerrank-username' }
+            ].map(({ label, key, icon, placeholder }) => (
               <div key={key} className="input-group">
-                <label>{icon} {label.toUpperCase()}</label>
+                <label>{icon} {label}</label>
                 <input
                   type="text"
                   value={form[key]}
                   onChange={(e) => setForm(prev => ({ ...prev, [key]: e.target.value }))}
-                  placeholder={`Enter ${label}`}
+                  placeholder={placeholder}
                 />
               </div>
             ))}
-            <button
-              className="auth-btn"
-              onClick={handleSave}
-              disabled={saving}
-              style={{ marginTop: '10px' }}
-            >
-              {saving ? 'Saving...' : saved ? '✅ Saved!' : 'SAVE CHANGES'}
-            </button>
           </div>
+          <button className="auth-btn" onClick={handleSave} disabled={saving} style={{ marginTop: '20px', width: '100%' }}>
+            {saving ? '💾 Saving...' : saved ? '✅ Saved Successfully!' : '💾 SAVE CHANGES'}
+          </button>
         </div>
       )}
 
-      <div className="stats-grid" style={{ marginTop: '1.5rem' }}>
+      {/* Stats Grid */}
+      <div className="stats-grid" style={{ marginBottom: '2rem' }}>
         <div className="stat-card green">
           <div className="stat-label">DEV SCORE</div>
           <div className="stat-value">{profile?.score ?? 0}</div>
+          <div className="stat-sub">Total points earned</div>
         </div>
         <div className="stat-card gold">
           <div className="stat-label">GLOBAL RANK</div>
           <div className="stat-value">#{profile?.rank ?? 9999}</div>
+          <div className="stat-sub">Worldwide ranking</div>
         </div>
         <div className="stat-card purple">
           <div className="stat-label">PROBLEMS</div>
           <div className="stat-value">{profile?.problems ?? 0}</div>
+          <div className="stat-sub">Total solved</div>
         </div>
         <div className="stat-card red">
           <div className="stat-label">STREAK</div>
           <div className="stat-value">{profile?.streak ?? 0}d</div>
+          <div className="stat-sub">Current streak</div>
         </div>
       </div>
 
-      <div className="card-title" style={{ marginTop: '2rem' }}>Connected Platforms</div>
-      <div className="profile-platforms" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-        {[
-          { icon: '🐙', name: 'GitHub', handle: profile?.githubUsername },
-          { icon: '⚡', name: 'LeetCode', handle: profile?.leetcodeUsername },
-          { icon: '🏆', name: 'Codeforces', handle: profile?.codeforcesUsername },
-          { icon: '🎯', name: 'HackerRank', handle: profile?.hackerrankUsername }
-        ].map(({ icon, name, handle }) => (
-          <div key={name} className={`platform-card ${handle ? 'connected' : ''}`}>
-            <div className="platform-header">
-              <span className="platform-icon">{icon}</span>
-              <div>
-                <div className="platform-name">{name}</div>
-                <div className="platform-handle">@{handle || 'not connected'}</div>
+      {/* Connected Platforms */}
+      <div className="card" style={{ marginBottom: '2rem' }}>
+        <div className="card-title">🔗 Connected Platforms</div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px' }}>
+          Link your coding accounts to sync stats automatically
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+          {[
+            { icon: '🐙', name: 'GitHub', handle: profile?.githubUsername, color: 'rgba(255, 255, 255, 0.1)' },
+            { icon: '⚡', name: 'LeetCode', handle: profile?.leetcodeUsername, color: 'rgba(255, 209, 102, 0.1)' },
+            { icon: '🏆', name: 'Codeforces', handle: profile?.codeforcesUsername, color: 'rgba(33, 150, 243, 0.1)' },
+            { icon: '🎯', name: 'HackerRank', handle: profile?.hackerrankUsername, color: 'rgba(0, 200, 117, 0.1)' }
+          ].map(({ icon, name, handle, color }) => (
+            <div key={name} style={{
+              background: handle ? color : 'var(--bg2)',
+              border: handle ? '1px solid var(--border2)' : '1px dashed var(--border)',
+              borderRadius: '12px',
+              padding: '20px',
+              transition: 'all 0.3s',
+              cursor: 'pointer'
+            }} className="platform-card">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '28px' }}>{icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: '600', fontSize: '16px', color: 'var(--text)' }}>{name}</div>
+                  <div style={{ fontSize: '12px', color: handle ? 'var(--primary)' : 'var(--text3)', fontFamily: 'var(--mono)' }}>
+                    {handle ? `@${handle}` : 'Not connected'}
+                  </div>
+                </div>
+                <span style={{
+                  fontSize: '10px',
+                  padding: '4px 8px',
+                  borderRadius: '12px',
+                  background: handle ? 'rgba(0, 229, 160, 0.2)' : 'rgba(255, 77, 109, 0.1)',
+                  color: handle ? 'var(--primary)' : 'var(--accent)',
+                  fontWeight: '600'
+                }}>
+                  {handle ? '✓' : '✕'}
+                </span>
               </div>
-              <span className="connected-pill">{handle ? 'Connected ✅' : 'Not Set'}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      <div className="card" style={{ marginTop: '1.5rem' }}>
+      {/* Sync Stats */}
+      <div className="card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.05), rgba(123, 97, 255, 0.05))' }}>
+        <div className="card-title">⚡ Sync Your Stats</div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
+          Automatically fetch latest data from your connected platforms and update your Dev Score
+        </p>
+        <button className="auth-btn" onClick={handleSync} disabled={syncing} style={{ width: '100%', maxWidth: '400px' }}>
+          {syncing ? '🔄 Syncing... (This may take a moment)' : '🔄 SYNC MY STATS'}
+        </button>
+        {syncMsg && (
+          <p style={{ 
+            color: syncMsg.includes('✅') ? 'var(--primary)' : 'var(--accent)', 
+            fontSize: '14px', 
+            marginTop: '12px',
+            padding: '12px',
+            background: 'var(--bg2)',
+            borderRadius: '8px',
+            border: `1px solid ${syncMsg.includes('✅') ? 'var(--primary)' : 'var(--accent)'}`
+          }}>
+            {syncMsg}
+          </p>
+        )}
+      </div>
+
+      {/* Achievements */}
+      <div className="card" style={{ marginBottom: '2rem' }}>
         <div className="card-title">🏅 Achievements</div>
         {(() => {
           const s = profile || {};
@@ -251,20 +304,42 @@ const ProfilePage = ({ user, setUser }) => {
             { icon: '🏅', title: 'Top 10', desc: 'Global rank under 10', done: (s.rank || 9999) >= 1 && (s.rank || 9999) <= 10 },
           ];
           const unlocked = list.filter((x) => x.done).length;
+          const progress = ((unlocked / list.length) * 100).toFixed(0);
+          
           return (
             <>
-              <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 14px' }}>{unlocked} / {list.length} unlocked</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '14px', color: 'var(--text2)' }}>Progress: {unlocked} / {list.length} unlocked</span>
+                  <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--primary)' }}>{progress}%</span>
+                </div>
+                <div style={{ height: '8px', background: 'var(--bg3)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ 
+                    height: '100%', 
+                    width: `${progress}%`, 
+                    background: 'linear-gradient(90deg, var(--primary), var(--accent2))',
+                    transition: 'width 1s ease'
+                  }}></div>
+                </div>
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
                 {list.map((a) => (
                   <div key={a.title} style={{
-                    padding: '14px', borderRadius: '10px', textAlign: 'center',
-                    background: a.done ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
-                    border: a.done ? '1px solid var(--primary)' : '1px solid var(--border)',
-                    opacity: a.done ? 1 : 0.55,
+                    padding: '16px',
+                    borderRadius: '12px',
+                    textAlign: 'center',
+                    background: a.done ? 'linear-gradient(135deg, rgba(0, 229, 160, 0.1), rgba(123, 97, 255, 0.05))' : 'var(--bg2)',
+                    border: a.done ? '2px solid var(--primary)' : '1px solid var(--border)',
+                    opacity: a.done ? 1 : 0.5,
+                    transition: 'all 0.3s',
+                    cursor: 'pointer'
                   }}>
-                    <div style={{ fontSize: '28px' }}>{a.done ? a.icon : '🔒'}</div>
-                    <div style={{ fontWeight: 'bold', fontSize: '13px', marginTop: '6px' }}>{a.title}</div>
-                    <div style={{ fontSize: '11px', color: 'var(--text2)', marginTop: '2px' }}>{a.desc}</div>
+                    <div style={{ fontSize: '32px', marginBottom: '8px' }}>{a.done ? a.icon : '🔒'}</div>
+                    <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '4px', color: a.done ? 'var(--primary)' : 'var(--text)' }}>
+                      {a.title}
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'var(--text2)' }}>{a.desc}</div>
                   </div>
                 ))}
               </div>
@@ -273,142 +348,38 @@ const ProfilePage = ({ user, setUser }) => {
         })()}
       </div>
 
-      <div className="card" style={{ marginTop: '1.5rem', border: '1px solid var(--primary)' }}>
-        <div className="card-title">🔗 Your Public Profile</div>
-        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          A shareable link showcasing your verified developer profile — perfect for recruiters, LinkedIn,
-          and resumes. Accessible to anyone without login.
+      {/* Public Profile Link */}
+      <div className="card" style={{ marginBottom: '2rem', border: '1px solid var(--primary)' }}>
+        <div className="card-title">🔗 Public Profile Link</div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
+          Share your verified developer profile with recruiters, on LinkedIn, or in your resume
         </p>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '13px', color: 'var(--text)', flex: 1, minWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <code style={{ 
+            background: 'var(--bg2)', 
+            padding: '12px 16px', 
+            borderRadius: '8px', 
+            fontSize: '13px', 
+            color: 'var(--primary)', 
+            flex: 1, 
+            minWidth: '200px',
+            fontFamily: 'var(--mono)',
+            border: '1px solid var(--border)'
+          }}>
             {profile?.id ? `${window.location.origin}/u/${profile.id}` : 'Loading...'}
           </code>
-          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleShare} disabled={!profile?.id}>
+          <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={handleShare} disabled={!profile?.id}>
             {copied ? '✅ Copied!' : '📋 Copy Link'}
           </button>
           {profile?.id && (
-            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none' }}>
+            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none', padding: '12px 24px' }}>
               👁️ Preview
             </a>
           )}
         </div>
       </div>
 
-      <div className="card" style={{ marginTop: '1.5rem' }}>
-        <div className="card-title">🏷️ README Badge</div>
-        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Add this badge to your GitHub README, portfolio or blog — it displays your live Dev Score.
-          Copy and paste it into your README.
-        </p>
-        {profile?.id && (
-          <div style={{ marginBottom: '12px' }}>
-            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '20px' }} />
-          </div>
-        )}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'stretch' }}>
-          <code style={{ background: 'var(--bg2)', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', color: 'var(--text)', flex: 1, minWidth: '220px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
-            {badgeMarkdown || 'Loading...'}
-          </code>
-          <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={handleCopyBadge} disabled={!badgeMarkdown}>
-            {badgeCopied ? '✅ Copied!' : '📋 Copy Markdown'}
-          </button>
-        </div>
-      </div>
-
-      <div className="card" style={{ marginTop: '1.5rem' }}>
-        <div className="card-title">⚡ Auto-Sync from Platforms</div>
-        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Apne connected platforms (GitHub, LeetCode, Codeforces, HackerRank) ke real data se
-          Dev Score, problems aur rank apne aap calculate karo.
-        </p>
-        <button className="auth-btn" onClick={handleSync} disabled={syncing}>
-          {syncing ? 'Syncing... (thoda time lag sakta hai)' : '🔄 SYNC MY STATS'}
-        </button>
-        {syncMsg && <p style={{ color: 'var(--primary)', fontSize: '13px', marginTop: '10px' }}>{syncMsg}</p>}
-      </div>
-
-      <div className="card" style={{ marginTop: '1.5rem' }}>
-        <div className="card-title">Update Your Stats (Manual)</div>
-        <ScoreUpdater token={token} onUpdate={fetchProfile} />
-      </div>
-
-      <div className="card" style={{ marginTop: '1.5rem', marginBottom: '2rem', border: '1px solid #ff4d4f44' }}>
-        <div className="card-title" style={{ color: '#ff4d4f' }}>⚠️ Danger Zone</div>
-        <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 15px' }}>
-          Account delete karne se tumhara saara data hamesha ke liye chala jayega.
-        </p>
-        <button
-          onClick={handleDeleteAccount}
-          style={{
-            background: 'transparent', border: '1px solid #ff4d4f', color: '#ff4d4f',
-            padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '13px'
-          }}
-        >
-          🗑️ Delete My Account
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const ScoreUpdater = ({ token, onUpdate }) => {
-  const [stats, setStats] = useState({ score: '', problems: '', streak: '' });
-  const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState('');
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-
-  const handleUpdate = async () => {
-    setSaving(true);
-    try {
-      const body = {};
-      if (stats.score) body.score = parseInt(stats.score);
-      if (stats.problems) body.problems = parseInt(stats.problems);
-      if (stats.streak) body.streak = parseInt(stats.streak);
-
-      const res = await fetch(`${API_URL}/api/user/update-stats`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
-      if (res.ok) {
-        setMsg('✅ Stats updated!');
-        setStats({ score: '', problems: '', streak: '' });
-        onUpdate();
-        setTimeout(() => setMsg(''), 2000);
-      }
-    } catch (err) {
-      setMsg('❌ Error updating stats');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      {[
-        { label: 'New Score', key: 'score', placeholder: 'e.g. 1500' },
-        { label: 'Problems Solved', key: 'problems', placeholder: 'e.g. 150' },
-        { label: 'Current Streak (days)', key: 'streak', placeholder: 'e.g. 10' }
-      ].map(({ label, key, placeholder }) => (
-        <div key={key} className="input-group">
-          <label>{label.toUpperCase()}</label>
-          <input
-            type="number"
-            value={stats[key]}
-            onChange={(e) => setStats(prev => ({ ...prev, [key]: e.target.value }))}
-            placeholder={placeholder}
-          />
-        </div>
-      ))}
-      {msg && <p style={{ color: 'var(--primary)', fontSize: '13px' }}>{msg}</p>}
-      <button className="auth-btn" onClick={handleUpdate} disabled={saving}>
-        {saving ? 'Updating...' : 'UPDATE STATS ➔'}
-      </button>
-    </div>
-  );
-};
-
-export default ProfilePage;
+      {/* README Badge */}
+      <div className="card" style={{ marginBottom: '2rem' }}>
+        <div className="card-title">🏷️ GitHub README Badge</div>
+        <p styl
