@@ -156,11 +156,11 @@ const Activity = () => {
       
       {/* Hero Header */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)',
+        background: 'var(--bg2)',
         borderRadius: '16px',
         padding: '2rem',
         marginBottom: '2rem',
-        border: '1px solid rgba(0, 229, 160, 0.2)',
+        border: '1px solid var(--border2)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -174,12 +174,12 @@ const Activity = () => {
             width: '80px',
             height: '80px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+            background: 'var(--primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '40px',
-            boxShadow: '0 8px 24px rgba(0, 229, 160, 0.3)'
+            boxShadow: '0 8px 24px rgba(0, 229, 160, 0.2)'
           }}>
             ⚡
           </div>
@@ -192,9 +192,7 @@ const Activity = () => {
               letterSpacing: '-0.5px'
             }}>
               Developer <span style={{ 
-                background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                color: 'var(--primary)'
               }}>Activity</span>
             </h1>
             <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
@@ -217,11 +215,11 @@ const Activity = () => {
       {/* GitHub Overview */}
       {isGithubConnected && (
         <div style={{
-          background: 'linear-gradient(135deg, rgba(36, 41, 46, 0.4) 0%, rgba(36, 41, 46, 0.2) 100%)',
+          background: 'var(--bg2)',
           borderRadius: '16px',
           padding: '1.5rem',
           marginBottom: '2rem',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
+          border: '1px solid var(--border)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
             <div style={{
@@ -254,69 +252,69 @@ const Activity = () => {
             gap: '12px' 
           }}>
             <div style={{
-              background: 'rgba(0, 229, 160, 0.1)',
+              background: 'var(--bg3)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid rgba(0, 229, 160, 0.2)'
+              border: '1px solid var(--border)'
             }}>
-              <div style={{ fontSize: '12px', color: '#00e5a0', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--primary)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 📚 Public Repositories
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.public_repos || 12}
               </div>
-              <div style={{ fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
                 ▲ +1
               </div>
             </div>
 
             <div style={{
-              background: 'rgba(123, 97, 255, 0.1)',
+              background: 'var(--bg3)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid rgba(123, 97, 255, 0.2)'
+              border: '1px solid var(--border)'
             }}>
-              <div style={{ fontSize: '12px', color: '#7b61ff', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--accent2)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 👥 Followers
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.followers || 248}
               </div>
-              <div style={{ fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
                 ▲ +12
               </div>
             </div>
 
             <div style={{
-              background: 'rgba(255, 215, 0, 0.1)',
+              background: 'var(--bg3)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid rgba(255, 215, 0, 0.2)'
+              border: '1px solid var(--border)'
             }}>
-              <div style={{ fontSize: '12px', color: '#ffd700', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--gold)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 💫 Contributions (YTD)
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 482
               </div>
-              <div style={{ fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
                 ▲ +36
               </div>
             </div>
 
             <div style={{
-              background: 'rgba(255, 161, 22, 0.1)',
+              background: 'var(--bg3)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid rgba(255, 161, 22, 0.2)'
+              border: '1px solid var(--border)'
             }}>
-              <div style={{ fontSize: '12px', color: '#ffa116', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--gold)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 ⭐ Total Stars
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 1.2k
               </div>
-              <div style={{ fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
                 ▲ +120
               </div>
             </div>
@@ -333,10 +331,10 @@ const Activity = () => {
       }}>
         {/* GitHub Card */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(36, 41, 46, 0.3) 0%, rgba(36, 41, 46, 0.1) 100%)',
+          background: 'var(--bg2)',
           borderRadius: '14px',
           padding: '1.25rem',
-          border: isGithubConnected ? '2px solid #00e5a0' : '1px solid rgba(255, 255, 255, 0.1)',
+          border: isGithubConnected ? '2px solid var(--primary)' : '1px solid var(--border)',
           position: 'relative'
         }}>
           {isGithubConnected && (
@@ -345,7 +343,7 @@ const Activity = () => {
               top: '12px',
               right: '12px',
               padding: '4px 10px',
-              background: '#00e5a0',
+              background: 'var(--primary)',
               borderRadius: '6px',
               fontSize: '11px',
               fontWeight: '700',
@@ -401,9 +399,9 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: isGithubConnected ? 'linear-gradient(135deg, #00e5a0 0%, #00b87a 100%)' : 'rgba(0, 229, 160, 0.1)',
-              color: isGithubConnected ? '#000' : '#00e5a0',
-              border: isGithubConnected ? 'none' : '1px solid rgba(0, 229, 160, 0.3)',
+              background: isGithubConnected ? 'var(--primary)' : 'var(--bg3)',
+              color: isGithubConnected ? '#000' : 'var(--primary)',
+              border: isGithubConnected ? 'none' : '1px solid var(--border2)',
               borderRadius: '8px',
               fontSize: '13px',
               fontWeight: '700',
@@ -416,10 +414,10 @@ const Activity = () => {
 
         {/* LeetCode Card */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(255, 161, 22, 0.2) 0%, rgba(255, 161, 22, 0.05) 100%)',
+          background: 'var(--bg2)',
           borderRadius: '14px',
           padding: '1.25rem',
-          border: isLeetcodeConnected ? '2px solid #ffa116' : '1px solid rgba(255, 161, 22, 0.2)',
+          border: isLeetcodeConnected ? '2px solid var(--primary)' : '1px solid var(--border)',
           position: 'relative'
         }}>
           {!isLeetcodeConnected && (
@@ -443,7 +441,7 @@ const Activity = () => {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #ffa116 0%, #f89500 100%)',
+              background: 'var(--gold)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -466,7 +464,7 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
+              background: 'var(--accent2)',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
@@ -481,10 +479,10 @@ const Activity = () => {
 
         {/* Codeforces Card */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.2) 0%, rgba(33, 150, 243, 0.05) 100%)',
+          background: 'var(--bg2)',
           borderRadius: '14px',
           padding: '1.25rem',
-          border: isCodeforcesConnected ? '2px solid #2196f3' : '1px solid rgba(33, 150, 243, 0.2)',
+          border: isCodeforcesConnected ? '2px solid var(--primary)' : '1px solid var(--border)',
           position: 'relative'
         }}>
           {!isCodeforcesConnected && (
@@ -508,7 +506,7 @@ const Activity = () => {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
+              background: 'var(--accent2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -531,7 +529,7 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
+              background: 'var(--accent2)',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
@@ -546,10 +544,10 @@ const Activity = () => {
 
         {/* HackerRank Card */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(0, 200, 117, 0.2) 0%, rgba(0, 200, 117, 0.05) 100%)',
+          background: 'var(--bg2)',
           borderRadius: '14px',
           padding: '1.25rem',
-          border: isHackerrankConnected ? '2px solid #00c875' : '1px solid rgba(0, 200, 117, 0.2)',
+          border: isHackerrankConnected ? '2px solid var(--primary)' : '1px solid var(--border)',
           position: 'relative'
         }}>
           {!isHackerrankConnected && (
@@ -573,7 +571,7 @@ const Activity = () => {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #00c875 0%, #00a55f 100%)',
+              background: 'var(--primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -594,8 +592,8 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'linear-gradient(135deg, #00c875 0%, #00a55f 100%)',
-              color: '#fff',
+              background: 'var(--primary)',
+              color: '#000',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
@@ -634,7 +632,7 @@ const Activity = () => {
               </svg>
               Recent GitHub Activity
             </h3>
-            <a href="#" style={{ fontSize: '13px', color: '#00e5a0', fontWeight: '600', textDecoration: 'none' }}>
+            <a href="#" style={{ fontSize: '13px', color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>
               View All Activity →
             </a>
           </div>
@@ -677,11 +675,11 @@ const Activity = () => {
                 {activity.sha && (
                   <div style={{
                     padding: '4px 10px',
-                    background: 'rgba(0, 229, 160, 0.1)',
+                    background: 'var(--bg3)',
                     borderRadius: '6px',
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: '#00e5a0',
+                    color: 'var(--primary)',
                     fontFamily: 'monospace'
                   }}>
                     {activity.sha}
@@ -690,11 +688,11 @@ const Activity = () => {
                 {activity.number && (
                   <div style={{
                     padding: '4px 10px',
-                    background: 'rgba(123, 97, 255, 0.1)',
+                    background: 'var(--bg3)',
                     borderRadius: '6px',
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: '#7b61ff',
+                    color: 'var(--accent2)',
                     fontFamily: 'monospace'
                   }}>
                     {activity.number}
@@ -721,7 +719,7 @@ const Activity = () => {
             <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '10px' }}>
               🏆 Upcoming Coding Contests
             </h3>
-            <a href="#" style={{ fontSize: '13px', color: '#00e5a0', fontWeight: '600', textDecoration: 'none' }}>
+            <a href="#" style={{ fontSize: '13px', color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>
               View All →
             </a>
           </div>
@@ -739,9 +737,9 @@ const Activity = () => {
                   key={i}
                   style={{
                     padding: '14px',
-                    background: `linear-gradient(135deg, ${contest.color}15 0%, ${contest.color}05 100%)`,
+                    background: 'var(--bg3)',
                     borderRadius: '10px',
-                    border: `1px solid ${contest.color}30`
+                    border: '1px solid var(--border)'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -769,7 +767,7 @@ const Activity = () => {
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '12px', color: 'var(--text2)' }}>
                         <span>📅 {contest.date}</span>
-                        <span style={{ color: '#00e5a0', fontWeight: '600' }}>⏰ In {contest.daysLeft} days</span>
+                        <span style={{ color: 'var(--primary)', fontWeight: '600' }}>⏰ In {contest.daysLeft} days</span>
                       </div>
                     </div>
                     <button
