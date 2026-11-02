@@ -17,16 +17,40 @@ const StatBadge = ({ label, value, color }) => (
   </div>
 );
 
-const NotSetCard = ({ icon, name, field }) => (
+const NotSetCard = ({ name, field }) => (
   <div className="card" style={{
-    marginBottom: '20px', textAlign: 'center', padding: '25px',
-    border: '1px dashed var(--border)'
+    marginBottom: '20px', textAlign: 'center', padding: '30px',
+    border: '1px dashed rgba(139, 92, 246, 0.3)',
+    background: 'rgba(139, 92, 246, 0.05)',
+    borderRadius: '16px'
   }}>
-    <div style={{ fontSize: '32px', marginBottom: '8px' }}>{icon}</div>
-    <div style={{ color: 'var(--text2)', fontSize: '14px' }}>{name} Not Connected</div>
-    <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>
-      Add your {field} in Profile → Edit Profile
+    <div style={{ 
+      width: '60px', 
+      height: '60px', 
+      margin: '0 auto 16px',
+      background: 'rgba(139, 92, 246, 0.15)',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '24px',
+      color: '#8b5cf6',
+      fontWeight: '700'
+    }}>?</div>
+    <div style={{ color: 'var(--text)', fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>{name} Not Connected</div>
+    <div style={{ color: 'var(--text2)', fontSize: '13px', marginBottom: '16px' }}>
+      Add your {field} in Profile to see stats
     </div>
+    <button style={{
+      padding: '10px 24px',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '8px',
+      fontSize: '13px',
+      fontWeight: '600',
+      cursor: 'pointer'
+    }}>Connect Now</button>
   </div>
 );
 
@@ -144,8 +168,12 @@ const Activity = () => {
     <div className="page active rel">
 
       {githubData ? (
-        <div className="card" style={{ marginBottom: '20px' }}>
-          <div className="card-title">🐙 GITHUB</div>
+        <div className="card" style={{ 
+          marginBottom: '20px',
+          background: 'linear-gradient(135deg, rgba(36, 41, 46, 0.4) 0%, rgba(36, 41, 46, 0.2) 100%)',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <div className="card-title">GITHUB</div>
           <div className="stats-grid">
             <div className="stat-card green">
               <div className="stat-label">PUBLIC REPOS</div>
@@ -157,11 +185,14 @@ const Activity = () => {
             </div>
           </div>
         </div>
-      ) : <NotSetCard icon="🐙" name="GitHub" field="githubUsername" />}
+      ) : <NotSetCard name="GitHub" field="githubUsername" />}
 
       {leetcodeData ? (
-        <div className="card">
-          <div className="card-title">⚡ LEETCODE</div>
+        <div className="card" style={{
+          background: 'linear-gradient(135deg, rgba(255, 161, 22, 0.15) 0%, rgba(255, 161, 22, 0.05) 100%)',
+          border: '1px solid rgba(255, 161, 22, 0.2)'
+        }}>
+          <div className="card-title">LEETCODE</div>
           <div className="stats-grid">
             <div className="stat-card green">
               <div className="stat-label">TOTAL SOLVED</div>
@@ -181,11 +212,15 @@ const Activity = () => {
             </div>
           </div>
         </div>
-      ) : <NotSetCard icon="⚡" name="LeetCode" field="leetcodeUsername" />}
+      ) : <NotSetCard name="LeetCode" field="leetcodeUsername" />}
 
       {codeforcesData ? (
-        <div className="card" style={{ marginTop: '20px' }}>
-          <div className="card-title">🏆 CODEFORCES</div>
+        <div className="card" style={{ 
+          marginTop: '20px',
+          background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(33, 150, 243, 0.05) 100%)',
+          border: '1px solid rgba(33, 150, 243, 0.2)'
+        }}>
+          <div className="card-title">CODEFORCES</div>
           <div style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '4px', textTransform: 'capitalize' }}>
             {codeforcesData.rank || 'unrated'} · @{codeforcesData.handle}
           </div>
@@ -204,11 +239,15 @@ const Activity = () => {
             </div>
           </div>
         </div>
-      ) : <NotSetCard icon="🏆" name="Codeforces" field="codeforcesUsername" />}
+      ) : <NotSetCard name="Codeforces" field="codeforcesUsername" />}
 
       {hackerrankData ? (
-        <div className="card" style={{ marginTop: '20px' }}>
-          <div className="card-title">🎯 HACKERRANK</div>
+        <div className="card" style={{ 
+          marginTop: '20px',
+          background: 'linear-gradient(135deg, rgba(0, 200, 117, 0.15) 0%, rgba(0, 200, 117, 0.05) 100%)',
+          border: '1px solid rgba(0, 200, 117, 0.2)'
+        }}>
+          <div className="card-title">HACKERRANK</div>
           <div className="stats-grid" style={{ marginTop: '12px' }}>
             <div className="stat-card gold">
               <div className="stat-label">TOTAL STARS</div>
@@ -231,11 +270,12 @@ const Activity = () => {
             </div>
           )}
         </div>
-      ) : <NotSetCard icon="🎯" name="HackerRank" field="hackerrankUsername" />}
+      ) : <NotSetCard name="HackerRank" field="hackerrankUsername" />}
 
       {skillRadar.length > 0 && (
         <div className="card" style={{ marginTop: '20px' }}>
-          <div className="card-title">🧭 SKILL RADAR (Codeforces topics)</div>
+          <div className="card-title">SKILL RADAR</div>
+          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '4px', marginBottom: '16px' }}>Codeforces problem-solving topics</p>
           <ResponsiveContainer width="100%" height={280}>
             <RadarChart data={skillRadar}>
               <PolarGrid stroke="rgba(255,255,255,0.1)" />
@@ -255,7 +295,7 @@ const Activity = () => {
           .slice(0, 5);
         return (
           <div className="card" style={{ marginTop: '20px' }}>
-            <div className="card-title">🎯 RECOMMENDED PRACTICE (your weak areas)</div>
+            <div className="card-title">RECOMMENDED PRACTICE</div>
             <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
               These topics need more practice. Strengthen your Skill Radar by solving problems in these areas.
             </p>
@@ -273,7 +313,8 @@ const Activity = () => {
       })()}
 
       <div className="card" style={{ marginTop: '20px' }}>
-        <div className="card-title">📅 UPCOMING CONTESTS (Codeforces)</div>
+        <div className="card-title">UPCOMING CONTESTS</div>
+        <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '4px', marginBottom: '12px' }}>Codeforces scheduled contests</p>
         {contests.length === 0 ? (
           <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>No upcoming contests found (or loading).</p>
         ) : (
