@@ -7,29 +7,29 @@
 }
 
 :root {
-  /* Professional Developer Theme Colors */
-  --primary: #00D9A3;        /* Bright green - GitHub success */
-  --primary-dim: #00b386;
-  --accent: #2196F3;         /* Electric blue - VS Code blue */
-  --accent2: #BB86FC;        /* Soft purple - Material Design */
-  --gold: #FFB020;           /* Warm gold */
-  --silver: #B0B8C8;
+  /* Premium Gold & Black Theme */
+  --primary: #FFB020;        /* Warm Gold - Primary accent */
+  --primary-dim: #E6A01E;
+  --accent: #00D9A3;         /* Mint Green - Success */
+  --accent2: #6366F1;        /* Indigo - Secondary */
+  --gold: #FFD700;           /* Bright Gold */
+  --silver: #C0C0C0;
   --bronze: #CD7C3F;
   
-  /* Dark Backgrounds - Professional coding theme */
-  --bg: #0D1117;             /* Very dark - like GitHub dark */
-  --bg2: #161B22;            /* Cards/panels */
-  --bg3: #1F2937;            /* Hover states */
-  --bg4: #252B35;            /* Modal overlays */
+  /* Deep Black Backgrounds */
+  --bg: #000000;             /* Pure black */
+  --bg2: #0A0A0A;            /* Almost black - cards */
+  --bg3: #1A1A1A;            /* Dark gray - hover */
+  --bg4: #2A2A2A;            /* Lighter gray */
   
-  /* Borders & Dividers */
-  --border: #30363D;         /* Subtle borders */
-  --border2: rgba(0, 217, 163, 0.3);  /* Primary border */
+  /* Gold-tinted borders */
+  --border: rgba(255, 176, 32, 0.15);    /* Subtle gold tint */
+  --border2: rgba(255, 176, 32, 0.3);    /* Gold border */
   
   /* Text Colors */
-  --text: #E6EDF3;           /* Primary text - bright */
-  --text2: #8B949E;          /* Secondary text - muted */
-  --text3: #6E7681;          /* Tertiary text - dim */
+  --text: #FFFFFF;           /* Pure white */
+  --text2: #A0A0A0;          /* Light gray */
+  --text3: #707070;          /* Medium gray */
   
   /* Fonts */
   --mono: 'Space Mono', monospace;
@@ -55,14 +55,14 @@ body {
   overflow: hidden;
 }
 
-/* Grid bg - Subtle coding theme */
+/* Grid bg - Gold accent */
 #app::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(rgba(33, 150, 243, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(33, 150, 243, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(255, 176, 32, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 176, 32, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
   z-index: 0;
