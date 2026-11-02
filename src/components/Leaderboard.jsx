@@ -77,15 +77,15 @@ const Leaderboard = ({ user }) => {
       {/* Hero Header */}
       <div style={{
         background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.15) 0%, rgba(123, 97, 255, 0.15) 100%)',
-        borderRadius: '24px',
-        padding: '3rem 2.5rem',
-        marginBottom: '2rem',
+        borderRadius: '16px',
+        padding: '1.5rem 2rem',
+        marginBottom: '1.5rem',
         border: '1px solid rgba(0, 229, 160, 0.3)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '2rem',
+        gap: '1.5rem',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -100,18 +100,18 @@ const Leaderboard = ({ user }) => {
           borderRadius: '50%'
         }}></div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', position: 'relative', zIndex: 1 }}>
           <div style={{
-            fontSize: '80px',
-            filter: 'drop-shadow(0 8px 16px rgba(255, 215, 0, 0.4))'
+            fontSize: '48px',
+            filter: 'drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4))'
           }}>🏆</div>
           <div>
             <h1 style={{
-              fontSize: '42px',
+              fontSize: '28px',
               fontWeight: '800',
-              marginBottom: '8px',
+              marginBottom: '4px',
               color: 'var(--text)',
-              letterSpacing: '-1px'
+              letterSpacing: '-0.5px'
             }}>
               Global <span style={{ 
                 background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
@@ -119,7 +119,7 @@ const Leaderboard = ({ user }) => {
                 WebkitTextFillColor: 'transparent'
               }}>Leaderboard</span>
             </h1>
-            <p style={{ fontSize: '16px', color: 'var(--text2)', marginBottom: '0' }}>
+            <p style={{ fontSize: '14px', color: 'var(--text2)', marginBottom: '0' }}>
               See how you rank among the top developers worldwide
             </p>
           </div>
@@ -127,33 +127,33 @@ const Leaderboard = ({ user }) => {
 
         <div style={{ 
           display: 'flex', 
-          gap: '2rem',
+          gap: '1rem',
           position: 'relative',
           zIndex: 1 
         }}>
           <div style={{
             textAlign: 'center',
-            padding: '20px 32px',
+            padding: '12px 20px',
             background: 'rgba(0, 229, 160, 0.1)',
-            borderRadius: '16px',
+            borderRadius: '12px',
             border: '1px solid rgba(0, 229, 160, 0.3)'
           }}>
-            <div style={{ fontSize: '14px', color: '#00e5a0', marginBottom: '8px', fontWeight: '600' }}>📊 Total Developers</div>
-            <div style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text)' }}>{totalDevs}+</div>
+            <div style={{ fontSize: '12px', color: '#00e5a0', marginBottom: '4px', fontWeight: '600' }}>📊 Total Developers</div>
+            <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text)' }}>{totalDevs}+</div>
           </div>
           <div style={{
             textAlign: 'center',
-            padding: '20px 32px',
+            padding: '12px 20px',
             background: 'rgba(123, 97, 255, 0.1)',
-            borderRadius: '16px',
+            borderRadius: '12px',
             border: '1px solid rgba(123, 97, 255, 0.3)'
           }}>
-            <div style={{ fontSize: '14px', color: '#7b61ff', marginBottom: '8px', fontWeight: '600' }}>👑 Your Rank</div>
-            <div style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text)' }}>#{userRank || '—'}</div>
+            <div style={{ fontSize: '12px', color: '#7b61ff', marginBottom: '4px', fontWeight: '600' }}>👑 Your Rank</div>
+            <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text)' }}>#{userRank || '—'}</div>
           </div>
           <div style={{
-            fontSize: '100px',
-            filter: 'drop-shadow(0 8px 20px rgba(255, 215, 0, 0.6))',
+            fontSize: '56px',
+            filter: 'drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6))',
             animation: 'float 3s ease-in-out infinite'
           }}>🏆</div>
         </div>
@@ -271,29 +271,29 @@ const Leaderboard = ({ user }) => {
       {/* Leaderboard Table */}
       <div style={{
         background: 'var(--bg2)',
-        borderRadius: '20px',
-        padding: '24px',
+        borderRadius: '16px',
+        padding: '16px',
         border: '1px solid var(--border)'
       }}>
         {/* Table Header */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '80px 1fr 150px 150px 150px 120px 60px',
-          gap: '16px',
-          padding: '16px 20px',
+          gridTemplateColumns: '60px 1fr 130px 130px 130px 100px 50px',
+          gap: '12px',
+          padding: '12px 16px',
           borderBottom: '2px solid var(--border)',
-          marginBottom: '12px',
-          fontSize: '12px',
+          marginBottom: '8px',
+          fontSize: '11px',
           fontWeight: '700',
           color: 'var(--text3)',
           textTransform: 'uppercase'
         }}>
           <div>#</div>
           <div>User</div>
-          <div>GitHub Score</div>
-          <div>LeetCode Score</div>
-          <div>Total Score</div>
-          <div>Rank Change</div>
+          <div>GitHub</div>
+          <div>LeetCode</div>
+          <div>Total</div>
+          <div>Change</div>
           <div></div>
         </div>
 
@@ -324,11 +324,11 @@ const Leaderboard = ({ user }) => {
                 key={i}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '80px 1fr 150px 150px 150px 120px 60px',
-                  gap: '16px',
-                  padding: '18px 20px',
-                  marginBottom: '8px',
-                  borderRadius: '12px',
+                  gridTemplateColumns: '60px 1fr 130px 130px 130px 100px 50px',
+                  gap: '12px',
+                  padding: '12px 16px',
+                  marginBottom: '6px',
+                  borderRadius: '10px',
                   background: isUser 
                     ? 'linear-gradient(90deg, rgba(0, 229, 160, 0.15) 0%, rgba(0, 229, 160, 0.05) 100%)'
                     : isTopThree 
@@ -358,7 +358,7 @@ const Leaderboard = ({ user }) => {
               >
                 {/* Rank */}
                 <div style={{
-                  fontSize: isTopThree ? '32px' : '18px',
+                  fontSize: isTopThree ? '26px' : '16px',
                   fontWeight: '800',
                   color: isUser ? '#00e5a0' : 'var(--text)'
                 }}>
@@ -366,16 +366,16 @@ const Leaderboard = ({ user }) => {
                 </div>
 
                 {/* User */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{
-                    width: '40px',
-                    height: '40px',
+                    width: '36px',
+                    height: '36px',
                     borderRadius: '50%',
                     background: `linear-gradient(135deg, ${isTopThree ? '#ffd700' : '#00e5a0'} 0%, ${isTopThree ? '#ffa500' : '#7b61ff'} 100%)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '16px',
+                    fontSize: '14px',
                     fontWeight: '700',
                     color: '#fff',
                     border: isTopThree ? '2px solid #ffd700' : 'none'
@@ -384,32 +384,32 @@ const Leaderboard = ({ user }) => {
                   </div>
                   <div>
                     <div style={{ 
-                      fontSize: '15px', 
+                      fontSize: '14px', 
                       fontWeight: '700', 
                       color: 'var(--text)',
                       marginBottom: '2px'
                     }}>
                       {item.name} {isUser && <span style={{ color: '#00e5a0' }}>(You)</span>}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text3)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span>⚙️</span> {item.platform || 'GitHub'}
+                    <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                      {item.platform || 'LeetCode'}
                     </div>
                   </div>
                 </div>
 
                 {/* GitHub Score */}
-                <div style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text)' }}>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
                   {item.githubScore || Math.floor(item.score * 0.4)}
                 </div>
 
                 {/* LeetCode Score */}
-                <div style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text)' }}>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
                   {item.leetcodeScore || Math.floor(item.score * 0.6)}
                 </div>
 
                 {/* Total Score */}
                 <div style={{ 
-                  fontSize: '18px', 
+                  fontSize: '16px', 
                   fontWeight: '800', 
                   color: isUser ? '#00e5a0' : isTopThree ? '#ffd700' : 'var(--text)'
                 }}>
@@ -421,7 +421,7 @@ const Leaderboard = ({ user }) => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
-                  fontSize: '14px',
+                  fontSize: '13px',
                   fontWeight: '700',
                   color: i % 2 === 0 ? '#10b981' : '#ef4444'
                 }}>
@@ -429,7 +429,7 @@ const Leaderboard = ({ user }) => {
                 </div>
 
                 {/* Arrow */}
-                <div style={{ fontSize: '18px', color: 'var(--text3)' }}>
+                <div style={{ fontSize: '16px', color: 'var(--text3)' }}>
                   →
                 </div>
               </div>
@@ -441,10 +441,10 @@ const Leaderboard = ({ user }) => {
       {/* Bottom Motivational Banner */}
       {userRank && (
         <div style={{
-          marginTop: '2rem',
+          marginTop: '1.5rem',
           background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)',
-          borderRadius: '16px',
-          padding: '24px 32px',
+          borderRadius: '12px',
+          padding: '16px 24px',
           border: '1px solid rgba(0, 229, 160, 0.3)',
           display: 'flex',
           justifyContent: 'space-between',
@@ -452,29 +452,29 @@ const Leaderboard = ({ user }) => {
           flexWrap: 'wrap',
           gap: '1rem'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ fontSize: '48px' }}>📈</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ fontSize: '40px' }}>📈</div>
             <div>
-              <div style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text)', marginBottom: '4px' }}>
+              <div style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text)', marginBottom: '2px' }}>
                 Keep Coding, {user?.name}! 🚀
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--text2)' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
                 You're in the top {((userRank / totalDevs) * 100).toFixed(1)}% of developers globally
               </div>
             </div>
           </div>
           <button style={{
-            padding: '14px 32px',
+            padding: '10px 24px',
             background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
             color: '#fff',
             border: 'none',
-            borderRadius: '10px',
-            fontSize: '15px',
+            borderRadius: '8px',
+            fontSize: '14px',
             fontWeight: '700',
             cursor: 'pointer',
             boxShadow: '0 4px 12px rgba(0, 229, 160, 0.4)'
           }}>
-            View Your Profile →
+            View Profile →
           </button>
         </div>
       )}
