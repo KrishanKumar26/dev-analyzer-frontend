@@ -132,62 +132,118 @@ const ProfilePage = ({ user, setUser }) => {
   };
 
   return (
-    <div className="page active rel" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="page active rel" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
       
-      {/* Profile Header */}
-      <div style={{ background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1), rgba(123, 97, 255, 0.1))', padding: '2rem', borderRadius: '16px', marginBottom: '2rem', border: '1px solid var(--border2)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div className="avatar" style={{ width: '100px', height: '100px', fontSize: '36px', border: '3px solid var(--primary)', boxShadow: '0 8px 20px rgba(0, 229, 160, 0.3)' }}>
-              {(profile?.name || user?.name || 'US').substring(0, 2).toUpperCase()}
+      {/* Profile Header - Modern Design */}
+      <div style={{ 
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08))', 
+        padding: '2.5rem', 
+        borderRadius: '20px', 
+        marginBottom: '2rem', 
+        border: '1px solid rgba(139, 92, 246, 0.2)',
+        boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+            <div className="avatar" style={{ 
+              width: '110px', 
+              height: '110px', 
+              fontSize: '40px', 
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: '4px solid rgba(255, 255, 255, 0.1)', 
+              boxShadow: '0 10px 30px rgba(102, 126, 234, 0.4)'
+            }}>
+              {(profile?.name || user?.name || 'DV').substring(0, 2).toUpperCase()}
             </div>
             <div>
-              <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px', color: 'var(--text)' }}>
-                {profile?.name || user?.name}
+              <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '8px', color: 'var(--text)', letterSpacing: '-0.5px' }}>
+                {profile?.name || user?.name || 'Developer'}
               </h1>
-              <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '12px' }}>{profile?.email || user?.email}</p>
-              <div className="live-badge">
-                <div className="live-dot"></div>
-                Global Rank #{profile?.rank || 9999}
+              <p style={{ color: 'var(--text2)', fontSize: '15px', marginBottom: '14px', opacity: 0.8 }}>
+                {profile?.email || user?.email}
+              </p>
+              <div className="live-badge" style={{ 
+                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15))',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                padding: '8px 16px',
+                borderRadius: '12px'
+              }}>
+                <div className="live-dot" style={{ background: '#8b5cf6' }}></div>
+                <span style={{ fontSize: '14px', fontWeight: '600' }}>Global Rank #{profile?.rank || '9,999'}</span>
               </div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={() => setEditing(!editing)}>
+            <button className="auth-btn" style={{ 
+              width: 'auto', 
+              padding: '12px 28px',
+              background: editing ? 'transparent' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              border: editing ? '2px solid rgba(139, 92, 246, 0.5)' : 'none',
+              color: editing ? 'var(--text)' : '#fff'
+            }} onClick={() => setEditing(!editing)}>
               {editing ? '✕ Cancel' : '✏️ Edit Profile'}
             </button>
-            <button className="refresh-btn" onClick={handleLogout}>
-              🚪 Logout
+            <button className="refresh-btn" style={{ padding: '12px 28px' }} onClick={handleLogout}>
+              Logout
             </button>
           </div>
         </div>
       </div>
 
-      {/* Edit Form */}
+      {/* Edit Form - Modern Design */}
       {editing && (
-        <div className="card" style={{ marginBottom: '2rem', animation: 'fadeInPage 0.3s ease' }}>
-          <div className="card-title">✏️ Edit Your Profile</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginTop: '16px' }}>
+        <div className="card" style={{ 
+          marginBottom: '2rem', 
+          animation: 'fadeInPage 0.3s ease',
+          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(168, 85, 247, 0.03))',
+          border: '1px solid rgba(139, 92, 246, 0.2)'
+        }}>
+          <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px' }}>
+            Edit Your Profile
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginTop: '16px' }}>
             {[
-              { label: 'Full Name', key: 'name', icon: '👤', placeholder: 'Enter your name' },
-              { label: 'GitHub Username', key: 'githubUsername', icon: '🐙', placeholder: 'your-github-username' },
-              { label: 'LeetCode Username', key: 'leetcodeUsername', icon: '⚡', placeholder: 'your-leetcode-username' },
-              { label: 'Codeforces Username', key: 'codeforcesUsername', icon: '🏆', placeholder: 'your-codeforces-username' },
-              { label: 'HackerRank Username', key: 'hackerrankUsername', icon: '🎯', placeholder: 'your-hackerrank-username' }
-            ].map(({ label, key, icon, placeholder }) => (
+              { label: 'Full Name', key: 'name', placeholder: 'Enter your full name' },
+              { label: 'GitHub Username', key: 'githubUsername', placeholder: 'github-username' },
+              { label: 'LeetCode Username', key: 'leetcodeUsername', placeholder: 'leetcode-username' },
+              { label: 'Codeforces Handle', key: 'codeforcesUsername', placeholder: 'codeforces-handle' },
+              { label: 'HackerRank Username', key: 'hackerrankUsername', placeholder: 'hackerrank-username' }
+            ].map(({ label, key, placeholder }) => (
               <div key={key} className="input-group">
-                <label>{icon} {label}</label>
+                <label style={{ fontSize: '13px', fontWeight: '600', marginBottom: '8px', color: 'var(--text2)' }}>
+                  {label}
+                </label>
                 <input
                   type="text"
                   value={form[key]}
                   onChange={(e) => setForm(prev => ({ ...prev, [key]: e.target.value }))}
                   placeholder={placeholder}
+                  style={{
+                    background: 'var(--bg2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '10px',
+                    padding: '12px 16px',
+                    fontSize: '14px',
+                    transition: 'all 0.2s'
+                  }}
                 />
               </div>
             ))}
           </div>
-          <button className="auth-btn" onClick={handleSave} disabled={saving} style={{ marginTop: '20px', width: '100%' }}>
-            {saving ? '💾 Saving...' : saved ? '✅ Saved Successfully!' : '💾 SAVE CHANGES'}
+          <button 
+            className="auth-btn" 
+            onClick={handleSave} 
+            disabled={saving} 
+            style={{ 
+              marginTop: '24px', 
+              width: '100%',
+              background: saved ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              padding: '14px',
+              fontSize: '15px',
+              fontWeight: '700'
+            }}
+          >
+            {saving ? 'Saving Changes...' : saved ? '✓ Saved Successfully!' : 'Save Changes'}
           </button>
         </div>
       )}
@@ -216,72 +272,116 @@ const ProfilePage = ({ user, setUser }) => {
         </div>
       </div>
 
-      {/* Connected Platforms */}
+      {/* Connected Platforms - Modern Cards */}
       <div className="card" style={{ marginBottom: '2rem' }}>
-        <div className="card-title">🔗 Connected Platforms</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px' }}>
-          Link your coding accounts to sync stats automatically
+        <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          Connected Platforms
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '24px', lineHeight: '1.6' }}>
+          Link your coding accounts to automatically sync your statistics
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
           {[
-            { icon: '🐙', name: 'GitHub', handle: profile?.githubUsername, color: 'rgba(255, 255, 255, 0.1)' },
-            { icon: '⚡', name: 'LeetCode', handle: profile?.leetcodeUsername, color: 'rgba(255, 209, 102, 0.1)' },
-            { icon: '🏆', name: 'Codeforces', handle: profile?.codeforcesUsername, color: 'rgba(33, 150, 243, 0.1)' },
-            { icon: '🎯', name: 'HackerRank', handle: profile?.hackerrankUsername, color: 'rgba(0, 200, 117, 0.1)' }
-          ].map(({ icon, name, handle, color }) => (
+            { name: 'GitHub', handle: profile?.githubUsername, gradient: 'linear-gradient(135deg, #24292e 0%, #4a5568 100%)', icon: '💻' },
+            { name: 'LeetCode', handle: profile?.leetcodeUsername, gradient: 'linear-gradient(135deg, #ffa116 0%, #ff6b35 100%)', icon: '⚡' },
+            { name: 'Codeforces', handle: profile?.codeforcesUsername, gradient: 'linear-gradient(135deg, #1e88e5 0%, #1565c0 100%)', icon: '🏅' },
+            { name: 'HackerRank', handle: profile?.hackerrankUsername, gradient: 'linear-gradient(135deg, #00c853 0%, #00b248 100%)', icon: '🎯' }
+          ].map(({ name, handle, gradient, icon }) => (
             <div key={name} style={{
-              background: handle ? color : 'var(--bg2)',
-              border: handle ? '1px solid var(--border2)' : '1px dashed var(--border)',
-              borderRadius: '12px',
-              padding: '20px',
-              transition: 'all 0.3s',
-              cursor: 'pointer'
+              background: handle ? `${gradient}, var(--bg2)` : 'var(--bg2)',
+              backgroundBlendMode: handle ? 'overlay' : 'normal',
+              border: handle ? '1px solid rgba(139, 92, 246, 0.2)' : '1px dashed var(--border)',
+              borderRadius: '14px',
+              padding: '24px',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden'
             }} className="platform-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '28px' }}>{icon}</span>
+              {handle && (
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  width: '10px',
+                  height: '10px',
+                  background: '#10b981',
+                  borderRadius: '50%',
+                  boxShadow: '0 0 10px rgba(16, 185, 129, 0.8)'
+                }}></div>
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
+                <span style={{ fontSize: '32px' }}>{icon}</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '600', fontSize: '16px', color: 'var(--text)' }}>{name}</div>
-                  <div style={{ fontSize: '12px', color: handle ? 'var(--primary)' : 'var(--text3)', fontFamily: 'var(--mono)' }}>
+                  <div style={{ fontWeight: '700', fontSize: '17px', color: 'var(--text)', marginBottom: '4px' }}>{name}</div>
+                  <div style={{ 
+                    fontSize: '13px', 
+                    color: handle ? '#8b5cf6' : 'var(--text3)', 
+                    fontFamily: 'var(--mono)',
+                    fontWeight: '500'
+                  }}>
                     {handle ? `@${handle}` : 'Not connected'}
                   </div>
                 </div>
-                <span style={{
-                  fontSize: '10px',
-                  padding: '4px 8px',
-                  borderRadius: '12px',
-                  background: handle ? 'rgba(0, 229, 160, 0.2)' : 'rgba(255, 77, 109, 0.1)',
-                  color: handle ? 'var(--primary)' : 'var(--accent)',
-                  fontWeight: '600'
-                }}>
-                  {handle ? '✓' : '✕'}
-                </span>
+              </div>
+              <div style={{
+                fontSize: '11px',
+                padding: '6px 12px',
+                borderRadius: '20px',
+                background: handle ? 'rgba(139, 92, 246, 0.15)' : 'rgba(156, 163, 175, 0.1)',
+                color: handle ? '#8b5cf6' : 'var(--text3)',
+                fontWeight: '700',
+                textAlign: 'center',
+                border: handle ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid var(--border)'
+              }}>
+                {handle ? '✓ Connected' : '○ Disconnected'}
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Sync Stats */}
-      <div className="card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.05), rgba(123, 97, 255, 0.05))' }}>
-        <div className="card-title">⚡ Sync Your Stats</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
-          Automatically fetch latest data from your connected platforms and update your Dev Score
+      {/* Sync Stats - Professional Card */}
+      <div className="card" style={{ 
+        marginBottom: '2rem', 
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(168, 85, 247, 0.05))',
+        border: '1px solid rgba(139, 92, 246, 0.2)'
+      }}>
+        <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          Sync Statistics
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.6' }}>
+          Fetch the latest data from your connected platforms and update your Dev Score
         </p>
-        <button className="auth-btn" onClick={handleSync} disabled={syncing} style={{ width: '100%', maxWidth: '400px' }}>
-          {syncing ? '🔄 Syncing... (This may take a moment)' : '🔄 SYNC MY STATS'}
+        <button 
+          className="auth-btn" 
+          onClick={handleSync} 
+          disabled={syncing} 
+          style={{ 
+            width: '100%', 
+            maxWidth: '450px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            padding: '14px 28px',
+            fontSize: '15px',
+            fontWeight: '700',
+            opacity: syncing ? 0.7 : 1
+          }}
+        >
+          {syncing ? 'Syncing... Please wait' : 'Sync Now'}
         </button>
         {syncMsg && (
-          <p style={{ 
-            color: syncMsg.includes('✅') ? 'var(--primary)' : 'var(--accent)', 
+          <div style={{ 
+            color: syncMsg.includes('✅') ? '#10b981' : '#ef4444', 
             fontSize: '14px', 
-            marginTop: '12px',
-            padding: '12px',
-            background: 'var(--bg2)',
-            borderRadius: '8px',
-            border: `1px solid ${syncMsg.includes('✅') ? 'var(--primary)' : 'var(--accent)'}`
+            marginTop: '16px',
+            padding: '14px 18px',
+            background: syncMsg.includes('✅') ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+            borderRadius: '10px',
+            border: `1px solid ${syncMsg.includes('✅') ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+            fontWeight: '500'
           }}>
             {syncMsg}
-          </p>
+          </div>
         )}
       </div>
 
@@ -348,105 +448,143 @@ const ProfilePage = ({ user, setUser }) => {
         })()}
       </div>
 
-      {/* Public Profile Link */}
-      <div className="card" style={{ marginBottom: '2rem', border: '1px solid var(--primary)' }}>
-        <div className="card-title">🔗 Public Profile Link</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
-          Share your verified developer profile with recruiters, on LinkedIn, or in your resume
+      {/* Public Profile Link - Clean Design */}
+      <div className="card" style={{ 
+        marginBottom: '2rem', 
+        border: '1px solid rgba(139, 92, 246, 0.3)',
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(168, 85, 247, 0.03))'
+      }}>
+        <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          Share Your Profile
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.6' }}>
+          Share your verified developer profile with recruiters or on LinkedIn
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
           <code style={{ 
             background: 'var(--bg2)', 
-            padding: '12px 16px', 
-            borderRadius: '8px', 
+            padding: '14px 18px', 
+            borderRadius: '10px', 
             fontSize: '13px', 
-            color: 'var(--primary)', 
+            color: '#8b5cf6', 
             flex: 1, 
-            minWidth: '200px',
+            minWidth: '220px',
             fontFamily: 'var(--mono)',
-            border: '1px solid var(--border)'
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+            fontWeight: '500'
           }}>
             {profile?.id ? `${window.location.origin}/u/${profile.id}` : 'Loading...'}
           </code>
-          <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={handleShare} disabled={!profile?.id}>
-            {copied ? '✅ Copied!' : '📋 Copy Link'}
+          <button 
+            className="auth-btn" 
+            style={{ 
+              width: 'auto', 
+              padding: '14px 28px',
+              background: copied ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            }} 
+            onClick={handleShare} 
+            disabled={!profile?.id}
+          >
+            {copied ? '✓ Copied' : 'Copy Link'}
           </button>
           {profile?.id && (
-            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none', padding: '12px 24px' }}>
-              👁️ Preview
+            <a href={`/u/${profile.id}`} target="_blank" rel="noreferrer" className="refresh-btn" style={{ textDecoration: 'none', padding: '14px 28px' }}>
+              Preview
             </a>
           )}
         </div>
       </div>
 
-      {/* README Badge */}
+      {/* README Badge - Modern Look */}
       <div className="card" style={{ marginBottom: '2rem' }}>
-        <div className="card-title">🏷️ GitHub README Badge</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
-          Add this badge to your GitHub README to display your live Dev Score
+        <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          GitHub README Badge
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '18px', lineHeight: '1.6' }}>
+          Add this badge to your GitHub README to showcase your Dev Score
         </p>
         {profile?.id && (
-          <div style={{ marginBottom: '16px', padding: '12px', background: 'var(--bg2)', borderRadius: '8px', textAlign: 'center' }}>
-            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '28px' }} />
+          <div style={{ marginBottom: '18px', padding: '16px', background: 'var(--bg2)', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border)' }}>
+            <img src={`${API_URL}/api/public/badge/${profile.id}.svg`} alt="Dev Score badge" style={{ height: '30px' }} />
           </div>
         )}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'stretch' }}>
           <code style={{ 
             background: 'var(--bg2)', 
-            padding: '12px 16px', 
-            borderRadius: '8px', 
+            padding: '14px 18px', 
+            borderRadius: '10px', 
             fontSize: '12px', 
             color: 'var(--text)', 
             flex: 1, 
-            minWidth: '220px', 
+            minWidth: '240px', 
             overflowX: 'auto', 
             fontFamily: 'var(--mono)',
-            border: '1px solid var(--border)'
+            border: '1px solid var(--border)',
+            fontWeight: '500'
           }}>
             {badgeMarkdown || 'Loading...'}
           </code>
-          <button className="auth-btn" style={{ width: 'auto', padding: '12px 24px' }} onClick={handleCopyBadge} disabled={!badgeMarkdown}>
-            {badgeCopied ? '✅ Copied!' : '📋 Copy Markdown'}
+          <button 
+            className="auth-btn" 
+            style={{ 
+              width: 'auto', 
+              padding: '14px 28px',
+              background: badgeCopied ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            }} 
+            onClick={handleCopyBadge} 
+            disabled={!badgeMarkdown}
+          >
+            {badgeCopied ? '✓ Copied' : 'Copy Code'}
           </button>
         </div>
       </div>
 
-      {/* Manual Stats Update */}
+      {/* Manual Stats Update - Clean */}
       <div className="card" style={{ marginBottom: '2rem' }}>
-        <div className="card-title">📊 Manual Stats Update</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
-          Manually update your statistics if needed
+        <div className="card-title" style={{ fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          Update Statistics Manually
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.6' }}>
+          Manually adjust your statistics if automatic sync is unavailable
         </p>
         <ScoreUpdater token={token} onUpdate={fetchProfile} />
       </div>
 
-      {/* Danger Zone */}
-      <div className="card" style={{ marginBottom: '3rem', border: '1px solid rgba(255, 77, 109, 0.3)', background: 'rgba(255, 77, 109, 0.03)' }}>
-        <div className="card-title" style={{ color: 'var(--accent)' }}>⚠️ Danger Zone</div>
-        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '16px' }}>
-          Deleting your account will permanently remove all your data. This action cannot be undone.
+      {/* Danger Zone - Professional Warning */}
+      <div className="card" style={{ 
+        marginBottom: '3rem', 
+        border: '1px solid rgba(239, 68, 68, 0.3)', 
+        background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.02), rgba(220, 38, 38, 0.02))'
+      }}>
+        <div className="card-title" style={{ color: '#ef4444', fontSize: '20px', fontWeight: '700', marginBottom: '12px' }}>
+          Account Deletion
+        </div>
+        <p style={{ color: 'var(--text2)', fontSize: '14px', marginBottom: '20px', lineHeight: '1.6' }}>
+          Warning: This will permanently delete all your data including scores, achievements, and connections. This action cannot be undone.
         </p>
         <button
           onClick={handleDeleteAccount}
           style={{
             background: 'transparent', 
-            border: '1px solid var(--accent)', 
-            color: 'var(--accent)',
-            padding: '12px 24px', 
-            borderRadius: '8px', 
+            border: '2px solid #ef4444', 
+            color: '#ef4444',
+            padding: '12px 28px', 
+            borderRadius: '10px', 
             cursor: 'pointer', 
             fontWeight: '700', 
             fontSize: '14px',
-            transition: 'all 0.2s'
+            transition: 'all 0.3s ease'
           }}
           onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 77, 109, 0.1)';
+            e.target.style.background = 'rgba(239, 68, 68, 0.1)';
+            e.target.style.transform = 'translateY(-1px)';
           }}
           onMouseLeave={(e) => {
             e.target.style.background = 'transparent';
+            e.target.style.transform = 'translateY(0)';
           }}
         >
-          🗑️ Delete My Account
+          Delete Account
         </button>
       </div>
     </div>
@@ -492,37 +630,60 @@ const ScoreUpdater = ({ token, onUpdate }) => {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '18px' }}>
       {[
         { label: 'Dev Score', key: 'score', placeholder: 'e.g. 1500' },
         { label: 'Problems Solved', key: 'problems', placeholder: 'e.g. 150' },
-        { label: 'Streak (days)', key: 'streak', placeholder: 'e.g. 10' }
+        { label: 'Current Streak', key: 'streak', placeholder: 'e.g. 10 days' }
       ].map(({ label, key, placeholder }) => (
         <div key={key} className="input-group">
-          <label>{label}</label>
+          <label style={{ fontSize: '13px', fontWeight: '600', marginBottom: '8px', color: 'var(--text2)' }}>
+            {label}
+          </label>
           <input
             type="number"
             value={stats[key]}
             onChange={(e) => setStats(prev => ({ ...prev, [key]: e.target.value }))}
             placeholder={placeholder}
+            style={{
+              background: 'var(--bg2)',
+              border: '1px solid var(--border)',
+              borderRadius: '10px',
+              padding: '12px 16px',
+              fontSize: '14px',
+              transition: 'all 0.2s'
+            }}
           />
         </div>
       ))}
       <div style={{ gridColumn: '1 / -1' }}>
         {msg && (
-          <p style={{ 
-            color: msg.includes('✅') ? 'var(--primary)' : 'var(--accent)', 
-            fontSize: '13px', 
-            marginBottom: '12px',
-            padding: '10px',
-            background: 'var(--bg2)',
-            borderRadius: '6px'
+          <div style={{ 
+            color: msg.includes('✅') ? '#10b981' : '#ef4444', 
+            fontSize: '14px', 
+            marginBottom: '14px',
+            padding: '12px 16px',
+            background: msg.includes('✅') ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+            borderRadius: '10px',
+            border: `1px solid ${msg.includes('✅') ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+            fontWeight: '500'
           }}>
             {msg}
-          </p>
+          </div>
         )}
-        <button className="auth-btn" onClick={handleUpdate} disabled={saving} style={{ width: '100%' }}>
-          {saving ? '⏳ Updating...' : '📊 UPDATE STATS'}
+        <button 
+          className="auth-btn" 
+          onClick={handleUpdate} 
+          disabled={saving} 
+          style={{ 
+            width: '100%',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            padding: '14px',
+            fontSize: '15px',
+            fontWeight: '700'
+          }}
+        >
+          {saving ? 'Updating...' : 'Update Statistics'}
         </button>
       </div>
     </div>
