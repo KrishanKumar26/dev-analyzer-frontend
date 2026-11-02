@@ -79,11 +79,11 @@ const Groups = () => {
       
       {/* Hero Header */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)',
+        background: 'var(--bg2)',
         borderRadius: '16px',
         padding: '2rem',
         marginBottom: '2rem',
-        border: '1px solid rgba(0, 229, 160, 0.2)',
+        border: '1px solid var(--border)',
         display: 'flex',
         alignItems: 'center',
         gap: '1.5rem',
@@ -103,9 +103,7 @@ const Groups = () => {
             letterSpacing: '-0.5px'
           }}>
             Developer <span style={{ 
-              background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              color: 'var(--accent)'
             }}>Communities</span>
           </h1>
           <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
@@ -133,7 +131,7 @@ const Groups = () => {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #00e5a0 0%, #00b87a 100%)',
+              background: 'var(--accent)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -197,8 +195,8 @@ const Groups = () => {
             style={{
               width: '100%',
               padding: '12px',
-              background: 'linear-gradient(135deg, #00e5a0 0%, #00b87a 100%)',
-              color: '#000',
+              background: 'var(--accent)',
+              color: '#fff',
               border: 'none',
               borderRadius: '10px',
               fontSize: '14px',
@@ -224,7 +222,7 @@ const Groups = () => {
               width: '40px',
               height: '40px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #7b61ff 0%, #5a3fd6 100%)',
+              background: 'var(--accent2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -265,7 +263,7 @@ const Groups = () => {
             style={{
               width: '100%',
               padding: '12px',
-              background: 'linear-gradient(135deg, #7b61ff 0%, #5a3fd6 100%)',
+              background: 'var(--accent2)',
               color: '#fff',
               border: 'none',
               borderRadius: '10px',
@@ -316,7 +314,7 @@ const Groups = () => {
           </h2>
           <a href="#" style={{ 
             fontSize: '13px', 
-            color: '#00e5a0', 
+            color: 'var(--accent)', 
             fontWeight: '600',
             textDecoration: 'none'
           }}>
@@ -392,7 +390,7 @@ const Groups = () => {
                     width: '48px',
                     height: '48px',
                     borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+                    background: 'var(--accent)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -524,8 +522,8 @@ const Groups = () => {
               key={cat}
               style={{
                 padding: '8px 16px',
-                background: i === 0 ? 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)' : 'var(--bg2)',
-                color: i === 0 ? '#000' : 'var(--text)',
+                background: i === 0 ? 'var(--accent)' : 'var(--bg2)',
+                color: i === 0 ? '#fff' : 'var(--text)',
                 border: i === 0 ? 'none' : '1px solid var(--border)',
                 borderRadius: '8px',
                 fontSize: '13px',
@@ -545,9 +543,9 @@ const Groups = () => {
           gap: '1rem'
         }}>
           {[
-            { name: 'Data Structures', desc: 'Sharpen your problem-solving skills together.', members: '2.8K', activity: '32%', icon: '{ }', color1: '#2196f3', color2: '#1976d2' },
-            { name: 'Full Stack', desc: 'Build modern web apps together.', members: '1.9K', activity: '28%', icon: '⚡', color1: '#9c27b0', color2: '#7b1fa2' },
-            { name: 'Open Source', desc: 'Contribute. Collaborate. Grow.', members: '1.1K', activity: '20%', icon: '</>', color1: '#4caf50', color2: '#388e3c' }
+            { name: 'Data Structures', desc: 'Sharpen your problem-solving skills together.', members: '2.8K', activity: '32%', icon: '{ }', color: 'var(--accent)' },
+            { name: 'Full Stack', desc: 'Build modern web apps together.', members: '1.9K', activity: '28%', icon: '⚡', color: 'var(--accent2)' },
+            { name: 'Open Source', desc: 'Contribute. Collaborate. Grow.', members: '1.1K', activity: '20%', icon: '</>', color: 'var(--primary)' }
           ].map((comm) => (
             <div 
               key={comm.name}
@@ -572,12 +570,13 @@ const Groups = () => {
                 width: '48px',
                 height: '48px',
                 borderRadius: '12px',
-                background: `linear-gradient(135deg, ${comm.color1} 0%, ${comm.color2} 100%)`,
+                background: comm.color,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '24px',
-                marginBottom: '12px'
+                marginBottom: '12px',
+                color: '#fff'
               }}>
                 {comm.icon}
               </div>
@@ -618,7 +617,7 @@ const Groups = () => {
                 style={{
                   width: '100%',
                   padding: '10px',
-                  background: `linear-gradient(135deg, ${comm.color1} 0%, ${comm.color2} 100%)`,
+                  background: comm.color,
                   color: '#fff',
                   border: 'none',
                   borderRadius: '8px',
