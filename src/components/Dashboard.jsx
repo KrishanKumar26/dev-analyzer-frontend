@@ -90,39 +90,39 @@ const Dashboard = ({ user }) => {
       ) : (
         <div className="stats-grid">
           <div className="stat-card" style={{ 
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.05) 100%)',
-            border: '1px solid rgba(16, 185, 129, 0.3)'
+            background: 'var(--bg3)',
+            border: '1px solid var(--border)'
           }}>
             <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🏆</div>
             <div className="stat-label">DEVELOPER SCORE</div>
-            <div className="stat-value" style={{ color: '#10b981' }}>{devScore}</div>
+            <div className="stat-value" style={{ color: 'var(--primary)' }}>{devScore}</div>
             <div className="stat-change up">+18%</div>
           </div>
           <div className="stat-card" style={{ 
-            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.05) 100%)',
-            border: '1px solid rgba(245, 158, 11, 0.3)'
+            background: 'var(--bg3)',
+            border: '1px solid var(--border)'
           }}>
             <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🌍</div>
             <div className="stat-label">GLOBAL RANK</div>
-            <div className="stat-value" style={{ color: '#f59e0b' }}>#{globalRank}</div>
+            <div className="stat-value" style={{ color: 'var(--gold)' }}>#{globalRank}</div>
             <div className="stat-change up">+2</div>
           </div>
           <div className="stat-card" style={{ 
-            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(118, 75, 162, 0.05) 100%)',
-            border: '1px solid rgba(139, 92, 246, 0.3)'
+            background: 'var(--bg3)',
+            border: '1px solid var(--border)'
           }}>
             <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>✓</div>
             <div className="stat-label">PROBLEMS SOLVED</div>
-            <div className="stat-value" style={{ color: '#8b5cf6' }}>{solved}</div>
+            <div className="stat-value" style={{ color: 'var(--accent2)' }}>{solved}</div>
             <div className="stat-change up">+12%</div>
           </div>
           <div className="stat-card" style={{ 
-            background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%)',
-            border: '1px solid rgba(239, 68, 68, 0.3)'
+            background: 'var(--bg3)',
+            border: '1px solid var(--border)'
           }}>
             <div className="stat-icon" style={{ fontSize: '28px', marginBottom: '8px' }}>🔥</div>
             <div className="stat-label">CURRENT STREAK</div>
-            <div className="stat-value" style={{ color: '#ef4444' }}>{streak}d</div>
+            <div className="stat-value" style={{ color: 'var(--accent)' }}>{streak}d</div>
             <div className="stat-change up">+1d</div>
           </div>
         </div>
