@@ -178,12 +178,96 @@ const Dashboard = ({ user }) => {
         </div>
 
         <div className="right-stack">
-          <div className="card">
-            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-              <span style={{ fontSize: '20px' }}>💻</span>
+          {/* Skill Analytics Card */}
+          <div className="card" style={{ marginBottom: '20px' }}>
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+              <span style={{ fontSize: '18px' }}>💻</span>
               SKILL ANALYTICS
             </div>
-            {/* Skill bars will be rendered by PerformanceChart component */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[
+                { label: 'DSA', percentage: 92, color: '#06b6d4' },
+                { label: 'Backend', percentage: 88, color: '#8b5cf6' },
+                { label: 'SQL', percentage: 85, color: '#10b981' },
+                { label: 'Frontend', percentage: 72, color: '#a855f7' }
+              ].map((skill, idx) => (
+                <div key={idx}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)' }}>{skill.label}</span>
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: skill.color }}>{skill.percentage}%</span>
+                  </div>
+                  <div style={{ 
+                    height: '8px', 
+                    background: 'var(--bg3)', 
+                    borderRadius: '10px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ 
+                      width: `${skill.percentage}%`, 
+                      height: '100%', 
+                      background: skill.color,
+                      borderRadius: '10px',
+                      transition: 'width 1s ease'
+                    }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Score by Platform Card */}
+          <div className="card">
+            <div className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+              <span style={{ fontSize: '18px' }}>📊</span>
+              SCORE BY PLATFORM
+            </div>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', height: '200px' }}>
+              {[
+                { name: 'GitHub', score: 2100, maxScore: 3000, color: '#10b981', icon: '⚡' },
+                { name: 'LeetCode', score: 1900, maxScore: 3000, color: '#2196f3', icon: '💡' },
+                { name: 'Codeforces', score: 1400, maxScore: 3000, color: '#a855f7', icon: '🏆' },
+                { name: 'HackerRank', score: 1600, maxScore: 3000, color: '#f59e0b', icon: '🎯' }
+              ].map((platform, idx) => {
+                const heightPercent = (platform.score / platform.maxScore) * 100;
+                return (
+                  <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ 
+                      width: '100%', 
+                      height: `${heightPercent}%`,
+                      background: `linear-gradient(180deg, ${platform.color} 0%, ${platform.color}80 100%)`,
+                      borderRadius: '8px 8px 0 0',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      paddingTop: '8px',
+                      position: 'relative',
+                      transition: 'height 1s ease'
+                    }}>
+                      <span style={{ fontSize: '14px', fontWeight: '700', color: '#fff' }}>
+                        {(platform.score / 1000).toFixed(1)}k
+                      </span>
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '16px', marginBottom: '4px' }}>{platform.icon}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text2)', fontWeight: '600' }}>{platform.name}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              marginTop: '12px',
+              paddingTop: '12px',
+              borderTop: '1px solid var(--border)'
+            }}>
+              <span style={{ fontSize: '11px', color: 'var(--text3)' }}>0</span>
+              <span style={{ fontSize: '11px', color: 'var(--text3)' }}>1k</span>
+              <span style={{ fontSize: '11px', color: 'var(--text3)' }}>2k</span>
+              <span style={{ fontSize: '11px', color: 'var(--text3)' }}>3k</span>
+            </div>
           </div>
 
           <PerformanceChart />
