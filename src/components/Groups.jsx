@@ -75,83 +75,653 @@ const Groups = () => {
   const medal = (i) => (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`);
 
   return (
-    <div className="page active rel">
-      {/* Create + Join */}
-      <div className="two-col">
-        <div className="card">
-          <div className="card-title">➕ Create a Group</div>
-          <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-            Create a private league for your college, company, or friends.
+    <div className="page active" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
+      
+      {/* Hero Header */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)',
+        borderRadius: '16px',
+        padding: '2rem',
+        marginBottom: '2rem',
+        border: '1px solid rgba(0, 229, 160, 0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1.5rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div style={{
+          fontSize: '56px',
+          filter: 'drop-shadow(0 4px 12px rgba(0, 229, 160, 0.3))'
+        }}>👥</div>
+        <div>
+          <h1 style={{
+            fontSize: '32px',
+            fontWeight: '800',
+            marginBottom: '6px',
+            color: 'var(--text)',
+            letterSpacing: '-0.5px'
+          }}>
+            Developer <span style={{ 
+              background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>Communities</span>
+          </h1>
+          <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
+            Build your circle. Compete together. Grow faster.
           </p>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <input value={createName} onChange={(e) => setCreateName(e.target.value)} placeholder="e.g. IIT Delhi Coders"
-              style={{ flex: 1, minWidth: '160px', padding: '12px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text)' }} />
-            <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={createGroup} disabled={busy}>Create</button>
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="card-title">🔑 Join a Group</div>
-          <p style={{ color: 'var(--text2)', fontSize: '13px', margin: '8px 0 12px' }}>
-            Have a group code? Enter it here to join.
-          </p>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <input value={joinCode} onChange={(e) => setJoinCode(e.target.value.toUpperCase())} placeholder="GROUP CODE"
-              style={{ flex: 1, minWidth: '160px', padding: '12px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '2px' }} />
-            <button className="auth-btn" style={{ width: 'auto', padding: '10px 20px' }} onClick={joinGroup} disabled={busy}>Join</button>
-          </div>
         </div>
       </div>
 
-      {msg && <div className="card" style={{ marginTop: '16px', padding: '12px 16px', color: 'var(--primary)', fontSize: '14px' }}>{msg}</div>}
+      {/* Create + Join Groups */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
+        gap: '1.5rem', 
+        marginBottom: '2rem' 
+      }}>
+        {/* Create Group */}
+        <div style={{
+          background: 'var(--bg2)',
+          borderRadius: '16px',
+          padding: '1.5rem',
+          border: '1px solid var(--border)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #00e5a0 0%, #00b87a 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px'
+            }}>➕</div>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '2px', color: 'var(--text)' }}>
+                Create a group
+              </h3>
+              <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '0' }}>
+                Start your own developer community and invite others.
+              </p>
+            </div>
+          </div>
+          
+          <input 
+            value={createName} 
+            onChange={(e) => setCreateName(e.target.value)} 
+            placeholder="Group Name"
+            style={{ 
+              width: '100%',
+              padding: '12px 14px', 
+              background: 'var(--bg)', 
+              border: '1px solid var(--border)', 
+              borderRadius: '10px', 
+              color: 'var(--text)',
+              fontSize: '14px',
+              marginBottom: '8px'
+            }} 
+          />
+          
+          <input 
+            placeholder="Optional Description..."
+            style={{ 
+              width: '100%',
+              padding: '12px 14px', 
+              background: 'var(--bg)', 
+              border: '1px solid var(--border)', 
+              borderRadius: '10px', 
+              color: 'var(--text)',
+              fontSize: '14px',
+              marginBottom: '12px'
+            }} 
+          />
 
-      {/* My groups */}
-      <div className="card" style={{ marginTop: '16px' }}>
-        <div className="card-title">🏆 My Groups</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <span style={{ fontSize: '13px', color: 'var(--text2)', fontWeight: '600' }}>👁️ Visibility:</span>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+              <input type="radio" name="visibility" value="private" defaultChecked />
+              <span style={{ fontSize: '13px', color: 'var(--text)' }}>Private</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+              <input type="radio" name="visibility" value="public" />
+              <span style={{ fontSize: '13px', color: 'var(--text)' }}>Public</span>
+            </label>
+          </div>
+
+          <button 
+            onClick={createGroup} 
+            disabled={busy}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'linear-gradient(135deg, #00e5a0 0%, #00b87a 100%)',
+              color: '#000',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '14px',
+              fontWeight: '700',
+              cursor: busy ? 'not-allowed' : 'pointer',
+              opacity: busy ? 0.6 : 1,
+              transition: 'all 0.2s'
+            }}
+          >
+            🎯 Create Group →
+          </button>
+        </div>
+
+        {/* Join Group */}
+        <div style={{
+          background: 'var(--bg2)',
+          borderRadius: '16px',
+          padding: '1.5rem',
+          border: '1px solid var(--border)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #7b61ff 0%, #5a3fd6 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px'
+            }}>🔗</div>
+            <div>
+              <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '2px', color: 'var(--text)' }}>
+                Join a group
+              </h3>
+              <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '0' }}>
+                Enter a group invite code to join.
+              </p>
+            </div>
+          </div>
+          
+          <input 
+            value={joinCode} 
+            onChange={(e) => setJoinCode(e.target.value.toUpperCase())} 
+            placeholder="# Group Invite Code"
+            style={{ 
+              width: '100%',
+              padding: '12px 14px', 
+              background: 'var(--bg)', 
+              border: '1px solid var(--border)', 
+              borderRadius: '10px', 
+              color: 'var(--text)',
+              fontSize: '14px',
+              fontFamily: 'monospace',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              marginBottom: '12px'
+            }} 
+          />
+
+          <button 
+            onClick={joinGroup} 
+            disabled={busy}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'linear-gradient(135deg, #7b61ff 0%, #5a3fd6 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '14px',
+              fontWeight: '700',
+              cursor: busy ? 'not-allowed' : 'pointer',
+              opacity: busy ? 0.6 : 1,
+              transition: 'all 0.2s'
+            }}
+          >
+            🚪 Join Group
+          </button>
+        </div>
+      </div>
+
+      {msg && (
+        <div style={{ 
+          marginBottom: '1.5rem', 
+          padding: '14px 18px', 
+          background: msg.includes('✅') ? 'rgba(0, 229, 160, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+          border: msg.includes('✅') ? '1px solid rgba(0, 229, 160, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
+          borderRadius: '10px',
+          color: msg.includes('✅') ? '#00e5a0' : '#ef4444',
+          fontSize: '14px',
+          fontWeight: '500'
+        }}>
+          {msg}
+        </div>
+      )}
+
+      {/* Your Groups */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          marginBottom: '1rem'
+        }}>
+          <h2 style={{ 
+            fontSize: '20px', 
+            fontWeight: '700', 
+            color: 'var(--text)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            👥 Your Groups
+          </h2>
+          <a href="#" style={{ 
+            fontSize: '13px', 
+            color: '#00e5a0', 
+            fontWeight: '600',
+            textDecoration: 'none'
+          }}>
+            View All Groups →
+          </a>
+        </div>
+
         {myGroups.length === 0 ? (
-          <p style={{ color: 'var(--text2)', fontSize: '13px', marginTop: '10px' }}>No groups yet. Create or join one above.</p>
+          <div style={{
+            background: 'var(--bg2)',
+            borderRadius: '12px',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            border: '1px dashed var(--border)'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '12px' }}>👥</div>
+            <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '8px' }}>
+              You haven't joined any groups yet
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text3)' }}>
+              Create or join a group above to start competing
+            </p>
+          </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px', marginTop: '12px' }}>
-            {myGroups.map((g) => (
-              <div key={g.code} className={`platform-card ${selected?.code === g.code ? 'connected' : ''}`}
-                style={{ cursor: 'pointer', padding: '14px' }} onClick={() => openGroup(g.code)}>
-                <div style={{ fontWeight: 'bold', fontSize: '15px' }}>{g.name}</div>
-                <div style={{ color: 'var(--text2)', fontSize: '12px', marginTop: '4px' }}>
-                  {g.members} member{g.members === 1 ? '' : 's'} · <span style={{ fontFamily: 'monospace', color: 'var(--primary)' }}>{g.code}</span>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
+            gap: '1rem'
+          }}>
+            {myGroups.map((g) => {
+              const isAdmin = true; // You can track admin status from backend
+              const isSelected = selected?.code === g.code;
+              
+              return (
+                <div 
+                  key={g.code}
+                  onClick={() => openGroup(g.code)}
+                  style={{
+                    background: isSelected 
+                      ? 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)'
+                      : 'var(--bg2)',
+                    borderRadius: '14px',
+                    padding: '1.25rem',
+                    border: isSelected ? '2px solid #00e5a0' : '1px solid var(--border)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    position: 'relative'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {isAdmin && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      padding: '4px 10px',
+                      background: 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      color: '#000'
+                    }}>
+                      👑 Admin
+                    </div>
+                  )}
+
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    marginBottom: '12px'
+                  }}>
+                    🏛️
+                  </div>
+
+                  <h3 style={{ 
+                    fontSize: '17px', 
+                    fontWeight: '700', 
+                    marginBottom: '8px',
+                    color: 'var(--text)'
+                  }}>
+                    {g.name}
+                  </h3>
+                  
+                  <p style={{ 
+                    fontSize: '13px', 
+                    color: 'var(--text2)', 
+                    marginBottom: '12px',
+                    lineHeight: '1.4'
+                  }}>
+                    {g.description || 'Coding. Learning. Competing.'}
+                  </p>
+
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '16px',
+                    marginBottom: '12px',
+                    paddingTop: '12px',
+                    borderTop: '1px solid var(--border)'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Members</div>
+                      <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text)' }}>
+                        👥 {g.members || '1.2K'}
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Weekly Activity</div>
+                      <div style={{ fontSize: '15px', fontWeight: '700', color: '#00e5a0' }}>
+                        ⚡ 24%
+                      </div>
+                    </div>
+                    <div style={{ marginLeft: 'auto' }}>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Rank</div>
+                      <div style={{ fontSize: '15px', fontWeight: '700', color: '#ffd700' }}>
+                        🏆 #1
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '8px'
+                  }}>
+                    <div style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      background: 'rgba(0, 229, 160, 0.1)',
+                      borderRadius: '8px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: '#00e5a0',
+                      textAlign: 'center'
+                    }}>
+                      Progress: 78%
+                    </div>
+                    <button
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        openGroup(g.code); 
+                      }}
+                      style={{
+                        padding: '8px 16px',
+                        background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
+                        color: '#000',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                        fontWeight: '700',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Open Group →
+                    </button>
+                  </div>
                 </div>
-                <button onClick={(e) => { e.stopPropagation(); leaveGroup(g.code); }}
-                  style={{ marginTop: '8px', background: 'transparent', border: '1px solid #ff4d4f55', color: '#ff4d4f', fontSize: '11px', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer' }}>Leave</button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
 
+      {/* Discover Communities */}
+      <div>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          marginBottom: '1rem'
+        }}>
+          <h2 style={{ 
+            fontSize: '20px', 
+            fontWeight: '700', 
+            color: 'var(--text)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            🌟 Discover Communities
+          </h2>
+        </div>
+
+        {/* Category Filters */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '8px', 
+          marginBottom: '1.5rem',
+          flexWrap: 'wrap'
+        }}>
+          {['All', 'Data Structures', 'Full Stack', 'Open Source', 'Competitive Programming', 'Others'].map((cat, i) => (
+            <button
+              key={cat}
+              style={{
+                padding: '8px 16px',
+                background: i === 0 ? 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)' : 'var(--bg2)',
+                color: i === 0 ? '#000' : 'var(--text)',
+                border: i === 0 ? 'none' : '1px solid var(--border)',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: i === 0 ? '700' : '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+          gap: '1rem'
+        }}>
+          {[
+            { name: 'Data Structures', desc: 'Sharpen your problem-solving skills together.', members: '2.8K', activity: '32%', icon: '{ }', color1: '#2196f3', color2: '#1976d2' },
+            { name: 'Full Stack', desc: 'Build modern web apps together.', members: '1.9K', activity: '28%', icon: '⚡', color1: '#9c27b0', color2: '#7b1fa2' },
+            { name: 'Open Source', desc: 'Contribute. Collaborate. Grow.', members: '1.1K', activity: '20%', icon: '</>', color1: '#4caf50', color2: '#388e3c' }
+          ].map((comm) => (
+            <div 
+              key={comm.name}
+              style={{
+                background: 'var(--bg2)',
+                borderRadius: '14px',
+                padding: '1.25rem',
+                border: '1px solid var(--border)',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.borderColor = comm.color1;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = 'var(--border)';
+              }}
+            >
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: `linear-gradient(135deg, ${comm.color1} 0%, ${comm.color2} 100%)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '24px',
+                marginBottom: '12px'
+              }}>
+                {comm.icon}
+              </div>
+
+              <h3 style={{ 
+                fontSize: '17px', 
+                fontWeight: '700', 
+                marginBottom: '6px',
+                color: 'var(--text)'
+              }}>
+                {comm.name}
+              </h3>
+              
+              <p style={{ 
+                fontSize: '13px', 
+                color: 'var(--text2)', 
+                marginBottom: '12px',
+                lineHeight: '1.4'
+              }}>
+                {comm.desc}
+              </p>
+
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '16px',
+                marginBottom: '12px'
+              }}>
+                <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
+                  👥 {comm.members} Members
+                </div>
+                <div style={{ fontSize: '13px', color: '#00e5a0', fontWeight: '600' }}>
+                  ⚡ {comm.activity} Activity
+                </div>
+              </div>
+
+              <button
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  background: `linear-gradient(135deg, ${comm.color1} 0%, ${comm.color2} 100%)`,
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: '700',
+                  cursor: 'pointer'
+                }}
+              >
+                Join Group →
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Selected group leaderboard */}
       {selected && (
-        <div className="card" style={{ marginTop: '16px' }}>
-          <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-            <span>🏅 {selected.name}</span>
-            <span style={{ fontSize: '12px', color: 'var(--text2)' }}>Share code: <b style={{ color: 'var(--primary)', fontFamily: 'monospace' }}>{selected.code}</b></span>
-          </div>
-          <div className="lb-container" style={{ marginTop: '12px' }}>
+        <div style={{ marginTop: '2rem' }}>
+          <div style={{
+            background: 'var(--bg2)',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            border: '1px solid var(--border)'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              marginBottom: '1rem',
+              flexWrap: 'wrap',
+              gap: '1rem'
+            }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text)' }}>
+                🏅 {selected.name}
+              </h3>
+              <div style={{ 
+                padding: '8px 16px',
+                background: 'rgba(0, 229, 160, 0.1)',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#00e5a0',
+                fontFamily: 'monospace',
+                letterSpacing: '2px'
+              }}>
+                CODE: {selected.code}
+              </div>
+            </div>
+
             {(selected.leaderboard || []).length === 0 ? (
-              <div style={{ color: 'var(--text2)', textAlign: 'center', padding: '20px' }}>No members yet</div>
+              <div style={{ 
+                textAlign: 'center', 
+                padding: '3rem 2rem',
+                color: 'var(--text2)'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '12px' }}>👥</div>
+                <p style={{ fontSize: '15px' }}>No members yet</p>
+              </div>
             ) : (
-              selected.leaderboard.map((item, i) => (
-                <div key={i} style={{
-                  display: 'flex', alignItems: 'center', padding: '12px', borderRadius: '8px', marginBottom: '8px',
-                  background: item.isMe ? 'rgba(0,229,160,0.08)' : 'var(--bg2)',
-                  border: item.isMe ? '1px solid var(--primary)' : '1px solid var(--border)',
-                }}>
-                  <div style={{ width: '40px', fontWeight: 'bold', fontSize: '14px' }}>{medal(i)}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: '600', fontSize: '14px' }}>{item.name} {item.isMe ? '(You)' : ''}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--text2)' }}>{item.problems} problems</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {selected.leaderboard.map((item, i) => (
+                  <div key={i} style={{
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    padding: '14px 16px', 
+                    borderRadius: '10px',
+                    background: item.isMe 
+                      ? 'linear-gradient(90deg, rgba(0, 229, 160, 0.15) 0%, rgba(0, 229, 160, 0.05) 100%)'
+                      : 'var(--bg)',
+                    border: item.isMe ? '2px solid #00e5a0' : '1px solid var(--border)',
+                    gap: '14px'
+                  }}>
+                    <div style={{ 
+                      fontSize: i < 3 ? '24px' : '16px',
+                      fontWeight: '800',
+                      minWidth: '40px',
+                      color: item.isMe ? '#00e5a0' : 'var(--text)'
+                    }}>
+                      {medal(i)}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ 
+                        fontSize: '15px', 
+                        fontWeight: '700',
+                        color: 'var(--text)',
+                        marginBottom: '2px'
+                      }}>
+                        {item.name} {item.isMe && <span style={{ color: '#00e5a0' }}>(You)</span>}
+                      </div>
+                      <div style={{ fontSize: '12px', color: 'var(--text2)' }}>
+                        {item.problems} problems solved
+                      </div>
+                    </div>
+                    <div style={{ 
+                      fontSize: '18px', 
+                      fontWeight: '800',
+                      color: item.isMe ? '#00e5a0' : '#7b61ff'
+                    }}>
+                      {(item.score || 0).toLocaleString()}
+                    </div>
                   </div>
-                  <div style={{ fontWeight: 'bold', fontSize: '16px', color: 'var(--primary)' }}>{(item.score || 0).toLocaleString()}</div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         </div>
