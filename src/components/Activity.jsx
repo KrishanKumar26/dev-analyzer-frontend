@@ -174,7 +174,7 @@ const Activity = () => {
             width: '80px',
             height: '80px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
+            background: 'linear-gradient(135deg, #A5D6A7 0%, #A5D6A7 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -192,7 +192,7 @@ const Activity = () => {
               letterSpacing: '-0.5px'
             }}>
               Developer <span style={{ 
-                color: '#FFB020'
+                color: '#A5D6A7'
               }}>Activity</span>
             </h1>
             <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
@@ -257,13 +257,13 @@ const Activity = () => {
               padding: '1rem',
               border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 📚 Public Repositories
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.public_repos || 12}
               </div>
-              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', fontWeight: '600' }}>
                 ▲ +1
               </div>
             </div>
@@ -274,13 +274,13 @@ const Activity = () => {
               padding: '1rem',
               border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 👥 Followers
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.followers || 248}
               </div>
-              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', fontWeight: '600' }}>
                 ▲ +12
               </div>
             </div>
@@ -291,13 +291,13 @@ const Activity = () => {
               padding: '1rem',
               border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 💫 Contributions (YTD)
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 482
               </div>
-              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', fontWeight: '600' }}>
                 ▲ +36
               </div>
             </div>
@@ -308,13 +308,13 @@ const Activity = () => {
               padding: '1rem',
               border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 ⭐ Total Stars
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 1.2k
               </div>
-              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#A5D6A7', fontWeight: '600' }}>
                 ▲ +120
               </div>
             </div>
@@ -343,7 +343,7 @@ const Activity = () => {
               top: '12px',
               right: '12px',
               padding: '4px 10px',
-              background: '#FFB020',
+              background: '#A5D6A7',
               borderRadius: '6px',
               fontSize: '11px',
               fontWeight: '700',
@@ -399,8 +399,8 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: isGithubConnected ? 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)' : 'rgba(255, 176, 32, 0.1)',
-              color: isGithubConnected ? '#000' : '#FFB020',
+              background: isGithubConnected ? 'linear-gradient(135deg, #A5D6A7 0%, #A5D6A7 100%)' : 'rgba(255, 176, 32, 0.1)',
+              color: isGithubConnected ? '#000' : '#A5D6A7',
               border: isGithubConnected ? 'none' : '1px solid rgba(255, 176, 32, 0.3)',
               borderRadius: '8px',
               fontSize: '13px',
@@ -464,7 +464,7 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
+              background: 'linear-gradient(135deg, #A5D6A7 0%, #A5D6A7 100%)',
               color: '#000',
               border: 'none',
               borderRadius: '8px',
@@ -529,7 +529,7 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
+              background: 'linear-gradient(135deg, #A5D6A7 0%, #A5D6A7 100%)',
               color: '#000',
               border: 'none',
               borderRadius: '8px',
@@ -632,7 +632,7 @@ const Activity = () => {
               </svg>
               Recent GitHub Activity
             </h3>
-            <a href="#" style={{ fontSize: '13px', color: '#FFB020', fontWeight: '600', textDecoration: 'none' }}>
+            <a href="#" style={{ fontSize: '13px', color: '#A5D6A7', fontWeight: '600', textDecoration: 'none' }}>
               View All Activity →
             </a>
           </div>
@@ -783,4 +783,18 @@ const Activity = () => {
                         whiteSpace: 'nowrap'
                       }}
                     >
-                      View C
+                      View Contest →
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default Activity;
