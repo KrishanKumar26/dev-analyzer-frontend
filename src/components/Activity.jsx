@@ -160,7 +160,7 @@ const Activity = () => {
         borderRadius: '16px',
         padding: '2rem',
         marginBottom: '2rem',
-        border: '1px solid var(--border2)',
+        border: '1px solid rgba(255, 176, 32, 0.2)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -174,12 +174,12 @@ const Activity = () => {
             width: '80px',
             height: '80px',
             borderRadius: '16px',
-            background: 'var(--primary)',
+            background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '40px',
-            boxShadow: '0 8px 24px rgba(0, 229, 160, 0.2)'
+            boxShadow: '0 8px 24px rgba(255, 176, 32, 0.2)'
           }}>
             ⚡
           </div>
@@ -192,7 +192,7 @@ const Activity = () => {
               letterSpacing: '-0.5px'
             }}>
               Developer <span style={{ 
-                color: 'var(--primary)'
+                color: '#FFB020'
               }}>Activity</span>
             </h1>
             <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
@@ -252,69 +252,69 @@ const Activity = () => {
             gap: '12px' 
           }}>
             <div style={{
-              background: 'var(--bg3)',
+              background: 'rgba(255, 176, 32, 0.08)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid var(--border)'
+              border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: 'var(--primary)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 📚 Public Repositories
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.public_repos || 12}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
                 ▲ +1
               </div>
             </div>
 
             <div style={{
-              background: 'var(--bg3)',
+              background: 'rgba(255, 176, 32, 0.08)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid var(--border)'
+              border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: 'var(--accent2)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 👥 Followers
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 {githubData.followers || 248}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
                 ▲ +12
               </div>
             </div>
 
             <div style={{
-              background: 'var(--bg3)',
+              background: 'rgba(255, 176, 32, 0.08)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid var(--border)'
+              border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: 'var(--gold)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 💫 Contributions (YTD)
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 482
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
                 ▲ +36
               </div>
             </div>
 
             <div style={{
-              background: 'var(--bg3)',
+              background: 'rgba(255, 176, 32, 0.08)',
               borderRadius: '12px',
               padding: '1rem',
-              border: '1px solid var(--border)'
+              border: '1px solid rgba(255, 176, 32, 0.2)'
             }}>
-              <div style={{ fontSize: '12px', color: 'var(--gold)', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', marginBottom: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 ⭐ Total Stars
               </div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text)', marginBottom: '4px' }}>
                 1.2k
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: '600' }}>
+              <div style={{ fontSize: '12px', color: '#FFB020', fontWeight: '600' }}>
                 ▲ +120
               </div>
             </div>
@@ -331,10 +331,10 @@ const Activity = () => {
       }}>
         {/* GitHub Card */}
         <div style={{
-          background: 'var(--bg2)',
+          background: 'rgba(255, 176, 32, 0.05)',
           borderRadius: '14px',
           padding: '1.25rem',
-          border: isGithubConnected ? '2px solid var(--primary)' : '1px solid var(--border)',
+          border: isGithubConnected ? '2px solid rgba(255, 176, 32, 0.3)' : '1px solid var(--border)',
           position: 'relative'
         }}>
           {isGithubConnected && (
@@ -343,7 +343,7 @@ const Activity = () => {
               top: '12px',
               right: '12px',
               padding: '4px 10px',
-              background: 'var(--primary)',
+              background: '#FFB020',
               borderRadius: '6px',
               fontSize: '11px',
               fontWeight: '700',
@@ -399,9 +399,9 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: isGithubConnected ? 'var(--primary)' : 'var(--bg3)',
-              color: isGithubConnected ? '#000' : 'var(--primary)',
-              border: isGithubConnected ? 'none' : '1px solid var(--border2)',
+              background: isGithubConnected ? 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)' : 'rgba(255, 176, 32, 0.1)',
+              color: isGithubConnected ? '#000' : '#FFB020',
+              border: isGithubConnected ? 'none' : '1px solid rgba(255, 176, 32, 0.3)',
               borderRadius: '8px',
               fontSize: '13px',
               fontWeight: '700',
@@ -464,8 +464,8 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'var(--accent2)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
+              color: '#000',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
@@ -529,8 +529,8 @@ const Activity = () => {
             style={{
               width: '100%',
               padding: '10px',
-              background: 'var(--accent2)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, #FFB020 0%, #FFA500 100%)',
+              color: '#000',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
@@ -632,7 +632,7 @@ const Activity = () => {
               </svg>
               Recent GitHub Activity
             </h3>
-            <a href="#" style={{ fontSize: '13px', color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>
+            <a href="#" style={{ fontSize: '13px', color: '#FFB020', fontWeight: '600', textDecoration: 'none' }}>
               View All Activity →
             </a>
           </div>
