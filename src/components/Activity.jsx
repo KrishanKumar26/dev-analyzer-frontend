@@ -783,18 +783,4 @@ const Activity = () => {
                         whiteSpace: 'nowrap'
                       }}
                     >
-                      View Contest →
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-    </div>
-  );
-};
-
-export default Activity;
+                      View C
