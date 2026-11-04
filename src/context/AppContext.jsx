@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 
 const AppContext = createContext(null);
 
-export function AppProvider({ children, user, setUser, activeTab, setActiveTab }) {
+export function AppProvider({ children, user, setUser, activeTab, setActiveTab, viewLanding, setViewLanding }) {
   const [toasts, setToasts] = useState([]);
   const [theme, setTheme] = useState(() => localStorage.getItem("vortex-theme") || "dark");
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -28,7 +28,8 @@ export function AppProvider({ children, user, setUser, activeTab, setActiveTab }
   const logout = useCallback(() => {
     localStorage.removeItem("token");
     setUser(null);
-  }, [setUser]);
+    if (setViewLanding) setViewLanding(true);
+  }, [setUser, setViewLanding]);
 
   const value = {
     user,
@@ -43,6 +44,8 @@ export function AppProvider({ children, user, setUser, activeTab, setActiveTab }
     shortcutsOpen,
     setShortcutsOpen,
     logout,
+    viewLanding,
+    setViewLanding
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

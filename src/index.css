@@ -7,37 +7,54 @@
 }
 
 :root {
-  /* Professional Developer Theme Colors */
-  --primary: #00D9A3;        /* Bright green - GitHub success */
-  --primary-dim: #00b386;
-  --accent: #2196F3;         /* Electric blue - VS Code blue */
-  --accent2: #BB86FC;        /* Soft purple - Material Design */
-  --gold: #FFB020;           /* Warm gold */
-  --silver: #B0B8C8;
-  --bronze: #CD7C3F;
-  
-  /* Dark Backgrounds - Professional coding theme */
-  --bg: #0D1117;             /* Very dark - like GitHub dark */
-  --bg2: #161B22;            /* Cards/panels */
-  --bg3: #1F2937;            /* Hover states */
-  --bg4: #252B35;            /* Modal overlays */
-  
+  /* ✦ Warm Mocha Obsidian — Final Production Theme */
+  --primary: #D4A373;          /* Champagne Caramel — main accent */
+  --primary-dim: #A8795A;      /* Roasted mocha — hover/dim */
+  --primary-base: #68534B;     /* Deep espresso — base */
+  --primary-glow: rgba(212, 163, 115, 0.28);
+  --primary-subtle: rgba(104, 83, 75, 0.22);
+
+  --accent: #7599BF;           /* Elegant Steel Slate Blue */
+  --accent-glow: rgba(117, 153, 191, 0.2);
+  --accent-subtle: rgba(117, 153, 191, 0.16);
+
+  --accent2: #A58AC4;          /* Soft Lilac Purple */
+  --accent2-subtle: rgba(165, 138, 196, 0.16);
+
+  --accent-green: #5EA880;     /* Muted Sage Emerald */
+  --accent-green-subtle: rgba(94, 168, 128, 0.16);
+
+  --accent-pink: #C47C85;      /* Warm Desert Rose */
+  --accent-pink-subtle: rgba(196, 124, 133, 0.16);
+
+  --gold: #E6B86A;             /* Champagne Gold (#1 Rank) */
+  --silver: #B5ADA4;           /* Warm Platinum (#2 Rank) */
+  --bronze: #A07455;           /* Roasted Bronze (#3 Rank) */
+
+  /* Luxury Pitch-Black Background & Distinct Warm Mocha Boxes (#68534B Theme) */
+  --bg: #070606;               /* Deep Obsidian Black Canvas */
+  --bg2: #191412;              /* Warm Mocha Card Box Surface */
+  --bg3: #231C19;              /* Card Hover & Elevation */
+  --bg4: #2D2420;              /* Inputs & Active Pills */
+
   /* Borders & Dividers */
-  --border: #30363D;         /* Subtle borders */
-  --border2: rgba(0, 217, 163, 0.3);  /* Primary border */
-  
+  --border: rgba(168, 140, 130, 0.22);        /* Crisp Warm Mocha Hairline Border */
+  --border2: rgba(200, 155, 123, 0.45);       /* Primary Accent Glow Border */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
   /* Text Colors */
-  --text: #E6EDF3;           /* Primary text - bright */
-  --text2: #8B949E;          /* Secondary text - muted */
-  --text3: #6E7681;          /* Tertiary text - dim */
-  
+  --text: #FFFFFF;             /* Crisp bright white */
+  --text2: #B5ADA4;            /* Warm bone / secondary body */
+  --text3: #7D756D;            /* Muted warm gray */
+
   /* Fonts */
   --mono: 'Space Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  
+  --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
   /* Radius */
-  --radius: 12px;
-  --radius-sm: 8px;
+  --radius: 18px;
+  --radius-sm: 10px;
+  --radius-pill: 9999px;
 }
 
 body {
@@ -60,12 +77,202 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: 
-    linear-gradient(rgba(33, 150, 243, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(33, 150, 243, 0.02) 1px, transparent 1px);
-  background-size: 50px 50px;
+  background: 
+    radial-gradient(ellipse 85% 55% at 50% -8%, rgba(104, 83, 75, 0.28) 0%, rgba(7, 6, 6, 0) 70%),
+    linear-gradient(rgba(200, 155, 123, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 155, 123, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
   pointer-events: none;
   z-index: 0;
+}
+
+/* ============================================================
+   ✦ WARM MOCHA OBSIDIAN — ANIMATION SYSTEM
+   ============================================================ */
+
+/* Breathing glow on AI cards & hero sections */
+@keyframes aiGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(104, 83, 75, 0.2), inset 0 0 15px rgba(212, 163, 115, 0.03);
+    border-color: rgba(212, 163, 115, 0.28);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(212, 163, 115, 0.32), inset 0 0 28px rgba(212, 163, 115, 0.09);
+    border-color: rgba(212, 163, 115, 0.58);
+  }
+}
+
+/* Gentle float for hero elements */
+@keyframes aiFloating {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Pulsing live dot — radar ping */
+@keyframes liveRadar {
+  0%   { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(212, 163, 115, 0.75); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 9px rgba(212, 163, 115, 0); }
+  100% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(212, 163, 115, 0); }
+}
+
+/* Warm shimmer sweep — for hero banners & stat cards */
+@keyframes mochaShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Gradient text shift — VORTEX brand text */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Slide up fade in for cards on load */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Warm glow ring rotation — premium borders */
+@keyframes warmRingRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Metric bar fill animation */
+@keyframes fillBar {
+  from { width: 0%; }
+  to   { width: var(--bar-width, 100%); }
+}
+
+/* Soft scale pop on hover interaction */
+@keyframes scalePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ── Utility Animation Classes ── */
+.anim-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(212, 163, 115, 0) 0%,
+    rgba(212, 163, 115, 0.12) 40%,
+    rgba(212, 163, 115, 0.22) 50%,
+    rgba(212, 163, 115, 0.12) 60%,
+    rgba(212, 163, 115, 0) 100%
+  );
+  background-size: 200% auto;
+  animation: mochaShimmer 2.5s linear infinite;
+}
+
+.anim-gradient-text {
+  background: linear-gradient(135deg, #D4A373, #C89B7B, #E6B88A, #A8795A, #D4A373);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+.anim-float {
+  animation: aiFloating 3.5s ease-in-out infinite;
+}
+
+.anim-glow-pulse {
+  animation: aiGlowPulse 4s ease-in-out infinite;
+}
+
+.anim-slide-up {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.pill-badge.mocha {
+  background: rgba(104, 83, 75, 0.22);
+  color: #D4A373;
+  border: 1px solid rgba(212, 163, 115, 0.32);
+}
+
+.pill-badge.green {
+  background: rgba(94, 168, 128, 0.16);
+  color: #8EDBB1;
+  border: 1px solid rgba(94, 168, 128, 0.3);
+}
+
+.pill-badge.blue {
+  background: rgba(117, 153, 191, 0.16);
+  color: #A6C5E8;
+  border: 1px solid rgba(117, 153, 191, 0.3);
+}
+
+.pill-badge.pink {
+  background: rgba(196, 124, 133, 0.16);
+  color: #E8A8B1;
+  border: 1px solid rgba(196, 124, 133, 0.28);
+}
+
+.pill-badge.neutral {
+  background: rgba(255, 255, 255, 0.05);
+  color: #C7B9B5;
+  border: 1px solid rgba(168, 140, 130, 0.2);
+}
+
+.btn-chaicode-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #68534B 0%, #A8795A 60%, #D4A373 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: var(--sans);
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 12px rgba(104, 83, 75, 0.35);
+}
+.btn-chaicode-primary:hover {
+  background: linear-gradient(135deg, #7A6259 0%, #BF8F6A 60%, #E6B88A 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 163, 115, 0.4);
+}
+
+.btn-chaicode-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #FFFFFF;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(168, 140, 130, 0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--sans);
+}
+.btn-chaicode-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(200, 155, 123, 0.4);
+  transform: translateY(-2px);
 }
 
 .rel {
@@ -334,10 +541,17 @@ body {
   font-family: var(--mono);
   font-weight: 700;
   letter-spacing: 0.05em;
+  background: linear-gradient(135deg, #D4A373, #C89B7B, #E6B88A, #A8795A, #D4A373);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 5s ease infinite;
 }
 
 .logo-accent {
-  color: var(--text);
+  /* inherits gradient from logo-text */
+  color: var(--primary);
 }
 
 /* --- EXISTING PULSE ANIMATION UPDATE --- */
@@ -476,6 +690,73 @@ body {
   animation: pulse 1.5s infinite;
 }
 
+.overview-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1.85rem 2.25rem;
+  background: linear-gradient(180deg, #1C1613 0%, #120F0D 100%);
+  border: 1px solid rgba(168, 140, 130, 0.22);
+  border-radius: 20px;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 14px 36px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.overview-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(104, 83, 75, 0.28) 0%, transparent 70%);
+  pointer-events: none;
+  animation: aiGlowPulse 6s infinite ease-in-out;
+}
+
+.overview-hero-text {
+  max-width: 680px;
+  position: relative;
+  z-index: 1;
+}
+
+.overview-hero-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.03em;
+  margin: 10px 0 6px 0;
+  line-height: 1.2;
+}
+
+.overview-hero-title span {
+  background: linear-gradient(135deg, #E6B88A, #D4A373, #C89B7B, #D4A373);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+.overview-hero-subtitle {
+  font-size: 14.5px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.overview-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -484,13 +765,47 @@ body {
 }
 
 .stat-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #1D1714 0%, #130F0D 100%);
+  border: 1px solid rgba(168, 140, 130, 0.22);
   border-radius: var(--radius);
-  padding: 1.1rem;
-  transition: border-color 0.2s;
+  padding: 22px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.07), 0 10px 28px rgba(0, 0, 0, 0.65);
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.10s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.20s; }
+
+.stat-card:hover {
+  border-color: rgba(212, 163, 115, 0.55);
+  transform: translateY(-5px);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.14), 0 22px 44px rgba(0, 0, 0, 0.8), 0 0 30px rgba(104, 83, 75, 0.32);
+}
+
+/* Shimmer sweep on hover */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(212, 163, 115, 0.07) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  background-position: -200% 0;
+  transition: background-position 0.6s ease;
+  pointer-events: none;
+}
+
+.stat-card:hover::before {
+  background-position: 200% 0;
 }
 
 .stat-card::after {
@@ -503,7 +818,7 @@ body {
 }
 
 .stat-card.green::after {
-  background: var(--primary);
+  background: linear-gradient(90deg, transparent, #D4A373, transparent);
 }
 
 .stat-card.red::after {
@@ -572,10 +887,18 @@ body {
 }
 
 .card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #1C1613 0%, #120F0D 100%);
+  border: 1px solid rgba(168, 140, 130, 0.22);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 24px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.65);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card:hover {
+  border-color: rgba(212, 163, 115, 0.42);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(104, 83, 75, 0.18);
 }
 
 .card-title {
@@ -1390,50 +1713,52 @@ body {
   border-radius: 10px;
   transition: width 1s ease-in-out;
 }
-/* --- NEON GLOW SYSTEM --- */
+/* --- MOCHA LUXURY SYSTEM --- */
 
-/* 1. Base Glow for Cards */
+/* 1. Base Warm Mocha Surfaces for Cards */
 .stat-card, .platform-card, .card, .insight-card {
   position: relative;
-  background: rgba(17, 21, 32, 0.7); /* Thoda transparent taaki glow dikhe */
-  backdrop-filter: blur(8px);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  background: linear-gradient(180deg, #1C1613 0%, #130F0D 100%) !important;
+  backdrop-filter: blur(12px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(168, 140, 130, 0.22) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.65) !important;
 }
 
 /* 2. Glow on Hover */
-.stat-card:hover, .platform-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  border-color: var(--primary) !important;
-  box-shadow: 0 0 20px rgba(0, 229, 160, 0.15), 
-              0 0 40px rgba(0, 229, 160, 0.1);
+.stat-card:hover, .platform-card:hover, .card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(200, 155, 123, 0.55) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 
+              0 18px 40px rgba(0, 0, 0, 0.8), 
+              0 0 25px rgba(104, 83, 75, 0.28) !important;
 }
 
 /* 3. Specific Color Glows (Platform Wise) */
-.platform-card.connected:nth-child(1):hover { /* GitHub */
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
-  border-color: #fff !important;
+.platform-card.connected:nth-child(1):hover {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 25px rgba(117, 153, 191, 0.25) !important;
+  border-color: var(--accent) !important;
 }
 
-.platform-card.connected:nth-child(2):hover { /* LeetCode */
-  box-shadow: 0 0 25px rgba(255, 209, 102, 0.2);
-  border-color: var(--gold) !important;
+.platform-card.connected:nth-child(2):hover {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 25px rgba(200, 155, 123, 0.3) !important;
+  border-color: var(--primary) !important;
 }
 
 /* 4. Glowing Text Effect for Headers */
 .greeting span, .nav-logo {
-  text-shadow: 0 0 10px rgba(0, 229, 160, 0.5);
+  text-shadow: 0 0 12px rgba(200, 155, 123, 0.35);
 }
 
-/* 5. Animated Border (Optional: Bahut pro lagta hai) */
+/* 5. Animated Border */
 @keyframes borderRotate {
   from { background-position: 0% 50%; }
   to { background-position: 100% 50%; }
 }
 
 .stat-card.green:hover {
-  background: linear-gradient(var(--bg2), var(--bg2)) padding-box,
-              linear-gradient(90deg, var(--primary), var(--accent2)) border-box;
+  background: linear-gradient(180deg, #1C1613 0%, #130F0D 100%) padding-box,
+              linear-gradient(90deg, var(--primary), var(--accent-green)) border-box;
   border: 1px solid transparent !important;
 }
 /* --- NEON TOAST SYSTEM --- */
@@ -1448,7 +1773,7 @@ body {
 }
 
 .toast {
-  background: rgba(17, 21, 32, 0.9);
+  background: rgba(26, 21, 18, 0.95);
   backdrop-filter: blur(12px);
   border-left: 3px solid var(--primary);
   border-top: 1px solid var(--border);
@@ -1462,7 +1787,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 229, 160, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px var(--primary-glow);
   animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   min-width: 280px;
 }
@@ -1500,36 +1825,39 @@ body {
   z-index: 10;
   outline: 1px solid white;
 }
-/* --- PROFESSIONAL AUTH SCREEN --- */
+/* --- PREMIUM SPLIT-SCREEN AUTH --- */
 .auth-screen {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--bg);
+  background: #070606;
   position: relative;
   overflow: hidden;
+}
+
+/* Hide left panel on mobile */
+@media (max-width: 768px) {
+  .auth-left-panel { display: none !important; }
+  .auth-right-panel { padding: 40px 24px !important; }
 }
 
 .auth-bg-glow {
   position: absolute;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(0, 229, 160, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(104, 83, 75, 0.12) 0%, transparent 70%);
   z-index: 0;
 }
 
 .auth-glass-card {
   z-index: 1;
   width: 100%;
-  max-width: 400px;
-  background: rgba(17, 21, 32, 0.8);
+  max-width: 420px;
+  background: rgba(26, 21, 18, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 229, 160, 0.2);
+  border: 1px solid rgba(104, 83, 75, 0.25);
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 
 .auth-brand {
@@ -1559,44 +1887,49 @@ body {
 .input-group label {
   display: block;
   font-size: 10px;
-  color: var(--primary);
+  color: #C89B7B;
   font-family: var(--mono);
   margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .input-group input {
   width: 100%;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(104,83,75,0.35);
+  padding: 13px 16px;
+  border-radius: 10px;
   color: var(--text);
   outline: none;
-  transition: 0.3s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
 .input-group input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(0, 229, 160, 0.1);
+  border-color: #A8795A;
+  box-shadow: 0 0 0 3px rgba(104,83,75,0.15);
 }
 
 .auth-btn {
   width: 100%;
   margin-top: 20px;
   padding: 14px;
-  background: var(--primary);
-  color: var(--bg);
+  background: linear-gradient(135deg, #68534B 0%, #A8795A 100%);
+  color: #FFFFFF;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 700;
   font-family: var(--mono);
   cursor: pointer;
-  transition: 0.3s;
+  transition: opacity 0.2s, transform 0.2s;
+  font-size: 14px;
 }
 
 .auth-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 229, 160, 0.3);
+  opacity: 0.88;
+  transform: translateY(-1px);
 }
 
 .auth-footer {
@@ -1604,6 +1937,7 @@ body {
   font-size: 9px;
   color: var(--text3);
   letter-spacing: 2px;
+  text-align: center;
 }
 
 .loader-mini {
@@ -1759,7 +2093,7 @@ body {
   width: 100%;
   max-width: 560px;
   max-height: 60vh;
-  background: rgba(17, 21, 32, 0.97);
+  background: rgba(26, 21, 18, 0.98);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border2);
   border-radius: 14px;
@@ -2227,7 +2561,7 @@ body {
   justify-content: center;
   gap: 32px;
   padding: 24px;
-  background: rgba(17, 21, 32, 0.6);
+  background: rgba(26, 21, 18, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -2300,7 +2634,7 @@ body {
 }
 
 .landing-preview-frame {
-  background: rgba(17, 21, 32, 0.8);
+  background: rgba(26, 21, 18, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border2);
   border-radius: 16px;
@@ -2434,7 +2768,7 @@ body {
 }
 
 .landing-feature-card {
-  background: rgba(17, 21, 32, 0.6);
+  background: rgba(26, 21, 18, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -2484,7 +2818,7 @@ body {
 
 .landing-step {
   flex: 1;
-  background: rgba(17, 21, 32, 0.6);
+  background: rgba(26, 21, 18, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -2551,7 +2885,7 @@ body {
 }
 
 .landing-discovery-card {
-  background: rgba(17, 21, 32, 0.8);
+  background: rgba(26, 21, 18, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border2);
   border-radius: 16px;
@@ -2647,7 +2981,7 @@ body {
 .landing-leaderboard-preview {
   max-width: 700px;
   margin: 0 auto;
-  background: rgba(17, 21, 32, 0.6);
+  background: rgba(26, 21, 18, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "../context/AppContext";
 
 export default function CommandPalette() {
-  const { paletteOpen, setPaletteOpen, setActiveTab, theme, toggleTheme, addToast, logout, setShortcutsOpen } = useApp();
+  const { paletteOpen, setPaletteOpen, setActiveTab, theme, toggleTheme, addToast, logout, setShortcutsOpen, setViewLanding } = useApp();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef(null);
@@ -11,10 +11,20 @@ export default function CommandPalette() {
     () => [
       { id: "nav-overview", group: "Navigate", icon: "📊", label: "Go to Overview", run: () => setActiveTab("overview") },
       { id: "nav-leaderboard", group: "Navigate", icon: "🏆", label: "Go to Leaderboard", run: () => setActiveTab("leaderboard") },
+      { id: "nav-groups", group: "Navigate", icon: "👥", label: "Go to Groups", run: () => setActiveTab("groups") },
+      { id: "nav-goals", group: "Navigate", icon: "🎯", label: "Go to Goals", run: () => setActiveTab("goals") },
       { id: "nav-activity", group: "Navigate", icon: "⚡", label: "Go to Activity", run: () => setActiveTab("activity") },
+      { id: "nav-compare", group: "Navigate", icon: "⚖️", label: "Go to Compare", run: () => setActiveTab("compare") },
       { id: "nav-search", group: "Navigate", icon: "🔍", label: "Go to Search", run: () => setActiveTab("search") },
       { id: "nav-insights", group: "Navigate", icon: "🤖", label: "Go to Insights", run: () => setActiveTab("insights") },
       { id: "nav-profile", group: "Navigate", icon: "🛡️", label: "Go to Profile", run: () => setActiveTab("profile") },
+      {
+        id: "view-landing",
+        group: "Actions",
+        icon: "🏠",
+        label: "Go to Public Homepage",
+        run: () => setViewLanding && setViewLanding(true),
+      },
       {
         id: "toggle-theme",
         group: "Actions",
@@ -34,7 +44,7 @@ export default function CommandPalette() {
       },
       { id: "logout", group: "Actions", icon: "🚪", label: "Logout", run: () => logout() },
     ],
-    [theme, setActiveTab, toggleTheme, addToast, logout, setShortcutsOpen]
+    [theme, setActiveTab, toggleTheme, addToast, logout, setShortcutsOpen, setViewLanding]
   );
 
   const filtered = useMemo(() => {

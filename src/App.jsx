@@ -9,6 +9,7 @@ import SearchUser from "./components/SearchUser";
 import Groups from "./components/Groups";
 import Compare from "./components/Compare";
 import Goals from "./components/Goals";
+import InterviewReadiness from "./components/InterviewReadiness";
 import CommandPalette from "./components/CommandPalette";
 import ShortcutsHelp from "./components/ShortcutsHelp";
 import PublicProfile from "./components/PublicProfile";
@@ -16,23 +17,23 @@ import ResetPassword from "./components/ResetPassword";
 import LandingPage from "./components/LandingPage";
 import { AppProvider, useApp } from "./context/AppContext";
 
-const TAB_ORDER = ["overview", "leaderboard", "groups", "goals", "activity", "compare", "search", "insights", "profile"];
+const TAB_ORDER = ["overview", "leaderboard", "groups", "goals", "activity", "compare", "search", "insights", "readiness", "profile"];
 
 function AppShell({ user, setUser }) {
-  const { activeTab, setActiveTab, toasts, addToast, theme, toggleTheme, setPaletteOpen, setShortcutsOpen, logout } = useApp();
+  const { activeTab, setActiveTab, toasts, addToast, theme, toggleTheme, setPaletteOpen, setShortcutsOpen, logout, setViewLanding } = useApp();
 
   useEffect(() => {
     if (user) {
       const messages = {
-        overview: "Systems Synced 🟢",
-        activity: "Activity Feed Loaded 📊",
-        leaderboard: "Leaderboard Updated 🏆",
-        groups: "Groups Loaded 👥",
-        goals: "Goals Loaded 🎯",
-        compare: "Compare Ready ⚔️",
-        search: "Search Engine Ready 🔍",
-        insights: "AI Engine Initialized 🤖",
-        profile: "Identity Verified 🛡️"
+        overview: "✦ Telemetry Systems Synced",
+        activity: "✦ Activity Feed Live",
+        leaderboard: "✦ Global Rankings Active",
+        groups: "✦ Developer Communities Loaded",
+        goals: "✦ Milestone Targets Loaded",
+        compare: "✦ 1v1 Telemetry Engine Ready",
+        search: "✦ Developer Search Index Ready",
+        insights: "✦ AI Engine Initialized",
+        profile: "✦ Developer Identity Verified"
       };
       if (messages[activeTab]) {
         addToast(messages[activeTab], 'info');
@@ -88,7 +89,7 @@ function AppShell({ user, setUser }) {
         <Auth setUser={(userData) => {
           setUser(userData);
           addToast('Welcome, ' + userData.name.split(' ')[0] + ' 👋', 'success');
-        }} />
+        }} setViewLanding={setViewLanding} />
       ) : (
         <>
           <CommandPalette />
@@ -112,8 +113,12 @@ function AppShell({ user, setUser }) {
               <button className={'nav-tab ' + (activeTab === 'goals' ? 'active' : '')} onClick={() => setActiveTab('goals')}>Goals</button>
               <button className={'nav-tab ' + (activeTab === 'activity' ? 'active' : '')} onClick={() => setActiveTab('activity')}>Activity</button>
               <button className={'nav-tab ' + (activeTab === 'compare' ? 'active' : '')} onClick={() => setActiveTab('compare')}>Compare</button>
-              <button className={'nav-tab ' + (activeTab === 'search' ? 'active' : '')} onClick={() => setActiveTab('search')}>🔍 Search</button>
+              <button className={'nav-tab ' + (activeTab === 'search' ? 'active' : '')} onClick={() => setActiveTab('search')}>Search</button>
               <button className={'nav-tab ' + (activeTab === 'insights' ? 'active' : '')} onClick={() => setActiveTab('insights')}>Insights</button>
+              <button className={'nav-tab ' + (activeTab === 'readiness' ? 'active' : '')} onClick={() => setActiveTab('readiness')} style={{ color: activeTab === 'readiness' ? '#D4A373' : '', position: 'relative' }}>
+                Readiness
+                <span style={{ position: 'absolute', top: '-4px', right: '-4px', width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px rgba(16,185,129,0.8)' }} />
+              </button>
               <button className={'nav-tab ' + (activeTab === 'profile' ? 'active' : '')} onClick={() => setActiveTab('profile')}>Profile</button>
             </div>
 
@@ -152,6 +157,7 @@ function AppShell({ user, setUser }) {
             {activeTab === 'activity' && <Activity user={user} />}
             {activeTab === 'search' && <SearchUser user={user} />}
             {activeTab === 'insights' && <AIPortfolio user={user} />}
+            {activeTab === 'readiness' && <InterviewReadiness user={user} />}
             {activeTab === 'profile' && <ProfilePage user={user} setUser={setUser} />}
           </div>
         </>
@@ -165,9 +171,19 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
   const [showAuth, setShowAuth] = useState(false);
   
-  // Check token immediately, not in useEffect
+  // Check token immediately
   const hasToken = localStorage.getItem('token');
-  const [showLanding, setShowLanding] = useState(!hasToken);
+  const [viewLanding, setViewLanding] = useState(!hasToken || window.location.hash === '#landing' || window.location.search.includes('landing=true'));
+
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === '#landing' || window.location.search.includes('landing=true')) {
+        setViewLanding(true);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   // Public shareable profile route
   const publicMatch = window.location.pathname.match(/^\/u\/([^/]+)/);
@@ -179,17 +195,18 @@ function App() {
   }
 
   // Show landing page
-  if (showLanding && !user && !hasToken) {
+  if (viewLanding) {
     return (
       <LandingPage 
         onGetStarted={() => {
-          setShowLanding(false);
-          setShowAuth(true);
+          setViewLanding(false);
+          if (!user && !hasToken) setShowAuth(true);
         }}
         onSignIn={() => {
-          setShowLanding(false);
-          setShowAuth(true);
+          setViewLanding(false);
+          if (!user && !hasToken) setShowAuth(true);
         }}
+        onDirectApp={() => setViewLanding(false)}
       />
     );
   }
@@ -200,13 +217,20 @@ function App() {
       <Auth setUser={(userData) => {
         setUser(userData);
         setShowAuth(false);
-        setShowLanding(false);
-      }} />
+        setViewLanding(false);
+      }} setViewLanding={setViewLanding} />
     );
   }
 
   return (
-    <AppProvider user={user} setUser={setUser} activeTab={activeTab} setActiveTab={setActiveTab}>
+    <AppProvider 
+      user={user} 
+      setUser={setUser} 
+      activeTab={activeTab} 
+      setActiveTab={setActiveTab}
+      viewLanding={viewLanding}
+      setViewLanding={setViewLanding}
+    >
       <AppShell user={user} setUser={setUser} />
     </AppProvider>
   );

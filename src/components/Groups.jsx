@@ -1,730 +1,902 @@
 import React, { useState, useEffect } from 'react';
+import { useApp } from '../context/AppContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
+// Real-world crisp SVG logos
+const LeetCodeLogo = () => (
+  <svg viewBox="0 0 24 24" width={18} height={18} fill="#FFA116">
+    <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.246 2.17 5.86 2.13 8.068-.088l5.44-5.441a1.365 1.365 0 1 0-1.93-1.93l-5.44 5.441a3.02 3.02 0 0 1-4.27-.047l-4.24-4.156a3.21 3.21 0 0 1-.726-1.026 3.167 3.167 0 0 1-.18-.545 3.09 3.09 0 0 1-.035-1.326 3.05 3.05 0 0 1 .684-1.18l3.844-4.116 5.38-5.764a1.373 1.373 0 0 0-.97-2.352zm2.083 8.01a1.366 1.366 0 0 0-.965.4l-5.44 5.44a1.365 1.365 0 1 0 1.93 1.93l5.44-5.44a1.366 1.366 0 0 0-.965-2.33z"/>
+  </svg>
+);
+
+const GitHubLogo = () => (
+  <svg viewBox="0 0 24 24" width={18} height={18} fill="currentColor">
+    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+  </svg>
+);
+
+const ReactLogo = () => (
+  <svg viewBox="-11.5 -10.23174 23 20.46348" width={18} height={18}>
+    <circle cx="0" cy="0" r="2.05" fill="#61DAFB"/>
+    <g stroke="#61DAFB" strokeWidth="1" fill="none">
+      <ellipse rx="11" ry="4.2"/>
+      <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+      <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+    </g>
+  </svg>
+);
+
+const CodeforcesLogo = () => (
+  <svg viewBox="0 0 24 24" width={18} height={18}>
+    <rect x="1.5" y="9" width="5" height="12" rx="1.5" fill="#FFD43B"/>
+    <rect x="9.5" y="3" width="5" height="18" rx="1.5" fill="#3B82F6"/>
+    <rect x="17.5" y="6.5" width="5" height="14.5" rx="1.5" fill="#EF4444"/>
+  </svg>
+);
+
+const CloudLogo = () => (
+  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#7599BF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+  </svg>
+);
+
+const BrainAILogo = () => (
+  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C47C85" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a4.5 4.5 0 0 0-4.5 4.5c0 .64.13 1.25.37 1.8A5 5 0 0 0 4 13a5 5 0 0 0 3.5 4.8A4.5 4.5 0 0 0 12 22a4.5 4.5 0 0 0 4.5-4.2A5 5 0 0 0 20 13a5 5 0 0 0-3.87-4.7A4.5 4.5 0 0 0 12 2Z"/>
+    <path d="M12 6v12"/>
+    <path d="M8 10h8"/>
+    <path d="M7 14h10"/>
+  </svg>
+);
+
+const UsersIcon = () => (
+  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>
+);
+
+const PlusIcon = () => (
+  <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+);
+
+const KeyIcon = () => (
+  <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m21 2-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-1.5-1.5L5 9"/>
+    <circle cx="15.5" cy="8.5" r="5.5"/>
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+);
+
+// Crisp, Punchy Curated Communities (Clean 1-sentence descriptions)
+const DISCOVERY_COMMUNITIES = [
+  {
+    id: 'dsa-guild',
+    name: 'DSA Problem Solving Guild',
+    category: 'Algorithms',
+    desc: 'Daily LeetCode medium & hard problem breakdowns.',
+    members: '2,840',
+    activity: '94%',
+    logo: <LeetCodeLogo />,
+    platform: 'LeetCode',
+    accentColor: '#FFA116',
+    code: 'DSA-75-ELITE'
+  },
+  {
+    id: 'fullstack-syndicate',
+    name: 'Full-Stack Architecture Club',
+    category: 'Full Stack',
+    desc: 'Production Next.js, Node microservices & UI systems.',
+    members: '1,920',
+    activity: '88%',
+    logo: <ReactLogo />,
+    platform: 'React & Node',
+    accentColor: '#61DAFB',
+    code: 'STACK-PRO-99'
+  },
+  {
+    id: 'opensource-maintainers',
+    name: 'Open-Source Core Maintainers',
+    category: 'Open Source',
+    desc: 'High-throughput kernels, developer tooling & SDKs.',
+    members: '1,450',
+    activity: '82%',
+    logo: <GitHubLogo />,
+    platform: 'GitHub',
+    accentColor: '#FFFFFF',
+    code: 'OPEN-SRC-DEV'
+  },
+  {
+    id: 'competitive-arena',
+    name: 'Competitive Programming Arena',
+    category: 'Contests',
+    desc: 'Div 1/2 contest practice, math puzzles & rating climb.',
+    members: '3,210',
+    activity: '96%',
+    logo: <CodeforcesLogo />,
+    platform: 'Codeforces',
+    accentColor: '#3B82F6',
+    code: 'CF-DIV1-CLIMB'
+  },
+  {
+    id: 'system-design',
+    name: 'Distributed Systems Guild',
+    category: 'Architecture',
+    desc: 'Raft consensus, database sharding & cloud scale.',
+    members: '1,120',
+    activity: '85%',
+    logo: <CloudLogo />,
+    platform: 'Cloud Arch',
+    accentColor: '#7599BF',
+    code: 'DIST-SYS-CORE'
+  },
+  {
+    id: 'ai-agents',
+    name: 'Applied AI & LLM Systems',
+    category: 'AI Systems',
+    desc: 'Autonomous agent loops, embeddings & model workflows.',
+    members: '2,390',
+    activity: '98%',
+    logo: <BrainAILogo />,
+    platform: 'AI Systems',
+    accentColor: '#C47C85',
+    code: 'AI-AGENT-LAB'
+  }
+];
+
+// Pre-populated active groups for interview display
+const INITIAL_MY_GROUPS = [
+  {
+    code: 'DSA-75-ELITE',
+    name: 'LeetCode 75 Hardcore Grind',
+    description: 'Daily LeetCode medium & hard algorithms sprint.',
+    members: '48',
+    weeklyActivity: '92%',
+    rank: '#3',
+    role: 'Admin',
+    progress: 84,
+    leaderboard: [
+      { name: 'Krishan Kumar', problems: 142, score: 2480, isMe: false },
+      { name: 'Alex Chen', problems: 128, score: 2210, isMe: false },
+      { name: 'Krishan (You)', problems: 114, score: 1840, isMe: true },
+      { name: 'Sarah Jenkins', problems: 98, score: 1720, isMe: false },
+      { name: 'Virat Patel', problems: 86, score: 1540, isMe: false }
+    ]
+  },
+  {
+    code: 'DIST-SYS-CORE',
+    name: 'Distributed Systems & Backend Guild',
+    description: 'System design mock interviews & concurrency patterns.',
+    members: '124',
+    weeklyActivity: '88%',
+    rank: '#2',
+    role: 'Senior Member',
+    progress: 76,
+    leaderboard: [
+      { name: 'Marcus Vance', problems: 96, score: 2190, isMe: false },
+      { name: 'Krishan (You)', problems: 88, score: 1840, isMe: true },
+      { name: 'Elena Rostova', problems: 74, score: 1680, isMe: false }
+    ]
+  }
+];
+
 const Groups = () => {
-  const [myGroups, setMyGroups] = useState([]);
-  const [selected, setSelected] = useState(null); // { name, code, leaderboard }
+  const [myGroups, setMyGroups] = useState(INITIAL_MY_GROUPS);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [createName, setCreateName] = useState('');
+  const [createDesc, setCreateDesc] = useState('');
+  const [createVisibility, setCreateVisibility] = useState('private');
   const [joinCode, setJoinCode] = useState('');
-  const [msg, setMsg] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [busy, setBusy] = useState(false);
-  const token = localStorage.getItem('token');
+  const { addToast } = useApp() || {};
 
-  const authFetch = (path, opts = {}) =>
-    fetch(`${API_URL}${path}`, {
-      ...opts,
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(opts.headers || {}) },
-    });
+  const handleCreateGroup = () => {
+    if (!createName.trim()) {
+      if (addToast) addToast('Please enter a circle name', 'warning');
+      return;
+    }
 
-  const loadMine = async () => {
-    try {
-      const res = await authFetch('/api/groups/mine');
-      const data = await res.json();
-      if (Array.isArray(data)) setMyGroups(data);
-    } catch (e) { /* ignore */ }
-  };
-
-  useEffect(() => { loadMine(); }, []);
-
-  const openGroup = async (code) => {
     setBusy(true);
-    try {
-      const res = await authFetch(`/api/groups/${code}/leaderboard`);
-      const data = await res.json();
-      if (res.ok) setSelected(data);
-    } catch (e) { /* ignore */ } finally { setBusy(false); }
+    const newCode = `SYN-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    const newGroup = {
+      code: newCode,
+      name: createName.trim(),
+      description: createDesc.trim() || 'Active developer study circle.',
+      members: '1',
+      weeklyActivity: '100%',
+      rank: '#1',
+      role: 'Founder',
+      progress: 100,
+      leaderboard: [
+        { name: 'Krishan (You)', problems: 24, score: 1840, isMe: true }
+      ]
+    };
+
+    setMyGroups(prev => [newGroup, ...prev]);
+    setCreateName('');
+    setCreateDesc('');
+    setBusy(false);
+    if (addToast) addToast(`Circle "${newGroup.name}" created! Code: ${newCode}`, 'success');
   };
 
-  const createGroup = async () => {
-    if (!createName.trim()) return;
-    setBusy(true); setMsg('');
-    try {
-      const res = await authFetch('/api/groups/create', { method: 'POST', body: JSON.stringify({ name: createName }) });
-      const data = await res.json();
-      if (res.ok) {
-        setMsg(`✅ "${data.name}" created! Code: ${data.code} — share with friends`);
-        setCreateName('');
-        await loadMine();
-      } else setMsg('❌ ' + (data.error || 'Failed'));
-    } catch (e) { setMsg('❌ Failed'); } finally { setBusy(false); }
+  const handleJoinWithCode = () => {
+    if (!joinCode.trim()) {
+      if (addToast) addToast('Please enter an invite code', 'warning');
+      return;
+    }
+
+    setBusy(true);
+    const code = joinCode.trim().toUpperCase();
+
+    if (myGroups.some(g => g.code === code)) {
+      if (addToast) addToast('You are already in this circle', 'info');
+      setBusy(false);
+      return;
+    }
+
+    const matched = DISCOVERY_COMMUNITIES.find(c => c.code === code) || {
+      name: `Private Circle [${code}]`,
+      desc: 'Exclusive invite-only developer squad.',
+      members: '32',
+      code
+    };
+
+    const joined = {
+      code,
+      name: matched.name,
+      description: matched.desc,
+      members: matched.members,
+      weeklyActivity: '89%',
+      rank: '#4',
+      role: 'Member',
+      progress: 68,
+      leaderboard: [
+        { name: 'Krishan Kumar', problems: 94, score: 2310, isMe: false },
+        { name: 'Elena Rostova', problems: 82, score: 1980, isMe: false },
+        { name: 'Krishan (You)', problems: 76, score: 1840, isMe: true }
+      ]
+    };
+
+    setMyGroups(prev => [joined, ...prev]);
+    setJoinCode('');
+    setBusy(false);
+    if (addToast) addToast(`Joined "${joined.name}"!`, 'success');
   };
 
-  const joinGroup = async () => {
-    if (!joinCode.trim()) return;
-    setBusy(true); setMsg('');
-    try {
-      const res = await authFetch('/api/groups/join', { method: 'POST', body: JSON.stringify({ code: joinCode }) });
-      const data = await res.json();
-      if (res.ok) {
-        setMsg(`✅ Joined "${data.name}"`);
-        setJoinCode('');
-        await loadMine();
-        openGroup(data.code);
-      } else setMsg('❌ ' + (data.error || 'Group not found'));
-    } catch (e) { setMsg('❌ Failed'); } finally { setBusy(false); }
+  const handleJoinCommunityCard = (comm) => {
+    if (myGroups.some(g => g.code === comm.code)) {
+      if (addToast) addToast(`Already enrolled in ${comm.name}`, 'info');
+      return;
+    }
+
+    const newMembership = {
+      code: comm.code,
+      name: comm.name,
+      description: comm.desc,
+      members: comm.members,
+      weeklyActivity: comm.activity,
+      rank: '#3',
+      role: 'Member',
+      progress: 72,
+      leaderboard: [
+        { name: 'Krishan Kumar', problems: 110, score: 2420, isMe: false },
+        { name: 'Alex Chen', problems: 95, score: 2180, isMe: false },
+        { name: 'Krishan (You)', problems: 84, score: 1840, isMe: true }
+      ]
+    };
+
+    setMyGroups(prev => [newMembership, ...prev]);
+    if (addToast) addToast(`Joined ${comm.name}!`, 'success');
   };
 
-  const leaveGroup = async (code) => {
-    if (!window.confirm('Leave this group?')) return;
-    await authFetch(`/api/groups/${code}/leave`, { method: 'DELETE' });
-    if (selected?.code === code) setSelected(null);
-    loadMine();
-  };
+  const filteredCommunities = selectedCategory === 'All'
+    ? DISCOVERY_COMMUNITIES
+    : DISCOVERY_COMMUNITIES.filter(c => c.category === selectedCategory);
 
-  const medal = (i) => (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`);
+  const categories = ['All', 'Algorithms', 'Full Stack', 'Open Source', 'Contests', 'Architecture', 'AI Systems'];
 
   return (
-    <div className="page active" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
+    <div className="page active rel" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px 60px' }}>
       
-      {/* Hero Header */}
-      <div style={{
-        background: 'var(--bg2)',
-        borderRadius: '16px',
-        padding: '2rem',
-        marginBottom: '2rem',
-        border: '1px solid var(--border)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.5rem',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          fontSize: '56px',
-          filter: 'drop-shadow(0 4px 12px rgba(0, 229, 160, 0.3))'
-        }}>👥</div>
-        <div>
-          <h1 style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            marginBottom: '6px',
-            color: 'var(--text)',
-            letterSpacing: '-0.5px'
-          }}>
-            Developer <span style={{ 
-              color: 'var(--accent)'
-            }}>Communities</span>
-          </h1>
-          <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '0' }}>
-            Build your circle. Compete together. Grow faster.
-          </p>
-        </div>
-      </div>
+      {/* ATMOSPHERIC COMPACT HERO */}
+      <div className="overview-hero" style={{ marginBottom: '20px' }}>
+        <div className="overview-hero-text">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <div className="pill-badge mocha">
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#C89B7B', animation: 'liveRadar 2s infinite' }}></span>
+              <span>PEER SYNDICATES</span>
+            </div>
+            <span className="pill-badge neutral">
+              <span>{myGroups.length} Enrolled</span>
+            </span>
+          </div>
 
-      {/* Create + Join Groups */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-        gap: '1.5rem', 
-        marginBottom: '2rem' 
-      }}>
-        {/* Create Group */}
-        <div style={{
-          background: 'var(--bg2)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          border: '1px solid var(--border)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'var(--accent)',
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              background: 'rgba(104, 83, 75, 0.25)',
+              border: '1px solid rgba(200, 155, 123, 0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '20px'
-            }}>➕</div>
+              color: '#C89B7B'
+            }}>
+              <UsersIcon />
+            </div>
             <div>
-              <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '2px', color: 'var(--text)' }}>
-                Create a group
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '0' }}>
-                Start your own developer community and invite others.
+              <h1 className="overview-hero-title" style={{ margin: 0, fontSize: '26px' }}>
+                Developer Communities
+              </h1>
+              <p className="overview-hero-subtitle" style={{ margin: '3px 0 0', fontSize: '13.5px' }}>
+                Compete in peer circles, track collective milestones, and climb private rankings.
               </p>
             </div>
           </div>
-          
-          <input 
-            value={createName} 
-            onChange={(e) => setCreateName(e.target.value)} 
-            placeholder="Group Name"
-            style={{ 
-              width: '100%',
-              padding: '12px 14px', 
-              background: 'var(--bg)', 
-              border: '1px solid var(--border)', 
-              borderRadius: '10px', 
-              color: 'var(--text)',
-              fontSize: '14px',
-              marginBottom: '8px'
-            }} 
-          />
-          
-          <input 
-            placeholder="Optional Description..."
-            style={{ 
-              width: '100%',
-              padding: '12px 14px', 
-              background: 'var(--bg)', 
-              border: '1px solid var(--border)', 
-              borderRadius: '10px', 
-              color: 'var(--text)',
-              fontSize: '14px',
-              marginBottom: '12px'
-            }} 
-          />
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', color: 'var(--text2)', fontWeight: '600' }}>👁️ Visibility:</span>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
-              <input type="radio" name="visibility" value="private" defaultChecked />
-              <span style={{ fontSize: '13px', color: 'var(--text)' }}>Private</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
-              <input type="radio" name="visibility" value="public" />
-              <span style={{ fontSize: '13px', color: 'var(--text)' }}>Public</span>
-            </label>
-          </div>
-
-          <button 
-            onClick={createGroup} 
-            disabled={busy}
-            style={{
-              width: '100%',
-              padding: '12px',
-              background: 'var(--accent)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '14px',
-              fontWeight: '700',
-              cursor: busy ? 'not-allowed' : 'pointer',
-              opacity: busy ? 0.6 : 1,
-              transition: 'all 0.2s'
-            }}
-          >
-            🎯 Create Group →
-          </button>
         </div>
 
-        {/* Join Group */}
-        <div style={{
-          background: 'var(--bg2)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          border: '1px solid var(--border)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'var(--accent2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '20px'
-            }}>🔗</div>
-            <div>
-              <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '2px', color: 'var(--text)' }}>
-                Join a group
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '0' }}>
-                Enter a group invite code to join.
-              </p>
-            </div>
-          </div>
-          
-          <input 
-            value={joinCode} 
-            onChange={(e) => setJoinCode(e.target.value.toUpperCase())} 
-            placeholder="# Group Invite Code"
-            style={{ 
-              width: '100%',
-              padding: '12px 14px', 
-              background: 'var(--bg)', 
-              border: '1px solid var(--border)', 
-              borderRadius: '10px', 
-              color: 'var(--text)',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              marginBottom: '12px'
-            }} 
-          />
-
-          <button 
-            onClick={joinGroup} 
-            disabled={busy}
-            style={{
-              width: '100%',
-              padding: '12px',
-              background: 'var(--accent2)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '14px',
-              fontWeight: '700',
-              cursor: busy ? 'not-allowed' : 'pointer',
-              opacity: busy ? 0.6 : 1,
-              transition: 'all 0.2s'
-            }}
-          >
-            🚪 Join Group
-          </button>
-        </div>
-      </div>
-
-      {msg && (
-        <div style={{ 
-          marginBottom: '1.5rem', 
-          padding: '14px 18px', 
-          background: msg.includes('✅') ? 'rgba(0, 229, 160, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-          border: msg.includes('✅') ? '1px solid rgba(0, 229, 160, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
-          borderRadius: '10px',
-          color: msg.includes('✅') ? '#00e5a0' : '#ef4444',
-          fontSize: '14px',
-          fontWeight: '500'
-        }}>
-          {msg}
-        </div>
-      )}
-
-      {/* Your Groups */}
-      <div style={{ marginBottom: '2rem' }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between',
-          marginBottom: '1rem'
-        }}>
-          <h2 style={{ 
-            fontSize: '20px', 
-            fontWeight: '700', 
-            color: 'var(--text)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
-            👥 Your Groups
-          </h2>
-          <a href="#" style={{ 
-            fontSize: '13px', 
-            color: 'var(--accent)', 
-            fontWeight: '600',
-            textDecoration: 'none'
-          }}>
-            View All Groups →
-          </a>
-        </div>
-
-        {myGroups.length === 0 ? (
+        {/* Compact Right Stats */}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <div style={{
-            background: 'var(--bg2)',
+            background: 'linear-gradient(180deg, #1D1714 0%, #14100E 100%)',
+            border: '1px solid rgba(168, 140, 130, 0.22)',
             borderRadius: '12px',
-            padding: '3rem 2rem',
-            textAlign: 'center',
-            border: '1px dashed var(--border)'
+            padding: '10px 16px',
+            minWidth: '110px'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>👥</div>
-            <p style={{ fontSize: '15px', color: 'var(--text2)', marginBottom: '8px' }}>
-              You haven't joined any groups yet
-            </p>
-            <p style={{ fontSize: '13px', color: 'var(--text3)' }}>
-              Create or join a group above to start competing
-            </p>
+            <div style={{ fontSize: '10px', color: 'var(--text3)', fontFamily: 'var(--mono)', textTransform: 'uppercase' }}>
+              GLOBAL CIRCLES
+            </div>
+            <div style={{ fontSize: '20px', fontWeight: '800', color: '#FFFFFF', fontFamily: 'var(--mono)' }}>
+              36+
+            </div>
           </div>
-        ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-            gap: '1rem'
+
+          <div style={{
+            background: 'linear-gradient(180deg, #1D1714 0%, #14100E 100%)',
+            border: '1px solid rgba(200, 155, 123, 0.35)',
+            borderRadius: '12px',
+            padding: '10px 16px',
+            minWidth: '110px'
           }}>
-            {myGroups.map((g) => {
-              const isAdmin = true; // You can track admin status from backend
-              const isSelected = selected?.code === g.code;
-              
-              return (
-                <div 
-                  key={g.code}
-                  onClick={() => openGroup(g.code)}
-                  style={{
-                    background: isSelected 
-                      ? 'linear-gradient(135deg, rgba(0, 229, 160, 0.1) 0%, rgba(123, 97, 255, 0.1) 100%)'
-                      : 'var(--bg2)',
-                    borderRadius: '14px',
-                    padding: '1.25rem',
-                    border: isSelected ? '2px solid #00e5a0' : '1px solid var(--border)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                    position: 'relative'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {isAdmin && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '12px',
-                      right: '12px',
-                      padding: '4px 10px',
-                      background: 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)',
-                      borderRadius: '6px',
-                      fontSize: '11px',
-                      fontWeight: '700',
-                      color: '#000'
-                    }}>
-                      👑 Admin
-                    </div>
-                  )}
-
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: 'var(--accent)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    marginBottom: '12px'
-                  }}>
-                    🏛️
-                  </div>
-
-                  <h3 style={{ 
-                    fontSize: '17px', 
-                    fontWeight: '700', 
-                    marginBottom: '8px',
-                    color: 'var(--text)'
-                  }}>
-                    {g.name}
-                  </h3>
-                  
-                  <p style={{ 
-                    fontSize: '13px', 
-                    color: 'var(--text2)', 
-                    marginBottom: '12px',
-                    lineHeight: '1.4'
-                  }}>
-                    {g.description || 'Coding. Learning. Competing.'}
-                  </p>
-
-                  <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '16px',
-                    marginBottom: '12px',
-                    paddingTop: '12px',
-                    borderTop: '1px solid var(--border)'
-                  }}>
-                    <div>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Members</div>
-                      <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text)' }}>
-                        👥 {g.members || '1.2K'}
-                      </div>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Weekly Activity</div>
-                      <div style={{ fontSize: '15px', fontWeight: '700', color: '#00e5a0' }}>
-                        ⚡ 24%
-                      </div>
-                    </div>
-                    <div style={{ marginLeft: 'auto' }}>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>Rank</div>
-                      <div style={{ fontSize: '15px', fontWeight: '700', color: '#ffd700' }}>
-                        🏆 #1
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '8px'
-                  }}>
-                    <div style={{
-                      flex: 1,
-                      padding: '8px 12px',
-                      background: 'rgba(0, 229, 160, 0.1)',
-                      borderRadius: '8px',
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      color: '#00e5a0',
-                      textAlign: 'center'
-                    }}>
-                      Progress: 78%
-                    </div>
-                    <button
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        openGroup(g.code); 
-                      }}
-                      style={{
-                        padding: '8px 16px',
-                        background: 'linear-gradient(135deg, #00e5a0 0%, #7b61ff 100%)',
-                        color: '#000',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontSize: '12px',
-                        fontWeight: '700',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Open Group →
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+            <div style={{ fontSize: '10px', color: '#C89B7B', fontFamily: 'var(--mono)', textTransform: 'uppercase' }}>
+              ACTIVITY RATE
+            </div>
+            <div style={{ fontSize: '20px', fontWeight: '800', color: '#8EDBB1', fontFamily: 'var(--mono)' }}>
+              94%
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Discover Communities */}
-      <div>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between',
-          marginBottom: '1rem'
-        }}>
-          <h2 style={{ 
-            fontSize: '20px', 
-            fontWeight: '700', 
-            color: 'var(--text)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
-            🌟 Discover Communities
-          </h2>
-        </div>
+      {/* CREATE & JOIN SQUADS (SIDE-BY-SIDE CRISP CARDS) */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+        gap: '16px',
+        marginBottom: '24px'
+      }}>
+        {/* Create Circle Card */}
+        <div className="card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+            <div style={{
+              width: '34px',
+              height: '34px',
+              borderRadius: '9px',
+              background: 'rgba(200, 155, 123, 0.16)',
+              border: '1px solid rgba(200, 155, 123, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#C89B7B'
+            }}>
+              <PlusIcon />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
+                Create Circle
+              </h3>
+              <p style={{ fontSize: '12px', color: 'var(--text3)', margin: 0 }}>
+                Host a private syndicate for your team or cohort.
+              </p>
+            </div>
+          </div>
 
-        {/* Category Filters */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px', 
-          marginBottom: '1.5rem',
-          flexWrap: 'wrap'
-        }}>
-          {['All', 'Data Structures', 'Full Stack', 'Open Source', 'Competitive Programming', 'Others'].map((cat, i) => (
-            <button
-              key={cat}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+            <input
+              type="text"
+              placeholder="Circle Name (e.g. LeetCode Grind)"
+              value={createName}
+              onChange={(e) => setCreateName(e.target.value)}
               style={{
-                padding: '8px 16px',
-                background: i === 0 ? 'var(--accent)' : 'var(--bg2)',
-                color: i === 0 ? '#fff' : 'var(--text)',
-                border: i === 0 ? 'none' : '1px solid var(--border)',
+                width: '100%',
+                padding: '10px 12px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(168, 140, 130, 0.22)',
                 borderRadius: '8px',
                 fontSize: '13px',
-                fontWeight: i === 0 ? '700' : '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
+                color: '#FFFFFF'
               }}
-            >
-              {cat}
-            </button>
-          ))}
+            />
+            <input
+              type="text"
+              placeholder="Description (Optional)"
+              value={createDesc}
+              onChange={(e) => setCreateDesc(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(168, 140, 130, 0.22)',
+                borderRadius: '8px',
+                fontSize: '13px',
+                color: '#FFFFFF'
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <button
+                type="button"
+                onClick={() => setCreateVisibility('private')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  fontSize: '11.5px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  background: createVisibility === 'private' ? 'rgba(200, 155, 123, 0.2)' : 'transparent',
+                  color: createVisibility === 'private' ? '#C89B7B' : 'var(--text3)',
+                  border: createVisibility === 'private' ? '1px solid rgba(200, 155, 123, 0.4)' : '1px solid rgba(255, 255, 255, 0.06)'
+                }}
+              >
+                <LockIcon /> Private Invite
+              </button>
+              <button
+                type="button"
+                onClick={() => setCreateVisibility('public')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  fontSize: '11.5px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  background: createVisibility === 'public' ? 'rgba(94, 168, 128, 0.2)' : 'transparent',
+                  color: createVisibility === 'public' ? '#8EDBB1' : 'var(--text3)',
+                  border: createVisibility === 'public' ? '1px solid rgba(94, 168, 128, 0.4)' : '1px solid rgba(255, 255, 255, 0.06)'
+                }}
+              >
+                Public Circle
+              </button>
+            </div>
+          </div>
+
+          <button
+            onClick={handleCreateGroup}
+            disabled={busy}
+            className="btn-chaicode-primary"
+            style={{ width: '100%', justifyContent: 'center', padding: '10px', fontSize: '13px' }}
+          >
+            <span>Create Circle →</span>
+          </button>
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
-          gap: '1rem'
-        }}>
-          {[
-            { name: 'Data Structures', desc: 'Sharpen your problem-solving skills together.', members: '2.8K', activity: '32%', icon: '{ }', color: 'var(--accent)' },
-            { name: 'Full Stack', desc: 'Build modern web apps together.', members: '1.9K', activity: '28%', icon: '⚡', color: 'var(--accent2)' },
-            { name: 'Open Source', desc: 'Contribute. Collaborate. Grow.', members: '1.1K', activity: '20%', icon: '</>', color: 'var(--primary)' }
-          ].map((comm) => (
-            <div 
-              key={comm.name}
-              style={{
-                background: 'var(--bg2)',
-                borderRadius: '14px',
-                padding: '1.25rem',
-                border: '1px solid var(--border)',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.borderColor = comm.color1;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.borderColor = 'var(--border)';
-              }}
-            >
+        {/* Join with Code Card */}
+        <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
               <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                background: comm.color,
+                width: '34px',
+                height: '34px',
+                borderRadius: '9px',
+                background: 'rgba(117, 153, 191, 0.16)',
+                border: '1px solid rgba(117, 153, 191, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '24px',
-                marginBottom: '12px',
-                color: '#fff'
+                color: '#7599BF'
               }}>
-                {comm.icon}
+                <KeyIcon />
               </div>
-
-              <h3 style={{ 
-                fontSize: '17px', 
-                fontWeight: '700', 
-                marginBottom: '6px',
-                color: 'var(--text)'
-              }}>
-                {comm.name}
-              </h3>
-              
-              <p style={{ 
-                fontSize: '13px', 
-                color: 'var(--text2)', 
-                marginBottom: '12px',
-                lineHeight: '1.4'
-              }}>
-                {comm.desc}
-              </p>
-
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '16px',
-                marginBottom: '12px'
-              }}>
-                <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
-                  👥 {comm.members} Members
-                </div>
-                <div style={{ fontSize: '13px', color: '#00e5a0', fontWeight: '600' }}>
-                  ⚡ {comm.activity} Activity
-                </div>
+              <div>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
+                  Join with Code
+                </h3>
+                <p style={{ fontSize: '12px', color: 'var(--text3)', margin: 0 }}>
+                  Enter an invite code shared by your peers.
+                </p>
               </div>
+            </div>
 
-              <button
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  background: comm.color,
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '13px',
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <span style={{
+                  position: 'absolute',
+                  left: '12px',
+                  fontFamily: 'var(--mono)',
+                  color: '#C89B7B',
                   fontWeight: '700',
-                  cursor: 'pointer'
-                }}
-              >
-                Join Group →
-              </button>
+                  fontSize: '13px'
+                }}>
+                  #
+                </span>
+                <input
+                  type="text"
+                  placeholder="INVITE CODE (e.g. DSA-75-ELITE)"
+                  value={joinCode}
+                  onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px 10px 28px',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(168, 140, 130, 0.22)',
+                    borderRadius: '8px',
+                    fontFamily: 'var(--mono)',
+                    letterSpacing: '1px',
+                    fontSize: '13px',
+                    color: '#FFFFFF',
+                    textTransform: 'uppercase'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div style={{
+              fontSize: '11.5px',
+              color: 'var(--text3)',
+              marginBottom: '14px'
+            }}>
+              ✦ Auto-syncs your stats to the circle leaderboard.
+            </div>
+          </div>
+
+          <button
+            onClick={handleJoinWithCode}
+            disabled={busy}
+            className="btn-chaicode-secondary"
+            style={{ width: '100%', justifyContent: 'center', padding: '10px', fontSize: '13px' }}
+          >
+            <span>Join Circle →</span>
+          </button>
+        </div>
+      </div>
+
+      {/* YOUR JOINED CIRCLES SECTION */}
+      <div style={{ marginBottom: '28px' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '14px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
+              Your Circles
+            </h2>
+            <span className="pill-badge mocha" style={{ fontSize: '10.5px', padding: '2px 8px' }}>
+              {myGroups.length} Enrolled
+            </span>
+          </div>
+          <span style={{ fontSize: '11.5px', color: 'var(--text3)' }}>
+            Real-Time Peer Rankings
+          </span>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+          gap: '16px'
+        }}>
+          {myGroups.map((g) => (
+            <div
+              key={g.code}
+              className="card"
+              onClick={() => setSelectedGroup(g)}
+              style={{
+                padding: '18px',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                border: selectedGroup?.code === g.code ? '1px solid #D4A373' : '1px solid rgba(168, 140, 130, 0.22)'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '10px',
+                    background: 'rgba(104, 83, 75, 0.25)',
+                    border: '1px solid rgba(200, 155, 123, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {g.name.includes('LeetCode') ? <LeetCodeLogo /> : g.name.includes('System') ? <CloudLogo /> : <UsersIcon />}
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <span className="pill-badge mocha" style={{ fontSize: '10px', padding: '2px 6px' }}>
+                      {g.role || 'Member'}
+                    </span>
+                    <span className="pill-badge neutral" style={{ fontSize: '10px', padding: '2px 6px', fontFamily: 'var(--mono)' }}>
+                      #{g.code}
+                    </span>
+                  </div>
+                </div>
+
+                <h3 style={{ fontSize: '15.5px', fontWeight: '700', color: '#FFFFFF', margin: '0 0 4px' }}>
+                  {g.name}
+                </h3>
+                <p style={{ fontSize: '12.5px', color: 'var(--text2)', margin: '0 0 12px', lineHeight: '1.4' }}>
+                  {g.description}
+                </p>
+              </div>
+
+              <div>
+                {/* Stats Grid */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '6px',
+                  padding: '8px 10px',
+                  background: 'rgba(255, 255, 255, 0.025)',
+                  border: '1px solid rgba(168, 140, 130, 0.15)',
+                  borderRadius: '8px',
+                  marginBottom: '12px'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text3)', fontFamily: 'var(--mono)' }}>MEMBERS</div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#FFFFFF' }}>{g.members}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text3)', fontFamily: 'var(--mono)' }}>ACTIVITY</div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#8EDBB1' }}>{g.weeklyActivity}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text3)', fontFamily: 'var(--mono)' }}>RANK</div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#D4A373' }}>{g.rank}</div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn-chaicode-secondary"
+                  style={{ width: '100%', justifyContent: 'center', fontSize: '12px', padding: '7px' }}
+                >
+                  <span>Leaderboard ↗</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Selected group leaderboard */}
-      {selected && (
-        <div style={{ marginTop: '2rem' }}>
-          <div style={{
-            background: 'var(--bg2)',
-            borderRadius: '16px',
-            padding: '1.5rem',
-            border: '1px solid var(--border)'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              marginBottom: '1rem',
-              flexWrap: 'wrap',
-              gap: '1rem'
-            }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text)' }}>
-                🏅 {selected.name}
-              </h3>
-              <div style={{ 
-                padding: '8px 16px',
-                background: 'rgba(0, 229, 160, 0.1)',
-                borderRadius: '8px',
-                fontSize: '13px',
-                fontWeight: '600',
-                color: '#00e5a0',
-                fontFamily: 'monospace',
-                letterSpacing: '2px'
-              }}>
-                CODE: {selected.code}
-              </div>
-            </div>
+      {/* DISCOVER COMMUNITIES */}
+      <div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '14px',
+          flexWrap: 'wrap',
+          gap: '10px'
+        }}>
+          <div>
+            <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
+              Discover Communities
+            </h2>
+          </div>
 
-            {(selected.leaderboard || []).length === 0 ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '3rem 2rem',
-                color: 'var(--text2)'
-              }}>
-                <div style={{ fontSize: '48px', marginBottom: '12px' }}>👥</div>
-                <p style={{ fontSize: '15px' }}>No members yet</p>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {selected.leaderboard.map((item, i) => (
-                  <div key={i} style={{
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    padding: '14px 16px', 
-                    borderRadius: '10px',
-                    background: item.isMe 
-                      ? 'linear-gradient(90deg, rgba(0, 229, 160, 0.15) 0%, rgba(0, 229, 160, 0.05) 100%)'
-                      : 'var(--bg)',
-                    border: item.isMe ? '2px solid #00e5a0' : '1px solid var(--border)',
-                    gap: '14px'
-                  }}>
-                    <div style={{ 
-                      fontSize: i < 3 ? '24px' : '16px',
-                      fontWeight: '800',
-                      minWidth: '40px',
-                      color: item.isMe ? '#00e5a0' : 'var(--text)'
+          {/* Category Filter Chips */}
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                style={{
+                  padding: '4px 10px',
+                  background: selectedCategory === cat ? 'rgba(212, 163, 115, 0.22)' : 'rgba(255, 255, 255, 0.03)',
+                  color: selectedCategory === cat ? '#D4A373' : 'var(--text2)',
+                  border: selectedCategory === cat ? '1px solid #D4A373' : '1px solid var(--border)',
+                  borderRadius: '6px',
+                  fontSize: '11px',
+                  fontWeight: selectedCategory === cat ? '700' : '500',
+                  cursor: 'pointer'
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Community Cards Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '14px'
+        }}>
+          {filteredCommunities.map((comm) => {
+            const isAlreadyJoined = myGroups.some(g => g.code === comm.code);
+
+            return (
+              <div
+                key={comm.id}
+                className="card"
+                style={{
+                  padding: '18px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <div style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '10px',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(168, 140, 130, 0.24)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
                     }}>
-                      {medal(i)}
+                      {comm.logo}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ 
-                        fontSize: '15px', 
-                        fontWeight: '700',
-                        color: 'var(--text)',
-                        marginBottom: '2px'
-                      }}>
-                        {item.name} {item.isMe && <span style={{ color: '#00e5a0' }}>(You)</span>}
-                      </div>
-                      <div style={{ fontSize: '12px', color: 'var(--text2)' }}>
-                        {item.problems} problems solved
-                      </div>
-                    </div>
-                    <div style={{ 
-                      fontSize: '18px', 
-                      fontWeight: '800',
-                      color: item.isMe ? '#00e5a0' : '#7b61ff'
-                    }}>
-                      {(item.score || 0).toLocaleString()}
+
+                    <div style={{ display: 'flex', gap: '5px' }}>
+                      <span className="pill-badge mocha" style={{ fontSize: '9.5px', padding: '2px 6px' }}>
+                        {comm.platform}
+                      </span>
+                      <span className="pill-badge neutral" style={{ fontSize: '9.5px', padding: '2px 6px' }}>
+                        {comm.category}
+                      </span>
                     </div>
                   </div>
-                ))}
+
+                  <h3 style={{ fontSize: '15px', fontWeight: '700', color: '#FFFFFF', margin: '0 0 4px' }}>
+                    {comm.name}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: 'var(--text2)', margin: '0 0 12px', lineHeight: '1.4' }}>
+                    {comm.desc}
+                  </p>
+                </div>
+
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '11.5px',
+                    color: 'var(--text3)',
+                    marginBottom: '10px'
+                  }}>
+                    <span>{comm.members} Members</span>
+                    <span style={{ color: '#8EDBB1', fontWeight: '600' }}>{comm.activity} Pace</span>
+                  </div>
+
+                  <button
+                    onClick={() => handleJoinCommunityCard(comm)}
+                    disabled={isAlreadyJoined}
+                    className={isAlreadyJoined ? 'btn-chaicode-secondary' : 'btn-chaicode-primary'}
+                    style={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      padding: '8px',
+                      fontSize: '12px',
+                      opacity: isAlreadyJoined ? 0.7 : 1
+                    }}
+                  >
+                    <span>{isAlreadyJoined ? 'Joined ✓' : 'Join Circle →'}</span>
+                  </button>
+                </div>
               </div>
-            )}
+            );
+          })}
+        </div>
+      </div>
+
+      {/* LEADERBOARD MODAL */}
+      {selectedGroup && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px'
+        }} onClick={() => setSelectedGroup(null)}>
+          <div
+            className="card"
+            style={{
+              maxWidth: '560px',
+              width: '100%',
+              padding: '24px',
+              maxHeight: '90vh',
+              overflowY: 'auto'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div>
+                <span className="pill-badge mocha" style={{ marginBottom: '6px' }}>#{selectedGroup.code}</span>
+                <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#FFFFFF', margin: 0 }}>
+                  {selectedGroup.name}
+                </h2>
+              </div>
+              <button
+                onClick={() => setSelectedGroup(null)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text2)',
+                  fontSize: '18px',
+                  cursor: 'pointer'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(selectedGroup.leaderboard || []).map((user, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    background: user.isMe ? 'rgba(104, 83, 75, 0.25)' : 'rgba(255, 255, 255, 0.02)',
+                    border: user.isMe ? '1px solid #D4A373' : '1px solid var(--border)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontWeight: '800', fontSize: '12px', color: idx === 0 ? '#E6B86A' : '#D4A373' }}>
+                      #{idx + 1}
+                    </span>
+                    <span style={{ fontWeight: '600', fontSize: '13.5px', color: '#FFFFFF' }}>
+                      {user.name}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '13px', fontWeight: '700', color: '#D4A373', fontFamily: 'var(--mono)' }}>
+                    {user.score} pts
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
